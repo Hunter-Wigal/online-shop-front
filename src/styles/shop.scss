@@ -1,0 +1,41 @@
+.header{
+    text-align: center;
+}
+
+.search-label{
+    width: 25%;
+    display: block;
+    position: relative;
+    margin: auto;
+    background-color: aqua;
+}
+
+.search-bar{
+    display: inline-block;
+    position: relative;
+    width: 60%;
+    margin-right: 0;
+}
+
+.search-btn{
+    height: fit-content;
+    margin-left: 0;
+}
+
+.search-area{
+    width: 75%;
+    margin: auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    background-color: var(--debug-color);
+}
+
+.products{
+    width: 75%;
+    margin-inline: auto;
+    margin-top: 1%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
