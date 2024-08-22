@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import Button from "@mui/material/Button";
 
 import TextField from "@mui/material/TextField";
-import "../styles/Admin.scss";
+import "../styles/admin.scss";
 
 export default function Admin() {
   const [item_name, setName] = useState("");

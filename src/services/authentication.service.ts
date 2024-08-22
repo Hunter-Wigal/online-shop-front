@@ -1,5 +1,4 @@
 import { jwtDecode } from "jwt-decode";
-import jwt from "jsonwebtoken";
 
 export interface User {
   username: string;
@@ -133,5 +132,6 @@ export function checkJWT() {
     console.log("logging out...");
     // localStorage.setItem("jwt", "");
     localStorage.removeItem("user");
+    localStorage.removeItem("jwt");
   }
 }

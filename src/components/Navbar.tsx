@@ -1,8 +1,8 @@
 import Link from '@mui/material/Link';
-import "../styles/index.scss"
-// import { login, register, getUserDetails } from '../services/authentication.service';
+import "../styles/index.scss";
 import { AppBar, Button, IconButton } from '@mui/material';
 import { AccountCircle, ShoppingCartOutlined } from '@mui/icons-material';
+
 
 export default function Navbar(){
     // function toggleSignIn(){
@@ -24,29 +24,29 @@ export default function Navbar(){
 
     return(
         <>
-        {/* <p>{JSON.parse(currUser)['name']}</p> */}
+        {/* <p>{JSON.parse(currUser)['name']}</p>  */}
             <AppBar position='static'>
-                <ul className="links">
-                    <li>
-                        <Link href="/" color="inherit" key={""}>Home</Link>
-                    </li>
-                    <li>
-                        <Link href="/shop" color="inherit">Shop</Link>
-                    </li>
-                    <li>
-                        <Link href="/checkout" color="inherit">Checkout</Link>
-                    </li>
-                    <li>
-                        <Link href="/about" color="inherit">About</Link>
-                    </li>
-                    <li className="act-btn">
+                <div className="links">
+                    <Button variant="contained">
+                        <Link href="/" color="inherit" key={""} className="remove-underline">Home</Link>
+                    </Button>
+                    <Button variant="contained">
+                        <Link href="/shop" color="inherit" className="remove-underline">Shop</Link>
+                    </Button>
+                    <Button variant="contained">
+                        <Link href="/checkout" color="inherit" className="remove-underline">Checkout</Link>
+                    </Button>
+                    <Button variant="contained">
+                        <Link href="/about" color="inherit" className="remove-underline">About</Link>
+                    </Button>
+                    <div className="act-btn">
+                    <IconButton ><ShoppingCartOutlined/></IconButton> 
                         {account}
-                    {/* <Button className="toggle-modal" onClick={()=>{getUserDetails()}}>Test</Button> */}
-                        <IconButton><ShoppingCartOutlined/></IconButton>
-                        {/* <Button className="toggle-modal" onClick={()=>{toggleSignIn()}}>Sign In</Button> */}
-                    </li>
-                </ul>
-            </AppBar>
+                    </div>
+                    
+                </div>
+            </AppBar> 
         </>
     )
 }
+
