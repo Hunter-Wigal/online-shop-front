@@ -1,52 +1,101 @@
-import Link from '@mui/material/Link';
+import Link from "@mui/material/Link";
 import "../styles/index.scss";
-import { AppBar, Button, IconButton } from '@mui/material';
-import { AccountCircle, ShoppingCartOutlined } from '@mui/icons-material';
+import { AppBar, Button, IconButton } from "@mui/material";
+import {
+  AccountCircle,
+  ShoppingCartOutlined,
+  StoreOutlined,
+} from "@mui/icons-material";
 
+// TODO fix this mess
+const fontSize = 20;
+const margin = "0.5%";
 
-export default function Navbar(){
-    // function toggleSignIn(){
-    //     const dropdown = document.getElementById("dropdown");
+export default function Navbar() {
+  // function toggleSignIn(){
+  //     const dropdown = document.getElementById("dropdown");
 
-    //     if (dropdown){
-    //         dropdown.style.display = dropdown.style.display == "none" || dropdown.style.display == "" ? "block": "none";
+  //     if (dropdown){
+  //         dropdown.style.display = dropdown.style.display == "none" || dropdown.style.display == "" ? "block": "none";
 
-    //     }
-    // }
+  //     }
+  // }
 
-    function toggleAccount(){
+  function toggleAccount() {}
 
-    }
+  const currUser = localStorage["user"];
 
-    let currUser = localStorage['user'];
+  const account =
+    currUser === undefined ? (
+      <Button color="secondary" variant="contained" href="/account" sx={{'margin': 'auto', 'marginInline': '10%', 'height': '95%'}}>
+        Login
+      </Button>
+    ) : (
+      <IconButton onClick={toggleAccount} className="account">
+        <AccountCircle />
+      </IconButton>
+    );
 
-    let account = currUser === undefined ? <Button color="secondary" variant="contained" href="/account">Login/Sign Up</Button> : <IconButton onClick={toggleAccount}><AccountCircle/></IconButton>;
-
-    return(
-        <>
-        {/* <p>{JSON.parse(currUser)['name']}</p>  */}
-            <AppBar position='static'>
-                <div className="links">
-                    <Button variant="contained">
-                        <Link href="/" color="inherit" key={""} className="remove-underline">Home</Link>
-                    </Button>
-                    <Button variant="contained">
-                        <Link href="/shop" color="inherit" className="remove-underline">Shop</Link>
-                    </Button>
-                    <Button variant="contained">
-                        <Link href="/checkout" color="inherit" className="remove-underline">Checkout</Link>
-                    </Button>
-                    <Button variant="contained">
-                        <Link href="/about" color="inherit" className="remove-underline">About</Link>
-                    </Button>
-                    <div className="act-btn">
-                    <IconButton ><ShoppingCartOutlined/></IconButton> 
-                        {account}
-                    </div>
-                    
-                </div>
-            </AppBar> 
-        </>
-    )
+  return (
+    <>
+      {/* <p>{JSON.parse(currUser)['name']}</p>  */}
+      <AppBar position="static" sx={{'marginBottom': '2%'}}>
+        <div className="links">
+          <IconButton>
+            <StoreOutlined fontSize={"large"}/>
+          </IconButton>
+          <Link
+            href="/"
+            color="inherit"
+            
+            key={""}
+            className="nav-link"
+            underline="none"
+            fontSize={fontSize}
+            marginInline={margin}
+            marginLeft={"3%"}
+            
+          >
+            Home
+          </Link>
+          <Link
+            href="/shop"
+            color="inherit"
+            className="nav-link"
+            underline="none"
+            fontSize={fontSize}
+            marginInline={margin}
+          >
+            Shop
+          </Link>
+          <Link
+            href="/checkout"
+            color="inherit"
+            className="nav-link"
+            underline="none"
+            fontSize={fontSize}
+            marginInline={margin}
+          >
+            Checkout
+          </Link>
+          <Link
+            href="/about"
+            color="inherit"
+            className="nav-link"
+            underline="none"
+            fontSize={fontSize}
+            marginInline={margin}
+          >
+            About
+          </Link>
+          <div className="act-btn">
+            <IconButton>
+              <ShoppingCartOutlined fontSize="large" />
+            </IconButton>
+            {account}
+          </div>
+        </div>
+      </AppBar>
+    </>
+  );
 }
-

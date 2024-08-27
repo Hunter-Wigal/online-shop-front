@@ -5,38 +5,23 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Search } from "@mui/icons-material";
+import { fetchData } from "../services/products.service";
 
 export default function Shop() {
   const [products, setProducts] = useState([]);
 
-  async function fetchData() {
-    let ignore = false;
-    console.log(document.cookie);
-    console.log(document.cookie.split("=")[1]);
-
-    const response = await fetch("http://localhost:8080/api/v1/products", {
-      headers: {
-        method: "GET",
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + document.cookie.split("=")[1],
-      },
-    });
-
-    if (!ignore) {
-      setProducts(await response.json());
-      console.log(products);
-    }
-
-    return () => {
-      ignore = true;
-    };
-  }
-
   useEffect(() => {
-    // Declares the function to fetch the products
-
-    fetchData();
+    fetchData()
+      .then((data) =>
+        { 
+          if(data == null){
+            console.log("Cannot connect to the server");
+            return;
+          }
+          setProducts(data)})
+      .catch(() => {
+        console.log("Error fetching products");
+      });
   }, []);
 
   return (
@@ -44,17 +29,23 @@ export default function Shop() {
       <div className="container">
         <h1 className="header">Shop page</h1>
         <div className="search-area">
-          <TextField className="search-field" id="outlined-basic" label="Search for Products" variant="outlined" 
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Search />
-              </InputAdornment>
-            ),
-          }}/>
+          <TextField
+            className="search-field"
+            id="outlined-basic"
+            label="Search for Products"
+            variant="outlined"
+            margin="none"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              ),
+            }}
+          />
           <Button variant="outlined">Search</Button>
         </div>
-        <div className="refresh">
+        {/* <div className="refresh">
           <Button
             onClick={() => {
               fetchData();
@@ -62,12 +53,12 @@ export default function Shop() {
           >
             Refresh
           </Button>
-        </div>
+        </div> */}
         <div className="products">
-          {products.map((product: Product) => {
+          {products.length > 0 ? products.map((product: Product) => {
             console.log(product.itemName);
             return ProductCard(product);
-          })}
+          }) : <h2>No products available to display</h2>}
         </div>
       </div>
     </>

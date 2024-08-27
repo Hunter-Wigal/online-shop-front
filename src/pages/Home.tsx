@@ -8,7 +8,6 @@ export default function Home() {
         <div className="row">
           <h1 className="col">Online Shop</h1>
         </div>
-        <div className="row"><h2 className="col">Info</h2></div>
         <div className="row">
           <p className="intro col">
             Lorem ipsum odor amet, consectetuer adipiscing elit. Mollis netus
