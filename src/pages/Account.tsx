@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserDetails } from "../services/authentication.service";
+// import { UserDetails } from "../services/authentication.service";
 
 export default function Account() {
   const navigate = useNavigate();
