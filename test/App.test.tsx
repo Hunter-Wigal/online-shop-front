@@ -17,6 +17,6 @@ describe("Home", () => {
   test("Page loads", async () => {
     render(<Home />);
 
-    expect(screen.getByText("home page")).toBeDefined();
+    expect(screen.getByText("Online Shop")).toBeDefined();
   });
 });
