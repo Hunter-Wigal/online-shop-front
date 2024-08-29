@@ -30,7 +30,7 @@ export default function Shop() {
         <h1 className="header">Shop page</h1>
         <div className="search-area">
           <TextField
-            className="search-field"
+            sx={{"width": "100% !important"}}
             id="outlined-basic"
             label="Search for Products"
             variant="outlined"
@@ -56,8 +56,8 @@ export default function Shop() {
         </div> */}
         <div className="products">
           {products.length > 0 ? products.map((product: Product) => {
-            console.log(product.itemName);
-            return ProductCard(product);
+            console.log(product.name);
+            return ProductCard({product});
           }) : <h2>No products available to display</h2>}
         </div>
       </div>

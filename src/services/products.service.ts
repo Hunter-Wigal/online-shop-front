@@ -1,3 +1,6 @@
+import { Product } from "../components/Product";
+import { CartContextType } from "../App";
+
 async function checkStatus() {
   return fetch("http://localhost:8080/api/v1/products", { mode: "no-cors" })
     .then(() => {
@@ -42,4 +45,37 @@ export async function fetchData() {
     });
 
   return fetched;
+}
+
+
+export function getCart(context: CartContextType ){
+  
+  let cart = new Array<Product>();
+  // let setCart = null;
+  if (context != null) {
+    cart = context.cart;
+    // const product: Product = {id: 3, name: "Item", description: "An item", price: 5.00, quantity: 1};
+  }
+  
+  return cart;
+}
+
+export function addToCart(context: CartContextType){
+
+  let setCart = null;
+  // let setCart = null;
+  if (context != null) {
+    setCart = context.setCart;
+    let newCart = context.cart.slice();
+    
+    newCart.push({
+      id: 0,
+      name: "New item",
+      description: "An item",
+      price: 5,
+      quantity: 1
+    });
+
+    setCart(newCart);
+  }
 }

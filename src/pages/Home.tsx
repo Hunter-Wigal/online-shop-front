@@ -6,7 +6,7 @@ export default function Home() {
     <>
       <div className="container">
         <div className="row">
-          <h1 className="col">Online Shop</h1>
+          <h1 className="col-center">Online Shop</h1>
         </div>
         <div className="row">
           <p className="intro col">

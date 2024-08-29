@@ -1,3 +1,45 @@
+@use "sass:math";
+
+@mixin generate-width-classes($max: 100) {
+  @for $i from 1 through $max {
+    .w-#{$i} {
+      width: math.percentage(math.div($i, 100));
+    }
+  }
+}
+
+@mixin generate-padding-classes($max: 100) {
+  @for $i from 1 through $max {
+    .p-#{$i} {
+      padding: math.percentage(math.div($i, 100));
+    }
+  }
+}
+
+@mixin generate-margin-classes($max: 100) {
+  @for $i from 1 through $max {
+    .m-#{$i} {
+      margin: math.percentage(math.div($i, 100)) !important;
+    }
+    .mi-#{$i} {
+      margin-inline: math.percentage(math.div($i, 100)) !important;
+    }
+    .mr-#{$i} {
+      margin-right: math.percentage(math.div($i, 100)) !important;
+    }
+    .ml-#{$i} {
+      margin-left: math.percentage(math.div($i, 100)) !important;
+    }
+    .mt-#{$i} {
+      margin-top: math.percentage(math.div($i, 100)) !important;
+    }
+    .mb-#{$i} {
+      margin-bottom: math.percentage(math.div($i, 100)) !important;
+    }
+  }
+}
+
+
 html,
 body {
   width: 100%;
@@ -7,7 +49,6 @@ body {
   margin: 0;
 }
 
-
 .links {
   margin: 0.75%;
   margin-inline: 1.5%;
@@ -15,14 +56,15 @@ body {
   align-items: center;
 }
 
-.nav-link{
+.nav-link {
   border: 10px solid rgba(0, 0, 0, 0);
   border-radius: 5px;
 }
 
-.nav-link:hover{
+.nav-link:hover {
   box-shadow: 0px 0px 10px 10px #4bd6c1;
   transition: box-shadow 1s;
+  cursor: pointer;
 }
 
 .act-btn {
@@ -33,10 +75,9 @@ body {
   display: flex;
 }
 
-.account{
+.account {
   margin-left: 20%;
 }
-
 
 .dropdown {
   display: none;
@@ -60,19 +101,42 @@ body {
   justify-content: center;
 }
 
-.row{
+.row {
   display: flex;
   flex-direction: row;
 }
 
-.col{
-  display: block;
-  text-align: center;
+.col {
+  display: flex;
   margin: auto;
   width: 100%;
+  max-width: 75%;
+
+  &-start {
+    @extend .col;
+    justify-content: flex-start;
+    text-align: none;
+  }
+
+  &-center {
+    @extend .col;
+    justify-content: center;
+  }
+
+  &-end{
+    @extend .col;
+    justify-content: flex-end;
+
+  }
 }
 
-.toggle-modal{
+.toggle-modal {
   background-color: black !important;
   color: white !important;
 }
+
+@include generate-width-classes(100);
+
+@include generate-margin-classes(100);
+
+@include generate-padding-classes(100);

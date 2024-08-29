@@ -4,6 +4,17 @@ import "../styles/auth.scss";
 import * as as from "../services/authentication.service";
 import { useNavigate } from "react-router-dom";
 
+async function checkStatus() {
+  return fetch("http://localhost:8080/api/v1/auth", { mode: "no-cors" })
+    .then(() => {
+      console.log("Request sent with no-cors mode");
+      return true;
+    })
+    .catch(() => {
+      alert("Server is currently unavailable");
+      return false;
+    });
+}
 
 async function register(
   name: string,
@@ -11,63 +22,85 @@ async function register(
   email: string,
   password: string
 ) {
-  await as.register(email, password, name, age);
+  if (await checkStatus()) await as.register(email, password, name, age);
 }
 
-
+function StyledInput(props: {
+  label: string;
+  value: any;
+  setter: Function;
+  type: string;
+}) {
+  return (
+    <TextField
+      sx={{ "margin-bottom": "1.5% !important" }}
+      id="outlined-basic"
+      type={props.type}
+      label={props.label}
+      variant="outlined"
+      color="secondary"
+      autoSave="false"
+      value={props.value}
+      onInput={(e) => props.setter((e.target as HTMLInputElement).value)}
+    />
+  );
+}
 
 export default function Auth() {
   const [name, setName] = useState("");
   const [age, setAge] = useState(0);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
+
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
 
   let navigate = useNavigate();
 
-  function login(){
-    as.login(email, password);
-    return navigate('/account');
-}
+  async function login() {
+    if (await checkStatus()) as.login(loginEmail, loginPassword);
+    return navigate("/account");
+  }
 
   return (
     <>
       <div className="forms">
         <div className="login">
           <h1>Register</h1>
-          <form>
-            <TextField
-              id="outlined-basic"
+          <form autoComplete="off">
+            <StyledInput
               label="Full Name"
-              variant="outlined"
+              type="text"
               value={name}
-              onInput={(e) => setName((e.target as HTMLInputElement).value)}
+              setter={setName}
             />
-            <TextField
-              id="outlined-basic"
-              type="number"
+            <StyledInput
               label="Age"
-              variant="outlined"
+              type="number"
               value={age}
-              onInput={(e) =>
-                setAge(Number((e.target as HTMLInputElement).value))
-              }
+              setter={setAge}
             />
-            <TextField
-              id="outlined-basic"
+            <StyledInput
               label="Email"
-              variant="outlined"
-              value={email}
-              onInput={(e) => setEmail((e.target as HTMLInputElement).value)}
+              type="text"
+              value={registerEmail}
+              setter={setRegisterEmail}
             />
-            <TextField
-              id="outlined-basic"
-              type="password"
+            <StyledInput
               label="Password"
-              variant="outlined"
-              value={password}
-              onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
+              type="text"
+              value={registerPassword}
+              setter={setRegisterPassword}
             />
-            <Button className="submit" onClick={async () => register(name, age, email, password)}>
+
+            <Button
+              className="submit"
+              variant="outlined"
+              color="secondary"
+              onClick={async () =>
+                register(name, age, registerEmail, registerPassword)
+              }
+            >
               Submit
             </Button>
           </form>
@@ -75,22 +108,26 @@ export default function Auth() {
         <div className="login">
           <h1>Login</h1>
           <form>
-            <TextField
-              id="outlined-basic"
+            <StyledInput
               label="Email"
-              variant="outlined"
-              value={email}
-              onInput={(e) => setEmail((e.target as HTMLInputElement).value)}
+              type="text"
+              value={loginEmail}
+              setter={setLoginEmail}
+              
             />
-            <TextField
-              id="outlined-basic"
-              type="password"
+            <StyledInput
               label="Password"
-              variant="outlined"
-              value={password}
-              onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
+              type="password"
+              value={loginPassword}
+              setter={setLoginPassword}
             />
-            <Button className="submit" onClick={() => login()}>
+
+            <Button
+              className="submit"
+              onClick={() => login()}
+              variant="outlined"
+              color="secondary"
+            >
               Submit
             </Button>
           </form>

@@ -4,7 +4,7 @@ export default function About() {
   return (
     <>
       <div className="content">
-        <h1 className="center">About the Company/Organization/Shop</h1>
+        <h1 className="col-center">About the Company/Organization/Shop</h1>
         <p>
           Lorem ipsum odor amet, consectetuer adipiscing elit. Duis molestie
           lacus laoreet facilisis suspendisse ornare habitasse. Libero tincidunt

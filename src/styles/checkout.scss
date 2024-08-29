@@ -1,0 +1,43 @@
+.cart{
+    flex-direction: column;
+}
+
+.product{
+    border: 1px solid black;
+
+    img{
+        background-color: black;
+    }
+}
+
+.warning{
+    color: red;
+}
+
+.delivery{
+    display: block;
+    position: relative;
+    
+}
+
+.payment{
+    display: grid;
+    width: 50%;
+    grid-template-columns: auto auto auto;
+    grid-column-gap: 10px;
+}
+
+.payment > *{
+    width: 100%;
+}
+
+.full-column{
+    grid-column-start: 1;
+    grid-column-end: 4;
+}
+
+.place{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}

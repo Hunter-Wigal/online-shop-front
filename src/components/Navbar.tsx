@@ -1,17 +1,19 @@
 import Link from "@mui/material/Link";
 import "../styles/index.scss";
-import { AppBar, Button, IconButton } from "@mui/material";
+import { AppBar, Badge, Button, IconButton } from "@mui/material";
 import {
   AccountCircle,
   ShoppingCartOutlined,
   StoreOutlined,
 } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import { Product } from "./Product";
 
 // TODO fix this mess
 const fontSize = 20;
 const margin = "0.5%";
 
-export default function Navbar() {
+export default function Navbar(props: {cart: Product[]}) {
   // function toggleSignIn(){
   //     const dropdown = document.getElementById("dropdown");
 
@@ -21,13 +23,20 @@ export default function Navbar() {
   //     }
   // }
 
+  let cart = props.cart;
+
   function toggleAccount() {}
 
   const currUser = localStorage["user"];
 
   const account =
     currUser === undefined ? (
-      <Button color="secondary" variant="contained" href="/account" sx={{'margin': 'auto', 'marginInline': '10%', 'height': '95%'}}>
+      <Button
+        color="secondary"
+        variant="contained"
+        onClick={()=>{return navigate("/account")}}
+        sx={{ margin: "auto", marginInline: "10%", height: "95%" }}
+      >
         Login
       </Button>
     ) : (
@@ -36,30 +45,30 @@ export default function Navbar() {
       </IconButton>
     );
 
+  const navigate = useNavigate();
+
   return (
     <>
       {/* <p>{JSON.parse(currUser)['name']}</p>  */}
-      <AppBar position="static" sx={{'marginBottom': '2%'}}>
+      <AppBar position="static" sx={{ marginBottom: "2%" }}>
         <div className="links">
-          <IconButton>
-            <StoreOutlined fontSize={"large"}/>
+          <IconButton onClick={()=>{return navigate("/")}}>
+            <StoreOutlined fontSize={"large"} />
           </IconButton>
           <Link
-            href="/"
+            onClick={()=>{return navigate("/")}}
             color="inherit"
-            
             key={""}
             className="nav-link"
             underline="none"
             fontSize={fontSize}
             marginInline={margin}
             marginLeft={"3%"}
-            
           >
             Home
           </Link>
           <Link
-            href="/shop"
+            onClick={()=>{return navigate("/shop")}}
             color="inherit"
             className="nav-link"
             underline="none"
@@ -68,18 +77,9 @@ export default function Navbar() {
           >
             Shop
           </Link>
+
           <Link
-            href="/checkout"
-            color="inherit"
-            className="nav-link"
-            underline="none"
-            fontSize={fontSize}
-            marginInline={margin}
-          >
-            Checkout
-          </Link>
-          <Link
-            href="/about"
+            onClick={()=>{return navigate("/about")}}
             color="inherit"
             className="nav-link"
             underline="none"
@@ -88,9 +88,12 @@ export default function Navbar() {
           >
             About
           </Link>
+          
           <div className="act-btn">
-            <IconButton>
-              <ShoppingCartOutlined fontSize="large" />
+            <IconButton onClick={() => {return navigate("/checkout")}}>
+              <Badge badgeContent={cart.length} color="secondary">
+                <ShoppingCartOutlined fontSize="large" />
+              </Badge>
             </IconButton>
             {account}
           </div>

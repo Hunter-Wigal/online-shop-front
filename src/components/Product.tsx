@@ -4,21 +4,23 @@ import "../styles/product.scss"
 
 export interface Product {
   id: number;
-  itemName: string;
-  image_URL: string;
+  name: string;
+  image_URL?: string;
   description: string;
   price: number;
+  quantity: number;
 }
 
-export default function ProductCard(product: Product) {
+export default function ProductCard(props: {product: Product}) {
+  let product = props.product;
   return (
     <Card key={product.id} className="card">
       <CardContent className="" key={product.id}>
-        <h2>{product.itemName}</h2>
+        <h2>{product.name}</h2>
         <p>{product.description}</p>
         <img
           src={product.image_URL}
-          alt={`A picture of ${product.itemName}`}
+          alt={`A picture of ${product.name}`}
         ></img>
         <p>Price: ${product.price}</p>
       </CardContent>

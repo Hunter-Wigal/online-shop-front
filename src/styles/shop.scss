@@ -2,32 +2,19 @@
     text-align: center;
 }
 
-.search-label{
-    width: 25%;
-    display: block;
-    position: relative;
-    margin: auto;
-    background-color: aqua;
-}
-
-.search-bar{
-    display: inline-block;
-    position: relative;
-    width: 60%;
-    margin-right: 0;
-}
 
 .search-btn{
     height: fit-content;
-    margin-left: 0;
 }
 
 .search-area{
-    width: 75%;
+    width: 50%;
     margin: auto;
     position: relative;
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 90% 10%;
+    gap: 0px;
+
 }
 
 .products{
