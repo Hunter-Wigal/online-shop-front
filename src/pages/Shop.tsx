@@ -1,14 +1,16 @@
 import "../styles/shop.scss";
-import ProductCard, { Product } from "../components/Product";
+import ProductCard, { ProductType } from "../components/ProductCard";
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Search } from "@mui/icons-material";
 import { fetchData } from "../services/products.service";
+import { useNavigate } from "react-router-dom";
 
 export default function Shop() {
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData()
@@ -55,9 +57,8 @@ export default function Shop() {
           </Button>
         </div> */}
         <div className="products">
-          {products.length > 0 ? products.map((product: Product) => {
-            console.log(product.name);
-            return ProductCard({product});
+          {products.length > 0 ? products.map((product: ProductType) => {
+            return ProductCard({product, navigate});
           }) : <h2>No products available to display</h2>}
         </div>
       </div>

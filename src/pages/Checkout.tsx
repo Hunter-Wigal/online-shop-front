@@ -1,13 +1,12 @@
 import { Button } from "@mui/material";
 import { useContext } from "react";
-import { addToCart } from "../services/products.service";
-import { Product } from "../components/Product";
+import { ProductType } from "../components/ProductCard";
 import "../styles/checkout.scss";
 import ShippingForm from "../components/ShippingForm";
 import PaymentForm from "../components/PaymentForm";
 import { CartContext } from "../App";
 
-let cart = new Array<Product>();
+let cart = new Array<ProductType>();
 
 export default function Checkout() {
   const context = useContext(CartContext);
@@ -35,7 +34,7 @@ export default function Checkout() {
                         className="mr-3"
                         src={product.image_URL}
                       />
-                      <div className="col w-25">Name: {product.name}</div>
+                      <div className="col w-25">Name: {product.itemName}</div>
                       <div className="col-start">
                         Price: ${product.price.toFixed(2)}
                       </div>
@@ -71,7 +70,6 @@ export default function Checkout() {
           <div className="col">
             <div className="place"><Button className="pb-10 w-50 mt-3 mb-3" variant="outlined" onClick={()=>{console.log(cart.length)}}>Place Order</Button></div>
           </div>
-          <Button onClick={()=>addToCart(context)} color="error">Add to Cart</Button>
         </div>
       </div>
     </>

@@ -11,16 +11,17 @@ import * as as from "./services/authentication.service";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Auth from "./pages/Auth";
 import { createContext, SetStateAction, useState } from "react";
-import { Product } from "./components/Product";
+import { ProductType } from "./components/ProductCard";
+import Product from "./pages/Product";
 
 export interface CartContextType{
-  cart: Product[];
-  setCart: React.Dispatch<React.SetStateAction<Product[]>>
+  cart: ProductType[];
+  setCart: React.Dispatch<React.SetStateAction<ProductType[]>>
 }
 
 const context: CartContextType = {
   cart: [],
-  setCart: function (value: SetStateAction<Product[]>): void {
+  setCart: function (value: SetStateAction<ProductType[]>): void {
     value;
     throw new Error("Function not implemented.");
   }
@@ -28,7 +29,7 @@ const context: CartContextType = {
 
 export const CartContext = createContext<CartContextType>(context);
 function App() {
-  const [cart, setCart] = useState(Array<Product>());
+  const [cart, setCart] = useState(Array<ProductType>());
 
 
   window.addEventListener("pageshow", () => {
@@ -60,6 +61,7 @@ function App() {
             <Route path="/about" index element={<About />} />
             <Route path="/admin" index element={<Admin />} />
             <Route path="/auth" index element={<Auth />} />
+            <Route path="/item/:id" index element={<Product/>}></Route>
           </Routes>
         </CartContext.Provider>
       </ThemeProvider>

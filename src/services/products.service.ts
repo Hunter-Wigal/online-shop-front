@@ -1,10 +1,9 @@
-import { Product } from "../components/Product";
+import { ProductType } from "../components/ProductCard";
 import { CartContextType } from "../App";
 
 async function checkStatus() {
   return fetch("http://localhost:8080/api/v1/products", { mode: "no-cors" })
     .then(() => {
-      console.log("Request sent with no-cors mode");
       return true;
     })
     .catch(() => {
@@ -22,8 +21,8 @@ export async function fetchData() {
       method: "GET",
       Accept: "application/json, text/plain, */*",
       "Content-Type": "application/json",
-      Authorization: "Bearer " + document.cookie.split("=")[1],
-      "Access-Control-Allow-Origin": "*",
+      // Shouldn't need when retrieving products
+      // Authorization: "Bearer " + document.cookie.split("=")[1],
     },
   })
     .then(async (data) => {
@@ -31,7 +30,6 @@ export async function fetchData() {
         throw new Error("Server unavailable: " + data.status);
       }
       if (!ignore) {
-        console.log("here");
         return await data.json();
       } else {
         return () => {
@@ -50,7 +48,7 @@ export async function fetchData() {
 
 export function getCart(context: CartContextType ){
   
-  let cart = new Array<Product>();
+  let cart = new Array<ProductType>();
   // let setCart = null;
   if (context != null) {
     cart = context.cart;
@@ -60,22 +58,38 @@ export function getCart(context: CartContextType ){
   return cart;
 }
 
-export function addToCart(context: CartContextType){
+export function addToCart(context: CartContextType, product: ProductType){
 
   let setCart = null;
   // let setCart = null;
   if (context != null) {
     setCart = context.setCart;
     let newCart = context.cart.slice();
-    
-    newCart.push({
-      id: 0,
-      name: "New item",
-      description: "An item",
-      price: 5,
-      quantity: 1
-    });
 
+    newCart.push(product);
     setCart(newCart);
+  }
+}
+
+
+export async function getProduct(id: number){
+  if(!checkStatus())
+    return;
+
+  else{
+    return await fetch(`http://localhost:8080/api/v1/products/${id}`, {
+      headers: {
+        method: "GET",
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        // Shouldn't need when retrieving products
+        // Authorization: "Bearer " + document.cookie.split("=")[1],
+      },
+    }).then(async data=>{
+      return await data.json()
+    }).catch(()=>{
+      console.log("Item not found");
+      return undefined;
+    })
   }
 }

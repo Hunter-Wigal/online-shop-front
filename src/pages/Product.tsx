@@ -1,0 +1,98 @@
+import { Navigate, useParams } from "react-router-dom";
+import { addToCart, getProduct } from "../services/products.service";
+import { useContext, useEffect, useState } from "react";
+import { ProductType } from "../components/ProductCard";
+import "../styles/product.scss";
+import { Button, TextField } from "@mui/material";
+import { CartContext } from "../App";
+
+export default function Product() {
+  const defaultProduct: ProductType = {
+    id: 0,
+    itemName: "Undefined",
+    description: "Something went wrong",
+    price: 0,
+    quantity: 0,
+  };
+
+  const [product, setProduct] = useState(defaultProduct);
+  const { id } = useParams();
+  const [navigate, setNavigate] = useState(false);
+  const [quantity, setQuantity] = useState(0);
+  const context = useContext(CartContext);
+
+  // Validate quantity input
+  function quantitySetter(value: number) {
+    if (value < 1) {
+      setQuantity(1);
+    } else {
+      setQuantity(value);
+    }
+  }
+
+  if (!id) {
+    return (
+      <>
+        <h1>Product not found</h1>
+      </>
+    );
+  }
+
+  useEffect(() => {
+    getProduct(parseInt(id)).then((json) => {
+      if (!json) {
+        alert("Product not found");
+        setNavigate(true);
+      } else setProduct(json);
+    });
+  }, []);
+
+  return (
+    <>
+      {navigate ? <Navigate to="/shop" /> : null}
+
+      <div className="container">
+        <div className="row">
+          <div className="col header">
+            <h1>{product.itemName}</h1>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col img">
+            <img src={product.image_URL} />
+          </div>
+          <div className="col">
+            <p>Description: {product.description}</p>
+          </div>
+        </div>
+        <div className="row add-row">
+          <div className="col add-col">
+            <div className="col">Price: ${product.price.toFixed(2)}</div>
+            <div className="col">
+              <TextField
+                id="outlined-basic"
+                variant="outlined"
+                type="number"
+                value={quantity}
+                onInput={(e) =>
+                  quantitySetter(parseInt((e.target as HTMLInputElement).value))
+                }
+              />
+            </div>
+            <div className="col">
+              <Button
+                variant="contained"
+                onClick={() => {
+                  product.quantity = quantity;
+                  addToCart(context, product);
+                }}
+              >
+                Add to Cart
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}

@@ -7,13 +7,13 @@ import {
   StoreOutlined,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { Product } from "./Product";
+import { ProductType } from "./ProductCard";
 
 // TODO fix this mess
 const fontSize = 20;
 const margin = "0.5%";
 
-export default function Navbar(props: {cart: Product[]}) {
+export default function Navbar(props: {cart: ProductType[]}) {
   // function toggleSignIn(){
   //     const dropdown = document.getElementById("dropdown");
 
