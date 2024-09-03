@@ -2,7 +2,7 @@ import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 import "../styles/auth.scss";
 import * as as from "../services/authentication.service";
-import { useNavigate } from "react-router-dom";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 async function checkStatus() {
   return fetch("http://localhost:8080/api/v1/auth", { mode: "no-cors" })
@@ -20,9 +20,16 @@ async function register(
   name: string,
   age: number,
   email: string,
-  password: string
+  password: string,
+  navigate: NavigateFunction
 ) {
-  if (await checkStatus()) await as.register(email, password, name, age);
+  if (await checkStatus()) {
+    if (await as.register(email, password, name, age)) {
+      return navigate("/account");
+    } else {
+      alert("Failed to register");
+    }
+  }
 }
 
 function StyledInput(props: {
@@ -33,7 +40,7 @@ function StyledInput(props: {
 }) {
   return (
     <TextField
-      sx={{ "margin-bottom": "1.5% !important" }}
+      sx={{ marginBottom: "1.5% !important" }}
       id="outlined-basic"
       type={props.type}
       label={props.label}
@@ -47,6 +54,8 @@ function StyledInput(props: {
 }
 
 export default function Auth() {
+  let navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [age, setAge] = useState(0);
   const [registerEmail, setRegisterEmail] = useState("");
@@ -55,11 +64,13 @@ export default function Auth() {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
-  let navigate = useNavigate();
+
 
   async function login() {
-    if (await checkStatus()) as.login(loginEmail, loginPassword);
-    return navigate("/account");
+    if (await checkStatus()) {
+      as.login(loginEmail, loginPassword).then(result => {if(result) return navigate("/account");})
+
+    }
   }
 
   return (
@@ -98,7 +109,7 @@ export default function Auth() {
               variant="outlined"
               color="secondary"
               onClick={async () =>
-                register(name, age, registerEmail, registerPassword)
+                register(name, age, registerEmail, registerPassword, navigate)
               }
             >
               Submit
@@ -113,7 +124,6 @@ export default function Auth() {
               type="text"
               value={loginEmail}
               setter={setLoginEmail}
-              
             />
             <StyledInput
               label="Password"

@@ -79,15 +79,23 @@ body {
   margin-left: 20%;
 }
 
-.dropdown {
+.account-dropdown {
   display: none;
   position: absolute;
-  /* right: 0; */
+  // top: 0;
+  right: 0;
   width: fit-content;
   font-size: small;
-  margin-right: 5%;
-  background-color: antiquewhite;
+  border-left: 1px solid white;
+  border-bottom: 1px solid white;
   padding-inline: 1%;
+  justify-content: flex-end;
+  flex-direction: column;
+
+  button{
+    display: block;
+    width: 100%;
+  }
 }
 
 .container {

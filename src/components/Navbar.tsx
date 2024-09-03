@@ -8,55 +8,76 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { ProductType } from "./ProductCard";
+import { useEffect } from "react";
+import { checkJWT, logout } from "../services/authentication.service";
 
 // TODO fix this mess
 const fontSize = 20;
 const margin = "0.5%";
 
-export default function Navbar(props: {cart: ProductType[]}) {
-  // function toggleSignIn(){
-  //     const dropdown = document.getElementById("dropdown");
+export default function Navbar(props: { cart: ProductType[] }) {
+  const navigate = useNavigate();
 
-  //     if (dropdown){
-  //         dropdown.style.display = dropdown.style.display == "none" || dropdown.style.display == "" ? "block": "none";
+  function toggleAccount() {
+    const dropdown = document.getElementById("account-dropdown");
 
-  //     }
-  // }
+    if (dropdown) {
+      dropdown.style.display =
+        dropdown.style.display == "none" || dropdown.style.display == ""
+          ? "flex"
+          : "none";
+    }
+  }
+  useEffect(() => {
+    if (!checkJWT()) {
+      return navigate("/auth");
+    }
+  }, []);
 
   let cart = props.cart;
 
-  function toggleAccount() {}
+  const currUser = sessionStorage["user"];
 
-  const currUser = localStorage["user"];
-
-  const account =
-    currUser === undefined ? (
+  const account = 
+    currUser === undefined ? 
       <Button
         color="secondary"
         variant="contained"
-        onClick={()=>{return navigate("/account")}}
+        onClick={() => {
+          // return navigate("/account");
+          return navigate("/auth");
+        }}
         sx={{ margin: "auto", marginInline: "10%", height: "95%" }}
       >
         Login
       </Button>
-    ) : (
-      <IconButton onClick={toggleAccount} className="account">
-        <AccountCircle />
+     : 
+      <IconButton
+        onClick={toggleAccount}
+        className="account mr-10 ml-5"
+        size="large"
+      >
+        <AccountCircle sx={{ fontSize: "40px" }} />
       </IconButton>
-    );
+    ;
+ 
 
-  const navigate = useNavigate();
 
   return (
-    <>
-      {/* <p>{JSON.parse(currUser)['name']}</p>  */}
-      <AppBar position="static" sx={{ marginBottom: "2%" }}>
+    <div className="mb-2">
+      <AppBar position="relative">
         <div className="links">
-          <IconButton onClick={()=>{return navigate("/")}}>
+          <IconButton
+            onClick={() => {
+              return navigate("/");
+            }}
+          >
             <StoreOutlined fontSize={"large"} />
           </IconButton>
           <Link
-            onClick={()=>{return navigate("/")}}
+            onClick={() => {
+              return navigate("/");
+            }}
             color="inherit"
             key={""}
             className="nav-link"
@@ -68,7 +89,9 @@ export default function Navbar(props: {cart: ProductType[]}) {
             Home
           </Link>
           <Link
-            onClick={()=>{return navigate("/shop")}}
+            onClick={() => {
+              return navigate("/shop");
+            }}
             color="inherit"
             className="nav-link"
             underline="none"
@@ -79,7 +102,9 @@ export default function Navbar(props: {cart: ProductType[]}) {
           </Link>
 
           <Link
-            onClick={()=>{return navigate("/about")}}
+            onClick={() => {
+              return navigate("/about");
+            }}
             color="inherit"
             className="nav-link"
             underline="none"
@@ -88,9 +113,14 @@ export default function Navbar(props: {cart: ProductType[]}) {
           >
             About
           </Link>
-          
+
           <div className="act-btn">
-            <IconButton onClick={() => {return navigate("/checkout")}}>
+            <IconButton
+              size="large"
+              onClick={() => {
+                return navigate("/checkout");
+              }}
+            >
               <Badge badgeContent={cart.length} color="secondary">
                 <ShoppingCartOutlined fontSize="large" />
               </Badge>
@@ -99,6 +129,24 @@ export default function Navbar(props: {cart: ProductType[]}) {
           </div>
         </div>
       </AppBar>
-    </>
+      <div className="account-dropdown mt-1" id="account-dropdown">
+        <Button className="mb-5" color="secondary" variant="contained" onClick={()=>{toggleAccount();return navigate("/account")}}>
+          View Account
+        </Button>
+        <Button
+          className="logout"
+          color="error"
+          variant="contained"
+          onClick={() => {
+            logout();
+            toggleAccount();
+            
+            return navigate("/auth");
+          }}
+        >
+          Logout
+        </Button>
+      </div>
+    </div>
   );
 }
