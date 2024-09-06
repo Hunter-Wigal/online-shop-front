@@ -143,6 +143,10 @@ body {
   color: white !important;
 }
 
+.border{
+  border: 1px solid black;
+}
+
 @include generate-width-classes(100);
 
 @include generate-margin-classes(100);

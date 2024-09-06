@@ -11,7 +11,7 @@ async function checkStatus() {
     });
 }
 
-export async function fetchData() {
+export async function getProducts() {
   let ignore = false;
 
   if (!(await checkStatus())) return null;
@@ -92,4 +92,16 @@ export async function getProduct(id: number){
       return undefined;
     })
   }
+}
+
+export function addProduct(){
+
+}
+
+export function updateProduct(){
+  
+}
+
+export function removeProduct(){
+  
 }

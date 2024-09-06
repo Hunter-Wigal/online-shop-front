@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Search } from "@mui/icons-material";
-import { fetchData } from "../services/products.service";
+import { getProducts } from "../services/products.service";
 import { useNavigate } from "react-router-dom";
 
 export default function Shop() {
@@ -13,7 +13,7 @@ export default function Shop() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchData()
+    getProducts()
       .then((data) =>
         { 
           if(data == null){
