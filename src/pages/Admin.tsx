@@ -47,7 +47,9 @@ export default function Admin() {
     });
 
     getProducts().then((array) => {
-      if (array) setProducts(array);
+      if (array) {
+        setProducts(array);
+      }
     });
   }, []);
 
@@ -88,7 +90,19 @@ export default function Admin() {
         </CustomTabPanel>
 
         <CustomTabPanel value={value} index={1}>
-          <div className="row">{products.map((product)=>{return <ProductCard key={product.id} product={product} navigate={undefined} />})}</div>
+          <div className="row w-100">
+            {products.map((product) => {
+              return (
+                <div className="col w-100 mi-7">
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    navigate={undefined}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </CustomTabPanel>
 
         <CustomTabPanel value={value} index={2}>

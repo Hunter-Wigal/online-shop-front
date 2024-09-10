@@ -8,7 +8,7 @@ export interface Customer {
 }
 
 export interface Product {
-  itemName: string;
+  item_name: string;
   id: number;
   price: number;
   description: string;
@@ -42,33 +42,42 @@ export interface Transaction {
 //   });
 // }
 
-function OrderRow(props: {order: Transaction}){
-    const {order} = props;
-    return <div className="border p-1">
-        <h3>Order Number: {order.transaction_id}</h3>
-    <div className="row w-100 border p-2">
-        <div className="col">
-            Product Name (ID for now): {order.product.itemName}
+function OrderRow(props: { order: Transaction }) {
+  const { order } = props;
+  return (
+    <div className="border p-1 w-90 order">
+      <h3 className="row">Order Number: {order.transaction_id}</h3>
+
+      <div className="row">
+        <div className="col w-50 border p-2">
+          <div className="row">
+            <div className="col w-60">
+              <div className="row">Product Name (ID for now): {order.product.item_name}</div>
+              <div className="row">Quantity: {order.quantity}</div>
+              
+            </div>
+            <hr className="mr-2 split"/>
+            <div className="col">Current Status: {order.status}</div>
+          </div>
         </div>
-        <div className="col">Quantity: {order.quantity}</div>
-        <div className="col">Current Status: {order.status}</div>
+        <div className="col w-50 border p-2">
+          <div className="col">Customer info:</div>
+          <div className="col">Name: {order.user.name}</div>
+          <div className="col">Email: {order.user.email}</div>
+        </div>
+      </div>
+
     </div>
-    <div className="row w-100 mt-3 border p-2">
-        <div className="col">Customer info:</div>
-        <div className="col">Name: {order.user.name}</div>
-        <div className="col">Email: {order.user.email}</div>
-    </div>
-    </div>
+  );
 }
 
 export default function OrderDisplay(props?: { orders?: Array<Transaction> }) {
-  if (!props || !props.orders) {
+  if (!props || !props.orders || props.orders.length === 0) {
     // TODO change this because it shouldn't be displayed
-    return <>No orders to show</>;
+    return <h1 className="warning center">No orders to show</h1>;
   }
 
   const { orders } = props;
-  console.log(orders);
 
   return (
     <>
@@ -78,9 +87,9 @@ export default function OrderDisplay(props?: { orders?: Array<Transaction> }) {
             <h2>Orders Display</h2>
           </div>
         </div>
-          {orders.map((item) => {
-            return <OrderRow key={item.transaction_id} order={item}/>;
-          })}
+        {orders.map((item) => {
+          return <OrderRow key={item.transaction_id} order={item} />;
+        })}
       </div>
     </>
   );

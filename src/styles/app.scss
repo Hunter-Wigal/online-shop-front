@@ -16,7 +16,7 @@
   margin-top: 2%;
   display: block;
   //   max-height: 25%;
-  width: 25%;
+  width: 40%;
   //   max-height: 15vh;
 }
 
@@ -63,18 +63,19 @@
   opacity: 0.8;
 }
 
+$btn-distance: -3.75rem;
 .next_btn {
-  right: -3rem;
+  right: $btn-distance;
   border-radius: 0 2rem 2rem 0;
 }
 
 .prev_btn {
-  left: -3rem;
+  left: $btn-distance;
   border-radius: 2rem 0 0 2rem;
 }
 
 .car-image {
-    min-width: 100%;
+  min-width: 100%;
   flex: 1 0 50%;
   //   background-color: rgb(148, 148, 148);
   //   border: 5px solid gray;
@@ -84,7 +85,7 @@
   margin-inline: 5%;
 
   scroll-snap-align: center;
-    aspect-ratio: 16/9;
+    aspect-ratio: 4/3;
 }
 
 @media (max-width: 700px) {

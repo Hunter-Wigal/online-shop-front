@@ -118,7 +118,7 @@ body {
   display: flex;
   margin: auto;
   width: 100%;
-  max-width: 75%;
+  flex-direction: column;
 
   &-start {
     @extend .col;
@@ -145,6 +145,11 @@ body {
 
 .border{
   border: 1px solid black;
+}
+
+.center{
+  text-align: center;
+  justify-content: center;
 }
 
 @include generate-width-classes(100);
