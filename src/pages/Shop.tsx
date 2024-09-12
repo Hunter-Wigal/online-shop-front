@@ -9,18 +9,18 @@ import { getProducts } from "../services/products.service";
 import { useNavigate } from "react-router-dom";
 
 export default function Shop() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(new Array<ProductType>());
+
   const navigate = useNavigate();
 
   useEffect(() => {
     getProducts()
-      .then((data) =>
-        { 
-          if(data == null){
-            console.log("Cannot connect to the server");
-            return;
-          }
-          setProducts(data)})
+      .then((data) => {
+        if (!data) {
+          console.log("Cannot connect to the server");
+          return;
+        } else setProducts(data);
+      })
       .catch(() => {
         console.log("Error fetching products");
       });
@@ -32,7 +32,7 @@ export default function Shop() {
         <h1 className="header">Shop page</h1>
         <div className="search-area">
           <TextField
-            sx={{"width": "100% !important"}}
+            sx={{ width: "100% !important" }}
             id="outlined-basic"
             label="Search for Products"
             variant="outlined"
@@ -57,9 +57,13 @@ export default function Shop() {
           </Button>
         </div> */}
         <div className="products">
-          {products.length > 0 ? products.map((product: ProductType) => {
-            return ProductCard({product, navigate});
-          }) : <h2>No products available to display</h2>}
+          {products.length > 0 ? (
+            products.map((product: ProductType) => {
+              return ProductCard({ product, navigate });
+            })
+          ) : (
+            <h2>No products available to display</h2>
+          )}
         </div>
       </div>
     </>
