@@ -6,6 +6,10 @@
     width: 100%;
 }
 
+.product-info{
+    flex-direction: column;
+}
+
 .edit-form{
     display: flex;
     position: relative;

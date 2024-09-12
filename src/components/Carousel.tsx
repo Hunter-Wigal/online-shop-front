@@ -9,9 +9,10 @@ import "../styles/app.scss";
 //     "https://i.etsystatic.com/4365766966/r/il/55db78/4365766966/il_170x135.4365766966_9ld0.jpg",
 //   ];
 
-function getImages(num: number){
+// Fix to generate images when adding products or something cleaner
+export function getImages(num: number){
   let images = [];
-  let url = "https://picsum.photos/800/1200?random=";
+  let url = "https://picsum.photos/1200/800?random=";
   for(let i=0; i<num; i++){
     images.push(url + i);
   }

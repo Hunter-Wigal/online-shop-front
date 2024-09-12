@@ -51,8 +51,8 @@ function OrderRow(props: { order: Transaction }) {
       <div className="row">
         <div className="col w-50 border p-2">
           <div className="row">
-            <div className="col w-60">
-              <div className="row">Product Name (ID for now): {order.product.item_name}</div>
+            <div className="col w-60 product-info">
+              <div className="row mb-3">Product Name: {order.product.item_name}</div>
               <div className="row">Quantity: {order.quantity}</div>
               
             </div>

@@ -91,6 +91,7 @@ body {
   padding-inline: 1%;
   justify-content: flex-end;
   flex-direction: column;
+  z-index: 500;
 
   button{
     display: block;
@@ -118,7 +119,6 @@ body {
   display: flex;
   margin: auto;
   width: 100%;
-  flex-direction: column;
 
   &-start {
     @extend .col;

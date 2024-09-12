@@ -13,6 +13,8 @@ import Auth from "./pages/Auth";
 import { createContext, SetStateAction, useState } from "react";
 import { ProductType } from "./components/ProductCard";
 import Product from "./pages/Product";
+import EditProduct from "./pages/Edit";
+import NotFound from "./pages/404";
 
 export interface CartContextType{
   cart: ProductType[];
@@ -61,7 +63,9 @@ function App() {
             <Route path="/about" index element={<About />} />
             <Route path="/admin" index element={<Admin />} />
             <Route path="/auth" index element={<Auth />} />
-            <Route path="/item/:id" index element={<Product/>}></Route>
+            <Route path="/item/:id" index element={<Product/>}/>
+            <Route path="/edit/:id" index element={<EditProduct/>}/>
+            <Route path="404" index element={<NotFound/>}/>
           </Routes>
         </CartContext.Provider>
       </ThemeProvider>

@@ -5,6 +5,7 @@ import OrderDisplay, { Transaction } from "../components/OrderDisplay";
 import { getOrders } from "../services/admin.service";
 import ProductCard, { ProductType } from "../components/ProductCard";
 import { getProducts } from "../services/products.service";
+import { useNavigate } from "react-router-dom";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -18,12 +19,13 @@ function CustomTabPanel(props: TabPanelProps) {
   return (
     <div
       role="tabpanel"
+      key={index}
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && <Box sx={{ p: 3 }} key={index}>{children}</Box>}
     </div>
   );
 }
@@ -40,6 +42,7 @@ export default function Admin() {
   const [value, setValue] = useState(0);
   const [orders, setOrders] = useState(new Array<Transaction>());
   const [products, setProducts] = useState(new Array<ProductType>());
+  const navigate = useNavigate();
 
   useEffect(() => {
     getOrders().then((array) => {
@@ -63,7 +66,7 @@ export default function Admin() {
   return (
     <>
       <div className="container">
-        <h1>Admin page</h1>
+        <h1 className="center">Admin page</h1>
         <p>
           Page for managing the site with options to add, update, and remove
           available products. Should also show placed orders and be able to
@@ -93,11 +96,12 @@ export default function Admin() {
           <div className="row w-100">
             {products.map((product) => {
               return (
-                <div className="col w-100 mi-7">
+                <div className="col w-20">
                   <ProductCard
                     key={product.id}
                     product={product}
-                    navigate={undefined}
+                    navigate={navigate}
+                    edit={true}
                   />
                 </div>
               );

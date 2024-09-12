@@ -27,8 +27,8 @@ export async function getProducts(): Promise<ProductType[] | null> {
   if (!(await checkStatus())) return null;
 
   const fetched = fetch("http://localhost:8080/api/v1/products", {
+    method: "GET",
     headers: {
-      method: "GET",
       Accept: "application/json, text/plain, */*",
       "Content-Type": "application/json",
       // Shouldn't need when retrieving products
@@ -90,8 +90,8 @@ export async function getProduct(id: number) {
   if (!checkStatus()) return;
   else {
     return await fetch(`http://localhost:8080/api/v1/products/${id}`, {
+      method: "GET",
       headers: {
-        method: "GET",
         Accept: "application/json, text/plain, */*",
         "Content-Type": "application/json",
         // Shouldn't need when retrieving products
@@ -103,13 +103,28 @@ export async function getProduct(id: number) {
       })
       .catch(() => {
         console.log("Item not found");
-        return undefined;
+        return -1;
       });
   }
 }
 
 export function addProduct() {}
 
-export function updateProduct() {}
+export function updateProduct(id: number, name: string, description: string) {
+  fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/products/${id}`, {
+    method: 'PATCH',
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json-patch+json",
+      Authorization: "Bearer " + document.cookie.split("=")[1],
+    },
+    body: JSON.stringify({
+      item_name: name,
+      item_description: description,
+    })
+  }).then((response)=>{
+    console.log(response);
+  }).catch((error)=>{console.log(error)});
+}
 
 export function removeProduct() {}

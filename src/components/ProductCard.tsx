@@ -6,7 +6,7 @@ import { NavigateFunction } from "react-router-dom";
 
 export interface ProductType {
   id: number;
-  itemName: string;
+  item_name: string;
   image_URL?: string;
   description: string;
   price: number;
@@ -14,25 +14,34 @@ export interface ProductType {
 }
 
 export default function ProductCard(props: {
-  product: ProductType;
-  navigate?: NavigateFunction;
+  product: ProductType,
+  navigate?: NavigateFunction,
+  edit? : boolean
 }) {
+  let btnText = "View Item";
+  let route = "item";
+
+  if(props.edit){
+    btnText = "Edit Item";
+    route = "edit"
+  }
+
   let product = props.product;
   return (
     <Card key={product.id} className="card" id={`product-${product.id}`}>
-      <CardContent className="content" key={product.id}>
-        <h2>{product.itemName}</h2>
+      <CardContent className="content">
+        <h2>{product.item_name}</h2>
         <p>{product.description}</p>
-        <img src={product.image_URL} alt={`A picture of ${product.itemName}`} />
+        <img src={product.image_URL} alt={`A picture of ${product.item_name}`} />
         <p>Price: ${product.price}</p>
         <Button
           variant="outlined"
           onClick={() => {
             if (props.navigate) 
-              return props.navigate(`/item/${product.id}`);
+              return props.navigate(`/${route}/${product.id}`);
           }}
         >
-          View Item
+          {btnText}
         </Button>
       </CardContent>
     </Card>

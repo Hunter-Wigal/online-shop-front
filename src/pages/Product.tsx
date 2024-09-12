@@ -9,7 +9,7 @@ import { CartContext } from "../App";
 export default function Product() {
   const defaultProduct: ProductType = {
     id: 0,
-    itemName: "Undefined",
+    item_name: "Undefined",
     description: "Something went wrong",
     price: 0,
     quantity: 0,
@@ -54,7 +54,7 @@ export default function Product() {
       <div className="container">
         <div className="row">
           <div className="col header">
-            <h1>{product.itemName}</h1>
+            <h1>{product.item_name}</h1>
           </div>
         </div>
         <div className="row">
