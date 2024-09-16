@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "../styles/admin.scss";
 import { Box, Tab, Tabs } from "@mui/material";
 import OrderDisplay, { Transaction } from "../components/OrderDisplay";
-import { getOrders } from "../services/admin.service";
+import { getTransactions } from "../services/admin.service";
 import ProductCard, { ProductType } from "../components/ProductCard";
 import { getProducts } from "../services/products.service";
 import { useNavigate } from "react-router-dom";
@@ -19,13 +19,16 @@ function CustomTabPanel(props: TabPanelProps) {
   return (
     <div
       role="tabpanel"
-      key={index}
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }} key={index}>{children}</Box>}
+      {value === index && (
+        <Box sx={{ p: 3 }} key={index}>
+          {children}
+        </Box>
+      )}
     </div>
   );
 }
@@ -40,13 +43,13 @@ function a11yProps(index: number) {
 
 export default function Admin() {
   const [value, setValue] = useState(0);
-  const [orders, setOrders] = useState(new Array<Transaction>());
+  const [transactions, setTransactions] = useState(new Array<Transaction>());
   const [products, setProducts] = useState(new Array<ProductType>());
   const navigate = useNavigate();
 
   useEffect(() => {
-    getOrders().then((array) => {
-      if (array) setOrders(array);
+    getTransactions().then((array) => {
+      if (array) setTransactions(array);
     });
 
     getProducts().then((array) => {
@@ -89,16 +92,15 @@ export default function Admin() {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          <OrderDisplay orders={orders} />
+          <OrderDisplay transactions={transactions} />
         </CustomTabPanel>
 
         <CustomTabPanel value={value} index={1}>
           <div className="row w-100">
             {products.map((product) => {
               return (
-                <div className="col w-20">
+                <div className="col w-20" key={product.id + 100}>
                   <ProductCard
-                    key={product.id}
                     product={product}
                     navigate={navigate}
                     edit={true}
@@ -111,57 +113,8 @@ export default function Admin() {
 
         <CustomTabPanel value={value} index={2}>
           <h2>Account info:</h2>
+          <p></p>
         </CustomTabPanel>
-
-        {/* <OrderDisplay
-          order={{
-            productName: "Product",
-            quantity: 5,
-            price: 16.0,
-            customer: undefined,
-          }}
-        /> */}
-
-        {/* <div className="product-edit">
-          <form
-            action=""
-            method="post"
-            onSubmit={handleSubmit}
-            className="edit-form"
-          >
-            <TextField
-              value={item_name}
-              label="Item name"
-              color="secondary"
-              focused
-              onChange={(event) => {
-                setName(event.target.value);
-              }}
-            />
-            <TextField
-              value={description}
-              label="description"
-              variant="filled"
-              color="success"
-              focused
-              onChange={(event) => {
-                setDescription(event.target.value);
-              }}
-            />
-            <TextField
-              value={price}
-              label="price"
-              variant="standard"
-              color="warning"
-              focused
-              type="number"
-              onChange={(event) => {
-                setPrice(Number(event.target.value));
-              }}
-            />
-            <Button type="submit">Submit</Button>
-          </form>
-        </div>*/}
       </div>
     </>
   );

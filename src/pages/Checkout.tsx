@@ -12,12 +12,11 @@ export default function Checkout() {
   const context = useContext(CartContext);
   cart = context.cart;
 
-
   return (
     <>
-      <div className="container">
-        <h1 className="col">Checkout</h1>
-        <hr className="row w-75" />
+      <div className="container checkout">
+        <h1 className="col center">Checkout</h1>
+        <hr className="row w-75 mt-2" />
         <div className="row">
           <div className="col-start cart">
             <h2>Cart</h2>
@@ -34,7 +33,7 @@ export default function Checkout() {
                         className="mr-3"
                         src={product.image_URL}
                       />
-                      <div className="col w-25">Name: {product.itemName}</div>
+                      <div className="col w-25">Name: {product.item_name}</div>
                       <div className="col-start">
                         Price: ${product.price.toFixed(2)}
                       </div>
@@ -68,7 +67,17 @@ export default function Checkout() {
         </div>
         <div className="row">
           <div className="col">
-            <div className="place"><Button className="pb-10 w-50 mt-3 mb-3" variant="outlined" onClick={()=>{console.log(cart.length)}}>Place Order</Button></div>
+            <div className="place">
+              <Button
+                className="pb-10 w-50 mt-3 mb-3"
+                variant="outlined"
+                onClick={() => {
+                  console.log(cart.length);
+                }}
+              >
+                Place Order
+              </Button>
+            </div>
           </div>
         </div>
       </div>

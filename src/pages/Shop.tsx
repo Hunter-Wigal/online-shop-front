@@ -47,15 +47,7 @@ export default function Shop() {
           />
           <Button variant="outlined">Search</Button>
         </div>
-        {/* <div className="refresh">
-          <Button
-            onClick={() => {
-              fetchData();
-            }}
-          >
-            Refresh
-          </Button>
-        </div> */}
+
         <div className="products">
           {products.length > 0 ? (
             products.map((product: ProductType) => {

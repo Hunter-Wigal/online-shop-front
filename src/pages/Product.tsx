@@ -57,18 +57,18 @@ export default function Product() {
             <h1>{product.item_name}</h1>
           </div>
         </div>
-        <div className="row">
+        <div className="row product-content">
           <div className="col img">
             <img src={product.image_URL} />
           </div>
-          <div className="col">
+          <div className="col description">
             <p>Description: {product.description}</p>
           </div>
         </div>
         <div className="row add-row">
-          <div className="col add-col">
-            <div className="col">Price: ${product.price.toFixed(2)}</div>
-            <div className="col">
+          <div className="col price">Price: ${product.price.toFixed(2)}</div>
+          <div className="col add">
+            <div>
               <TextField
                 id="outlined-basic"
                 variant="outlined"
@@ -79,17 +79,15 @@ export default function Product() {
                 }
               />
             </div>
-            <div className="col">
-              <Button
-                variant="contained"
-                onClick={() => {
-                  product.quantity = quantity;
-                  addToCart(context, product);
-                }}
-              >
-                Add to Cart
-              </Button>
-            </div>
+            <Button
+              variant="contained"
+              onClick={() => {
+                product.quantity = quantity;
+                addToCart(context, product);
+              }}
+            >
+              Add to Cart
+            </Button>
           </div>
         </div>
       </div>

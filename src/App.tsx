@@ -30,11 +30,13 @@ const context: CartContextType = {
 };
 
 export const CartContext = createContext<CartContextType>(context);
+
+
 function App() {
   const [cart, setCart] = useState(Array<ProductType>());
 
 
-  window.addEventListener("pageshow", () => {
+  window.addEventListener("load", () => {
     as.checkJWT();
   });
 

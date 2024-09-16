@@ -12,7 +12,7 @@ export async function login(username: string, password: string) {
   // let response = null;
   //TODO look into axios
 
-  return fetch("http://localhost:8080/api/v1/auth/login", {
+  return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/login`, {
     headers: { "Content-Type": "application/json" },
     method: "POST",
     body: JSON.stringify({ email: username, password: password }),
@@ -29,7 +29,7 @@ export async function login(username: string, password: string) {
       window.localStorage.setItem("jwt", token);
       document.cookie = "jwt=" + token;
       response = result;
-      
+
       await setCurrentUser(username);
       return true;
     })
@@ -45,7 +45,7 @@ export async function register(
   name: string,
   age: number
 ) {
-  return fetch("http://localhost:8080/api/v1/auth/register", {
+  return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/register`, {
     headers: { "Content-Type": "application/json" },
     method: "POST",
     body: JSON.stringify({ email: username, password: password }),
@@ -54,7 +54,7 @@ export async function register(
       // let result = await response.text();
       response;
       let success = await login(username, password);
-      
+
       if (success) {
         updateUser(username, age, name);
         return true;
@@ -92,14 +92,17 @@ export function getUserDetails(): JWTDetails | null {
 function setCurrentUser(username: string) {
   if (!localStorage["jwt"]) return null;
 
-  return fetch(`http://localhost:8080/api/v1/user/user?username=${username}`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage["jwt"],
-    },
-    method: "GET",
-    // body: JSON.stringify({ username: username}),
-  })
+  return fetch(
+    `${import.meta.env.VITE_SERVER_URL}/api/v1/user/user?username=${username}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage["jwt"],
+      },
+      method: "GET",
+      // body: JSON.stringify({ username: username}),
+    }
+  )
     .then(async (response) => {
       // Result should be info on user
       let result = await response.text();
@@ -112,7 +115,7 @@ function setCurrentUser(username: string) {
 }
 
 async function updateUser(username: string, age: number, name: string) {
-  return fetch("http://localhost:8080/api/v1/user/user", {
+  return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/user/user`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage["jwt"],
@@ -131,30 +134,38 @@ async function updateUser(username: string, age: number, name: string) {
     });
 }
 
+function removeCurrUser() {
+  sessionStorage.removeItem("user");
+  localStorage.removeItem("jwt");
+  document.cookie = "logged_in=false;SameSite=Lax";
+  document.cookie = "jwt=null; SameSite=Lax";
+}
+
 // Check if JWT is expired
 export async function checkJWT() {
   const details = getUserDetails();
-  
+
   // No jwt, remove user
   if (!details) {
-    sessionStorage.removeItem("user");
+    removeCurrUser();
     return false;
   }
 
-  let validSession = await fetch("http://localhost:8080/api/v1/auth/valid", {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage["jwt"],
-    },
-    method: "GET",
-  });
-  
-  if(!validSession.ok){
-    sessionStorage.removeItem("user");
-    localStorage.removeItem("jwt");
+  let validSession = await fetch(
+    `${import.meta.env.VITE_SERVER_URL}/api/v1/auth/valid`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage["jwt"],
+      },
+      method: "GET",
+    }
+  );
+
+  if (!validSession.ok) {
+    removeCurrUser();
     return false;
   }
-  
 
   const seconds = details["exp"];
   // const date = new Date(seconds * 1000)
@@ -163,12 +174,10 @@ export async function checkJWT() {
   // Session expired, remove stored jwt and user
   if (seconds - currTime < 0) {
     console.log("logging out...");
-    // localStorage.setItem("jwt", "");
-    sessionStorage.removeItem("user");
-    localStorage.removeItem("jwt");
+    removeCurrUser();
     return false;
   }
-
+  console.log("here");
   return true;
 }
 
@@ -176,13 +185,13 @@ export function logout() {
   const jwt = localStorage["jwt"];
   localStorage.removeItem("jwt");
   sessionStorage.removeItem("user");
-  fetch("http://localhost:8080/api/v1/auth/logout", {
+  fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/logout`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + jwt,
     },
     method: "POST",
-  }).then((response)=>{
+  }).then((response) => {
     console.log("Successfully logged out");
     response;
   });

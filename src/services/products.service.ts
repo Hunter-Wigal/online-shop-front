@@ -2,7 +2,7 @@ import { ProductType } from "../components/ProductCard";
 import { CartContextType } from "../App";
 
 async function checkStatus() {
-  return fetch("http://localhost:8080/api/v1/products", { mode: "no-cors" })
+  return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/products`, { mode: "no-cors" })
     .then(() => {
       return true;
     })
@@ -26,7 +26,7 @@ export async function getProducts(): Promise<ProductType[] | null> {
 
   if (!(await checkStatus())) return null;
 
-  const fetched = fetch("http://localhost:8080/api/v1/products", {
+  const fetched = fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/products`, {
     method: "GET",
     headers: {
       Accept: "application/json, text/plain, */*",
@@ -89,7 +89,7 @@ export function addToCart(context: CartContextType, product: ProductType) {
 export async function getProduct(id: number) {
   if (!checkStatus()) return;
   else {
-    return await fetch(`http://localhost:8080/api/v1/products/${id}`, {
+    return await fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/products/${id}`, {
       method: "GET",
       headers: {
         Accept: "application/json, text/plain, */*",
@@ -99,7 +99,9 @@ export async function getProduct(id: number) {
       },
     })
       .then(async (data) => {
-        return await data.json();
+        let json = await data.json()
+        json.image_URL = getImages(1);
+        return json;
       })
       .catch(() => {
         console.log("Item not found");

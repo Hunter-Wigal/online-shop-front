@@ -28,8 +28,6 @@ export default function Carousel() {
   function next_image() {
     let car = document.getElementById("carousel");
     let img = document.getElementsByClassName("car-image")[0];
-
-    console.log(car);
   
     if(!car || !img)
     return;
