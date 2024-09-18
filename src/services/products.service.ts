@@ -2,7 +2,9 @@ import { ProductType } from "../components/ProductCard";
 import { CartContextType } from "../App";
 
 async function checkStatus() {
-  return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/products`, { mode: "no-cors" })
+  return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/products`, {
+    mode: "no-cors",
+  })
     .then(() => {
       return true;
     })
@@ -89,17 +91,20 @@ export function addToCart(context: CartContextType, product: ProductType) {
 export async function getProduct(id: number) {
   if (!checkStatus()) return;
   else {
-    return await fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/products/${id}`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-        // Shouldn't need when retrieving products
-        // Authorization: "Bearer " + document.cookie.split("=")[1],
-      },
-    })
+    return await fetch(
+      `${import.meta.env.VITE_SERVER_URL}/api/v1/products/${id}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+          // Shouldn't need when retrieving products
+          // Authorization: "Bearer " + document.cookie.split("=")[1],
+        },
+      }
+    )
       .then(async (data) => {
-        let json = await data.json()
+        let json = await data.json();
         json.image_URL = getImages(1);
         return json;
       })
@@ -110,11 +115,34 @@ export async function getProduct(id: number) {
   }
 }
 
-export function addProduct() {}
+export function addProduct(product: {
+  name: string;
+  description: string;
+  image_URL: string;
+  price: number;
+}) {
+  console.log(product);
+
+  fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/products`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+      // Authorization: "Bearer " + document.cookie.split("=")[1],
+    },
+    body: JSON.stringify({
+      item_name: product.name,
+      description: product.description,
+      price: product.price,
+    }),
+  }).then((response) => {
+    console.log(response);
+  });
+}
 
 export function updateProduct(id: number, name: string, description: string) {
   fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/products/${id}`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: {
       Accept: "application/json, text/plain, */*",
       "Content-Type": "application/json-patch+json",
@@ -123,10 +151,14 @@ export function updateProduct(id: number, name: string, description: string) {
     body: JSON.stringify({
       item_name: name,
       item_description: description,
+    }),
+  })
+    .then((response) => {
+      console.log(response);
     })
-  }).then((response)=>{
-    console.log(response);
-  }).catch((error)=>{console.log(error)});
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 export function removeProduct() {}

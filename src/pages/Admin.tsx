@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "../styles/admin.scss";
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box, Button, Tab, Tabs } from "@mui/material";
 import OrderDisplay, { Transaction } from "../components/OrderDisplay";
 import { getTransactions } from "../services/admin.service";
 import ProductCard, { ProductType } from "../components/ProductCard";
@@ -96,10 +96,11 @@ export default function Admin() {
         </CustomTabPanel>
 
         <CustomTabPanel value={value} index={1}>
-          <div className="row w-100">
+          <div className="center mb-2"><Button variant="contained" onClick={() =>{return navigate("/new-product")}}>Add new product</Button></div>
+          <div className="row w-100 card-container">
             {products.map((product) => {
               return (
-                <div className="col w-20" key={product.id + 100}>
+                <div className="col w-25 card-flex" key={product.id + 100}>
                   <ProductCard
                     product={product}
                     navigate={navigate}

@@ -15,6 +15,7 @@ import { ProductType } from "./components/ProductCard";
 import Product from "./pages/Product";
 import EditProduct from "./pages/Edit";
 import NotFound from "./pages/404";
+import { NewProduct } from "./pages/NewProduct";
 
 export interface CartContextType{
   cart: ProductType[];
@@ -67,6 +68,7 @@ function App() {
             <Route path="/auth" index element={<Auth />} />
             <Route path="/item/:id" index element={<Product/>}/>
             <Route path="/edit/:id" index element={<EditProduct/>}/>
+            <Route path="/new-product" index element={<NewProduct/>}/>
             <Route path="404" index element={<NotFound/>}/>
           </Routes>
         </CartContext.Provider>
