@@ -56,7 +56,7 @@ export async function register(
       let success = await login(username, password);
 
       if (success) {
-        updateUser(username, age, name);
+        await updateUser(username, age, name);
         return true;
       } else {
         console.log("Failed to register");
@@ -106,7 +106,7 @@ function setCurrentUser(username: string) {
     .then(async (response) => {
       // Result should be info on user
       let result = await response.text();
-      console.log(result);
+      console.log("Setting user");
       sessionStorage["user"] = result;
     })
     .catch((err) => {
@@ -134,11 +134,20 @@ async function updateUser(username: string, age: number, name: string) {
     });
 }
 
+
+function deleteAllCookies() {
+  document.cookie.split(';').forEach(cookie => {
+      const eqPos = cookie.indexOf('=');
+      const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
+      document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+  });
+}
+
+
 function removeCurrUser() {
   sessionStorage.removeItem("user");
   localStorage.removeItem("jwt");
-  document.cookie = "logged_in=false;SameSite=Lax";
-  document.cookie = "jwt=null; SameSite=Lax";
+  deleteAllCookies();
 }
 
 // Check if JWT is expired
@@ -177,7 +186,6 @@ export async function checkJWT() {
     removeCurrUser();
     return false;
   }
-  console.log("here");
   return true;
 }
 

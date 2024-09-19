@@ -5,6 +5,7 @@ import "../styles/checkout.scss";
 import ShippingForm from "../components/ShippingForm";
 import PaymentForm from "../components/PaymentForm";
 import { CartContext } from "../App";
+import { buyProducts } from "../services/products.service";
 
 let cart = new Array<ProductType>();
 
@@ -26,7 +27,7 @@ export default function Checkout() {
               ) : (
                 cart.map((product) => {
                   return (
-                    <div className="row mb-1 product p-1" key={product.id}>
+                    <div className="row mb-1 product p-1" key={product.product_id}>
                       <img
                         width="150"
                         height="100"
@@ -72,7 +73,7 @@ export default function Checkout() {
                 className="pb-10 w-50 mt-3 mb-3"
                 variant="outlined"
                 onClick={() => {
-                  console.log(cart.length);
+                  buyProducts(cart)
                 }}
               >
                 Place Order

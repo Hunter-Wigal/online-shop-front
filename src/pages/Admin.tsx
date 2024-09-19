@@ -50,6 +50,7 @@ export default function Admin() {
   useEffect(() => {
     getTransactions().then((array) => {
       if (array) setTransactions(array);
+      console.log(transactions);
     });
 
     getProducts().then((array) => {
@@ -100,7 +101,7 @@ export default function Admin() {
           <div className="row w-100 card-container">
             {products.map((product) => {
               return (
-                <div className="col w-25 card-flex" key={product.id + 100}>
+                <div className="col w-25 card-flex" key={product.product_id + 100}>
                   <ProductCard
                     product={product}
                     navigate={navigate}

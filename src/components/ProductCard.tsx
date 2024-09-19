@@ -5,7 +5,7 @@ import { Button } from "@mui/material";
 import { NavigateFunction } from "react-router-dom";
 
 export interface ProductType {
-  id: number;
+  product_id: number;
   item_name: string;
   image_URL?: string;
   description: string;
@@ -28,7 +28,7 @@ export default function ProductCard(props: {
 
   let product = props.product;
   return (
-    <Card key={product.id} className="card" id={`product-${product.id}`}>
+    <Card key={product.product_id} className="card mi-1" id={`product-${product.product_id}`}>
       <CardContent className="content">
         <h2>{product.item_name}</h2>
         <p>{product.description}</p>
@@ -38,7 +38,7 @@ export default function ProductCard(props: {
           variant="outlined"
           onClick={() => {
             if (props.navigate) 
-              return props.navigate(`/${route}/${product.id}`);
+              return props.navigate(`/${route}/${product.product_id}`);
           }}
         >
           {btnText}

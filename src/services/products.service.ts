@@ -1,5 +1,6 @@
 import { ProductType } from "../components/ProductCard";
 import { CartContextType } from "../App";
+import { getUserDetails } from "./authentication.service";
 
 async function checkStatus() {
   return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/products`, {
@@ -162,3 +163,37 @@ export function updateProduct(id: number, name: string, description: string) {
 }
 
 export function removeProduct() {}
+
+export function buyProducts(cart: ProductType[]) {
+  let product_ids = [];
+  let quantities = [];
+  for (let product of cart) {
+    product_ids.push(product.product_id);
+    quantities.push(product.quantity);
+  }
+
+  let orders = {
+    product_ids: product_ids,
+    user_email: "",
+    quantities: quantities,
+    address: "Unfinished",
+  };
+
+  let username = "invalid";
+  let details = getUserDetails();
+  if (details) username = details.sub;
+  orders.user_email = username;
+
+
+  fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/orders`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json-patch+json",
+      // Authorization: "Bearer " + document.cookie.split("=")[1],
+    },
+    body: JSON.stringify(orders),
+  }).then((response) => {
+    console.log(response);
+  });
+}

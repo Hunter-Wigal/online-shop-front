@@ -8,7 +8,7 @@ import { CartContext } from "../App";
 
 export default function Product() {
   const defaultProduct: ProductType = {
-    id: 0,
+    product_id: 0,
     item_name: "Undefined",
     description: "Something went wrong",
     price: 0,
@@ -18,7 +18,7 @@ export default function Product() {
   const [product, setProduct] = useState(defaultProduct);
   const { id } = useParams();
   const [navigate, setNavigate] = useState(false);
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const context = useContext(CartContext);
 
   // Validate quantity input
