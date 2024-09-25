@@ -17,9 +17,9 @@ import EditProduct from "./pages/Edit";
 import NotFound from "./pages/404";
 import { NewProduct } from "./pages/NewProduct";
 
-export interface CartContextType{
+export interface CartContextType {
   cart: ProductType[];
-  setCart: React.Dispatch<React.SetStateAction<ProductType[]>>
+  setCart: React.Dispatch<React.SetStateAction<ProductType[]>>;
 }
 
 const context: CartContextType = {
@@ -27,15 +27,13 @@ const context: CartContextType = {
   setCart: function (value: SetStateAction<ProductType[]>): void {
     value;
     throw new Error("Function not implemented.");
-  }
+  },
 };
 
 export const CartContext = createContext<CartContextType>(context);
 
-
 function App() {
   const [cart, setCart] = useState(Array<ProductType>());
-
 
   window.addEventListener("load", () => {
     as.checkJWT();
@@ -49,14 +47,15 @@ function App() {
       secondary: {
         main: "#3f51b5",
       },
+      warning: { main: "#ff0000" },
     },
   });
 
   return (
     <>
       <ThemeProvider theme={theme}>
-        <CartContext.Provider  value={ {cart: cart, setCart: setCart }}>
-          <Navbar cart={cart}/>
+        <CartContext.Provider value={{ cart: cart, setCart: setCart }}>
+          <Navbar cart={cart} />
 
           <Routes>
             <Route path="/" index element={<Home />} />
@@ -66,10 +65,10 @@ function App() {
             <Route path="/about" index element={<About />} />
             <Route path="/admin" index element={<Admin />} />
             <Route path="/auth" index element={<Auth />} />
-            <Route path="/item/:id" index element={<Product/>}/>
-            <Route path="/edit/:id" index element={<EditProduct/>}/>
-            <Route path="/new-product" index element={<NewProduct/>}/>
-            <Route path="404" index element={<NotFound/>}/>
+            <Route path="/item/:id" index element={<Product />} />
+            <Route path="/edit/:id" index element={<EditProduct />} />
+            <Route path="/new-product" index element={<NewProduct />} />
+            <Route path="404" index element={<NotFound />} />
           </Routes>
         </CartContext.Provider>
       </ThemeProvider>

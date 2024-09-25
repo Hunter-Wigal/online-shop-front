@@ -26,8 +26,9 @@ export async function login(username: string, password: string) {
         console.log("JWT is null");
         return null;
       }
+
       window.localStorage.setItem("jwt", token);
-      document.cookie = "jwt=" + token;
+      // document.cookie = "jwt=" + token + `;expires=${new Date(exp * 1000)}`;
       response = result;
 
       await setCurrentUser(username);
@@ -57,6 +58,7 @@ export async function register(
 
       if (success) {
         await updateUser(username, age, name);
+        
         return true;
       } else {
         console.log("Failed to register");
@@ -80,8 +82,7 @@ export interface UserDetails {
   email: string;
 }
 
-export function getUserDetails(): JWTDetails | null {
-  const jwt = localStorage["jwt"];
+export function getUserDetails(jwt: string): JWTDetails | null {
   if (!jwt || jwt === "") return null;
   // console.log(localStorage['jwt']);
 
@@ -134,58 +135,41 @@ async function updateUser(username: string, age: number, name: string) {
     });
 }
 
-
-function deleteAllCookies() {
-  document.cookie.split(';').forEach(cookie => {
-      const eqPos = cookie.indexOf('=');
-      const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
-      document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
-  });
-}
-
+// function deleteAllCookies() {
+//   document.cookie.split(";").forEach((cookie) => {
+//     const eqPos = cookie.indexOf("=");
+//     const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
+//     document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+//   });
+// }
 
 function removeCurrUser() {
   sessionStorage.removeItem("user");
   localStorage.removeItem("jwt");
-  deleteAllCookies();
+  // deleteAllCookies();
 }
 
 // Check if JWT is expired
 export async function checkJWT() {
-  const details = getUserDetails();
 
-  // No jwt, remove user
+  const details = getUserDetails(localStorage["jwt"]);
+
+  // Reset if no jwt
   if (!details) {
     removeCurrUser();
     return false;
   }
 
-  let validSession = await fetch(
-    `${import.meta.env.VITE_SERVER_URL}/api/v1/auth/valid`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage["jwt"],
-      },
-      method: "GET",
-    }
-  );
+  let exp = new Date(details.exp * 1000);
+  console.log(exp);
 
-  if (!validSession.ok) {
+  let validSession = exp > new Date();
+
+  if (!validSession) {
     removeCurrUser();
     return false;
   }
 
-  const seconds = details["exp"];
-  // const date = new Date(seconds * 1000)
-  const currTime = new Date().getTime() / 1000;
-
-  // Session expired, remove stored jwt and user
-  if (seconds - currTime < 0) {
-    console.log("logging out...");
-    removeCurrUser();
-    return false;
-  }
   return true;
 }
 

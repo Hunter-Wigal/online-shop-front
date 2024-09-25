@@ -29,7 +29,7 @@ export function NewProduct() {
         <TextField variant="outlined" label="Price ($)" type="number" value={price} onChange={(event)=>{setPrice(parseFloat(event.target.value))}}/>
     </div>
     <div className="row center mt-1">
-        <Button onClick={()=>{addProduct({name: name, description: description, image_URL: image, price: price})}} variant="contained">Save New Product</Button>
+        <Button onClick={()=>{addProduct({name: name, description: description, image_url: image, price: price})}} variant="contained">Save New Product</Button>
     </div>
     <div className="row mt-10">Preview product page coming soon....</div>
   </div>;

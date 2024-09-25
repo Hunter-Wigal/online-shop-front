@@ -14,16 +14,6 @@ async function checkStatus() {
     });
 }
 
-function getImages(num: number) {
-  let images = [];
-  let url = "https://picsum.photos/400?random=";
-  for (let i = 0; i < num; i++) {
-    images.push(url + i);
-  }
-
-  return images;
-}
-
 export async function getProducts(): Promise<ProductType[] | null> {
   let ignore = false;
 
@@ -44,13 +34,6 @@ export async function getProducts(): Promise<ProductType[] | null> {
       }
       if (!ignore) {
         let json: ProductType[] = await data.json();
-
-        let images = getImages(json.length);
-        let count = 0;
-
-        for (let product of json) {
-          product.image_URL = images[count++];
-        }
 
         return json;
       } else {
@@ -89,6 +72,36 @@ export function addToCart(context: CartContextType, product: ProductType) {
   }
 }
 
+export function updateQuantity(context: CartContextType, index: number, newQuantity: number){
+  let setCart = null;
+
+  if(newQuantity < 1)return;
+
+  if (context != null) {
+    setCart = context.setCart;
+    let cart = context.cart;
+    let product = cart[index];
+    product.quantity = newQuantity;
+
+    let newCart = cart.slice(0, index).concat(product).concat(cart.slice(index, cart.length - 1))
+
+    setCart(newCart);
+  }
+
+}
+
+export function removeFromCart(context: CartContextType, index: number){
+  if(context){
+    let setCart = context.setCart;
+    let newCart = context.cart.splice(index, 1);
+    setCart(newCart);
+    console.log(context.cart);
+
+    // Temporary solution
+    window.location.reload();
+  }
+}
+
 export async function getProduct(id: number) {
   if (!checkStatus()) return;
   else {
@@ -106,7 +119,6 @@ export async function getProduct(id: number) {
     )
       .then(async (data) => {
         let json = await data.json();
-        json.image_URL = getImages(1);
         return json;
       })
       .catch(() => {
@@ -119,7 +131,7 @@ export async function getProduct(id: number) {
 export function addProduct(product: {
   name: string;
   description: string;
-  image_URL: string;
+  image_url: string;
   price: number;
 }) {
   console.log(product);
@@ -135,6 +147,7 @@ export function addProduct(product: {
       item_name: product.name,
       description: product.description,
       price: product.price,
+      image_url: product.image_url
     }),
   }).then((response) => {
     console.log(response);
@@ -147,7 +160,7 @@ export function updateProduct(id: number, name: string, description: string) {
     headers: {
       Accept: "application/json, text/plain, */*",
       "Content-Type": "application/json-patch+json",
-      Authorization: "Bearer " + document.cookie.split("=")[1],
+      Authorization: "Bearer " + localStorage['jwt'],
     },
     body: JSON.stringify({
       item_name: name,
@@ -180,7 +193,7 @@ export function buyProducts(cart: ProductType[]) {
   };
 
   let username = "invalid";
-  let details = getUserDetails();
+  let details = getUserDetails(localStorage['jwt']);
   if (details) username = details.sub;
   orders.user_email = username;
 

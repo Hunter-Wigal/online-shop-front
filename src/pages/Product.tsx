@@ -59,7 +59,7 @@ export default function Product() {
         </div>
         <div className="row product-content">
           <div className="col img">
-            <img src={product.image_URL} />
+            <img src={product.image_url} />
           </div>
           <div className="col description">
             <p>Description: {product.description}</p>

@@ -7,7 +7,7 @@ import { NavigateFunction } from "react-router-dom";
 export interface ProductType {
   product_id: number;
   item_name: string;
-  image_URL?: string;
+  image_url?: string;
   description: string;
   price: number;
   quantity: number;
@@ -32,7 +32,7 @@ export default function ProductCard(props: {
       <CardContent className="content">
         <h2>{product.item_name}</h2>
         <p>{product.description}</p>
-        <img src={product.image_URL} alt={`A picture of ${product.item_name}`} />
+        <img src={product.image_url} alt={`A picture of ${product.item_name}`} />
         <p>Price: ${product.price}</p>
         <Button
           variant="outlined"

@@ -50,7 +50,6 @@ export default function Admin() {
   useEffect(() => {
     getTransactions().then((array) => {
       if (array) setTransactions(array);
-      console.log(transactions);
     });
 
     getProducts().then((array) => {
