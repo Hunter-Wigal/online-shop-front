@@ -164,7 +164,7 @@ export function addProduct(product: {
   console.log(product);
 
   easyFetch(
-    "product",
+    "products",
     false,
     "POST",
     JSON.stringify({
@@ -196,7 +196,22 @@ export function updateProduct(id: number, name: string, description: string) {
     });
 }
 
-export function removeProduct() {}
+export function removeProduct(id: number) {
+  if (id == -1) {
+    console.log("Error with removing product");
+    return new Promise<String>(()=>"Failed to delete");
+  }
+
+  // TODO change false to true
+  return easyFetch(`products/${id}`, false, "DELETE")
+    .then((response) => {
+      return response.text();
+    })
+    .catch((err) => {
+      console.log(err);
+      return err;
+    });
+}
 
 export function buyProducts(cart: ProductType[]) {
   let product_ids = [];

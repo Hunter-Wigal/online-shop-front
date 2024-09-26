@@ -34,6 +34,15 @@
     display: block;
     margin:auto;
   }
+
+  .buttons{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    justify-content: center;
+    margin-inline: auto;
+    gap: 1rem;
+  }
 }
 
 .product-content {
@@ -50,4 +59,13 @@
   }
 
 
+}
+
+.close-button{
+  position: fixed !important;
+  right: 0;
+  top: 0;
+  text-align: center;
+
+  // padding: 2px !important;
 }
