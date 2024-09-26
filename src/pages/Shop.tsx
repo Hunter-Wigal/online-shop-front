@@ -5,11 +5,18 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Search } from "@mui/icons-material";
-import { getProducts } from "../services/products.service";
+import { getProducts, productSearch } from "../services/products.service";
 import { useNavigate } from "react-router-dom";
 
+async function search(keyword: string){
+  let foundProducts = await productSearch(keyword);
+
+  return foundProducts;
+}
+
 export default function Shop() {
-  const [products, setProducts] = useState(new Array<ProductType>());
+  const [searchText, setSearch] = useState("");
+  const [searchedProducts, setSearchedProducts] = useState(new Array<ProductType>());
 
   const navigate = useNavigate();
 
@@ -19,7 +26,9 @@ export default function Shop() {
         if (!data) {
           console.log("Cannot connect to the server");
           return;
-        } else setProducts(data);
+        } else {
+          setSearchedProducts(data);
+        };
       })
       .catch(() => {
         console.log("Error fetching products");
@@ -33,10 +42,12 @@ export default function Shop() {
         <div className="search-area">
           <TextField
             sx={{ width: "100% !important" }}
-            id="outlined-basic"
+            id="search-text"
             label="Search for Products"
             variant="outlined"
             margin="none"
+            value={searchText}
+            onChange={(event)=>{setSearch(event.target.value)}}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -45,12 +56,12 @@ export default function Shop() {
               ),
             }}
           />
-          <Button variant="outlined">Search</Button>
+          <Button variant="outlined" onClick={()=>{search(searchText).then((foundPrducts)=>{setSearchedProducts(foundPrducts)})}}>Search</Button>
         </div>
 
         <div className="products">
-          {products.length > 0 ? (
-            products.map((product: ProductType) => {
+          {searchedProducts.length > 0 ? (
+            searchedProducts.map((product: ProductType) => {
               return ProductCard({ product, navigate });
             })
           ) : (
