@@ -62,7 +62,7 @@ export default function Shop() {
         <div className="products">
           {searchedProducts.length > 0 ? (
             searchedProducts.map((product: ProductType) => {
-              return ProductCard({ product, navigate });
+              return ProductCard({ product, navigate, key: product.product_id.toString() });
             })
           ) : (
             <h2>No products available to display</h2>

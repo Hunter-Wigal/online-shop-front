@@ -18,6 +18,9 @@ const margin = "0.5%";
 export default function Navbar(props: { cart: ProductType[] }) {
   const navigate = useNavigate();
 
+  // temporary. change to accessing roles from database
+  const admin = true;
+
   function toggleAccount() {
     const dropdown = document.getElementById("account-dropdown");
 
@@ -38,8 +41,8 @@ export default function Navbar(props: { cart: ProductType[] }) {
 
   const currUser = sessionStorage["user"];
 
-  const account = 
-    currUser === undefined ? 
+  const account =
+    currUser === undefined ? (
       <Button
         color="secondary"
         variant="contained"
@@ -51,7 +54,7 @@ export default function Navbar(props: { cart: ProductType[] }) {
       >
         Login
       </Button>
-     : 
+    ) : (
       <IconButton
         onClick={toggleAccount}
         className="account mr-10 ml-5"
@@ -59,10 +62,7 @@ export default function Navbar(props: { cart: ProductType[] }) {
       >
         <AccountCircle sx={{ fontSize: "40px" }} />
       </IconButton>
-    ;
- 
-
-
+    );
   return (
     <div className="mb-2">
       <AppBar position="relative">
@@ -113,6 +113,20 @@ export default function Navbar(props: { cart: ProductType[] }) {
           >
             About
           </Link>
+          {admin ? (
+            <Link
+              onClick={() => {
+                return navigate("/admin");
+              }}
+              color="inherit"
+              className="nav-link"
+              underline="none"
+              fontSize={fontSize}
+              marginInline={margin}
+            >
+              Admin
+            </Link>
+          ) : null}
 
           <div className="act-btn">
             <IconButton
@@ -130,7 +144,15 @@ export default function Navbar(props: { cart: ProductType[] }) {
         </div>
       </AppBar>
       <div className="account-dropdown mt-1" id="account-dropdown">
-        <Button className="mb-5" color="secondary" variant="contained" onClick={()=>{toggleAccount();return navigate("/account")}}>
+        <Button
+          className="mb-5"
+          color="secondary"
+          variant="contained"
+          onClick={() => {
+            toggleAccount();
+            return navigate("/account");
+          }}
+        >
           View Account
         </Button>
         <Button
@@ -140,7 +162,7 @@ export default function Navbar(props: { cart: ProductType[] }) {
           onClick={() => {
             logout();
             toggleAccount();
-            
+
             return navigate("/auth");
           }}
         >

@@ -1,16 +1,36 @@
 import { useEffect, useState } from "react";
 import "../styles/admin.scss";
-import { Box, Button, Tab, Tabs } from "@mui/material";
+import { Box, Button, Modal, Tab, Tabs } from "@mui/material";
 import OrderDisplay, { Transaction } from "../components/OrderDisplay";
 import { getTransactions } from "../services/admin.service";
 import ProductCard, { ProductType } from "../components/ProductCard";
-import { getProducts } from "../services/products.service";
+import { getProducts, removeProduct } from "../services/products.service";
 import { useNavigate } from "react-router-dom";
 
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
+}
+
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
+function callRemove(deleting: number, handleClose: Function) {
+  // Change to another modal or something
+  removeProduct(deleting).then((response) => {
+    window.alert(response);
+    handleClose();
+  });
 }
 
 function CustomTabPanel(props: TabPanelProps) {
@@ -46,6 +66,12 @@ export default function Admin() {
   const [transactions, setTransactions] = useState(new Array<Transaction>());
   const [products, setProducts] = useState(new Array<ProductType>());
   const navigate = useNavigate();
+
+  // Modal controls
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [deleting, setDeleting] = useState(-1);
 
   useEffect(() => {
     getTransactions().then((array) => {
@@ -96,15 +122,29 @@ export default function Admin() {
         </CustomTabPanel>
 
         <CustomTabPanel value={value} index={1}>
-          <div className="center mb-2"><Button variant="contained" onClick={() =>{return navigate("/new-product")}}>Add new product</Button></div>
+          <div className="center mb-2">
+            <Button
+              variant="contained"
+              onClick={() => {
+                return navigate("/new-product");
+              }}
+            >
+              Add new product
+            </Button>
+          </div>
           <div className="row w-100 card-container">
             {products.map((product) => {
               return (
-                <div className="col w-25 card-flex" key={product.product_id + 100}>
+                <div
+                  className="col w-25 card-flex"
+                  key={product.product_id + 100}
+                >
                   <ProductCard
                     product={product}
                     navigate={navigate}
                     edit={true}
+                    handleOpen={handleOpen}
+                    setDeleting={setDeleting}
                   />
                 </div>
               );
@@ -117,6 +157,39 @@ export default function Admin() {
           <p></p>
         </CustomTabPanel>
       </div>
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <h3 style={{ marginBottom: "20%" }}>
+            Are you sure you want to delete this product?
+          </h3>
+          <Button
+            className="close-button"
+            variant="outlined"
+            onClick={handleClose}
+          >
+            &#10006;
+          </Button>
+          <Button
+            variant="contained"
+            color="warning"
+            sx={{ marginRight: "50%" }}
+            onClick={() => {
+              callRemove(deleting, handleClose);
+            }}
+          >
+            Delete
+          </Button>
+          <Button variant="outlined" onClick={handleClose}>
+            Cancel
+          </Button>
+        </Box>
+      </Modal>
     </>
   );
 }
