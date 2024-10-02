@@ -1,4 +1,6 @@
 import { jwtDecode } from "jwt-decode";
+import { checkCart } from "./account.service";
+import { ProductType } from "../components/ProductCard";
 
 export interface User {
   username: string;
@@ -7,7 +9,7 @@ export interface User {
   sessionExp: Date;
 }
 
-export async function login(username: string, password: string) {
+export async function login(username: string, password: string, setCart: React.Dispatch<React.SetStateAction<ProductType[]>>) {
   // TODO find out if sending passwords is fine
   // let response = null;
   //TODO look into axios
@@ -32,6 +34,10 @@ export async function login(username: string, password: string) {
       response = result;
 
       await setCurrentUser(username);
+
+      checkCart().then((response)=>{
+        setCart(response);
+      });
       return true;
     })
     .catch((err) => {
@@ -44,7 +50,8 @@ export async function register(
   username: string,
   password: string,
   name: string,
-  age: number
+  age: number,
+  setCart: React.Dispatch<React.SetStateAction<ProductType[]>>
 ) {
   return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/register`, {
     headers: { "Content-Type": "application/json" },
@@ -54,7 +61,7 @@ export async function register(
     .then(async (response) => {
       // let result = await response.text();
       response;
-      let success = await login(username, password);
+      let success = await login(username, password, setCart);
 
       if (success) {
         await updateUser(username, age, name);
@@ -161,7 +168,6 @@ export async function checkJWT() {
   }
 
   let exp = new Date(details.exp * 1000);
-  console.log(exp);
 
   let validSession = exp > new Date();
 
@@ -173,7 +179,7 @@ export async function checkJWT() {
   return true;
 }
 
-export function logout() {
+export function logout(setCart: React.Dispatch<React.SetStateAction<ProductType[]>>) {
   const jwt = localStorage["jwt"];
   localStorage.removeItem("jwt");
   sessionStorage.removeItem("user");
@@ -186,5 +192,10 @@ export function logout() {
   }).then((response) => {
     console.log("Successfully logged out");
     response;
+  });
+
+  checkCart().then((response)=>{
+
+    setCart(response);
   });
 }

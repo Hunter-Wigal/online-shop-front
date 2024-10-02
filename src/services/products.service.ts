@@ -1,6 +1,7 @@
 import { ProductType } from "../components/ProductCard";
 import { CartContextType } from "../App";
 import { getUserDetails } from "./authentication.service";
+import { sendItemToCart } from "./account.service";
 
 function easyFetch(
   url_endpoint: string,
@@ -83,6 +84,7 @@ export function addToCart(context: CartContextType, product: ProductType) {
 
     newCart.push(product);
     setCart(newCart);
+    sendItemToCart(product);
   }
 }
 
@@ -115,7 +117,20 @@ export function removeFromCart(context: CartContextType, index: number) {
     let setCart = context.setCart;
     let newCart = context.cart.splice(index, 1);
     setCart(newCart);
-    console.log(context.cart);
+
+    let userDetails = sessionStorage["user"];
+
+    if (!userDetails) {
+      return;
+    }
+
+    let username = JSON.parse(userDetails).email;
+
+    easyFetch(`user/${username}/cart/${index}`, false, "DELETE").then(
+      (response) => {
+        console.log(response);
+      }
+    );
 
     // Temporary solution
     window.location.reload();
@@ -199,7 +214,7 @@ export function updateProduct(id: number, name: string, description: string) {
 export function removeProduct(id: number) {
   if (id == -1) {
     console.log("Error with removing product");
-    return new Promise<String>(()=>"Failed to delete");
+    return new Promise<String>(() => "Failed to delete");
   }
 
   // TODO change false to true

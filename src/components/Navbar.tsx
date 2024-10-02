@@ -8,14 +8,14 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { ProductType } from "./ProductCard";
-import { useEffect } from "react";
 import { checkJWT, logout } from "../services/authentication.service";
+import { useEffect } from "react";
 
 // TODO fix this mess
 const fontSize = 20;
 const margin = "0.5%";
 
-export default function Navbar(props: { cart: ProductType[] }) {
+export default function Navbar(props: { cart: ProductType[], setCart: React.Dispatch<React.SetStateAction<ProductType[]>> }) {
   const navigate = useNavigate();
 
   // temporary. change to accessing roles from database
@@ -63,6 +63,9 @@ export default function Navbar(props: { cart: ProductType[] }) {
         <AccountCircle sx={{ fontSize: "40px" }} />
       </IconButton>
     );
+
+
+    
   return (
     <div className="mb-2">
       <AppBar position="relative">
@@ -160,7 +163,7 @@ export default function Navbar(props: { cart: ProductType[] }) {
           color="error"
           variant="contained"
           onClick={() => {
-            logout();
+            logout(props.setCart);
             toggleAccount();
 
             return navigate("/auth");

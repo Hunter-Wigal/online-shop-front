@@ -1,8 +1,10 @@
 import { Button, TextField } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "../styles/auth.scss";
 import * as as from "../services/authentication.service";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import { ProductType } from "../components/ProductCard";
+import { CartContext } from '../App';
 
 async function checkStatus() {
   return fetch("http://localhost:8080/api/v1/auth", { mode: "no-cors" })
@@ -21,10 +23,11 @@ async function register(
   age: number,
   email: string,
   password: string,
-  navigate: NavigateFunction
+  navigate: NavigateFunction,
+  setCart: React.Dispatch<React.SetStateAction<ProductType[]>>
 ) {
   if (await checkStatus()) {
-    if (await as.register(email, password, name, age)) {
+    if (await as.register(email, password, name, age, setCart)) {
       return navigate("/account");
     } else {
       alert("Failed to register");
@@ -55,6 +58,7 @@ function StyledInput(props: {
 
 export default function Auth() {
   let navigate = useNavigate();
+  let context = useContext(CartContext);
 
   const [name, setName] = useState("");
   const [age, setAge] = useState(0);
@@ -68,7 +72,7 @@ export default function Auth() {
 
   async function login() {
     if (await checkStatus()) {
-      as.login(loginEmail, loginPassword).then(result => {if(result) return navigate("/account");})
+      as.login(loginEmail, loginPassword, context.setCart).then(result => {if(result) return navigate("/account");})
 
     }
   }
@@ -109,7 +113,7 @@ export default function Auth() {
               variant="outlined"
               color="secondary"
               onClick={async () =>
-                register(name, age, registerEmail, registerPassword, navigate)
+                register(name, age, registerEmail, registerPassword, navigate, context.setCart)
               }
             >
               Submit

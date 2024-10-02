@@ -52,7 +52,7 @@ export default function Checkout() {
                           Total Price: $
                           {(product.price * product.quantity).toFixed(2)}
                         </div>
-                        <Button className="ml-2" style={{"height": "75%"}} variant="contained" color="warning" onClick={()=>removeFromCart(context, index)}>Remove</Button>
+                        <Button className="ml-2" style={{"height": "75%", "alignSelf": "center"}} variant="contained" color="warning" onClick={()=>removeFromCart(context, index)}>Remove</Button>
                       </div>
                     </div>
                   );

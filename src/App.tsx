@@ -8,6 +8,7 @@ import Account from "./pages/Account";
 import Admin from "./pages/Admin";
 import Checkout from "./pages/Checkout";
 import * as as from "./services/authentication.service";
+import * as accS from "./services/account.service.ts";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Auth from "./pages/Auth";
 import { createContext, SetStateAction, useState } from "react";
@@ -37,6 +38,14 @@ function App() {
 
   window.addEventListener("load", () => {
     as.checkJWT();
+    accS.checkCart().then(async (response) => {
+      let newCart = new Array<ProductType>();
+
+      if(response)
+        newCart = response;
+
+      setCart(newCart);
+    });
   });
 
   const theme = createTheme({
@@ -55,7 +64,7 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <CartContext.Provider value={{ cart: cart, setCart: setCart }}>
-          <Navbar cart={cart} />
+          <Navbar cart={cart} setCart={setCart} />
 
           <Routes>
             <Route path="/" index element={<Home />} />
