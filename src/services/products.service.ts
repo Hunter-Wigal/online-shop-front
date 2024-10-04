@@ -3,6 +3,7 @@ import { CartContextType } from "../App";
 import { getUserDetails } from "./authentication.service";
 import { sendItemToCart } from "./account.service";
 
+// Function meant to eliminate the long fetch calls. May be changed to ajax later
 function easyFetch(
   url_endpoint: string,
   auth: boolean,
@@ -26,6 +27,7 @@ function easyFetch(
   });
 }
 
+// Checks whether the server is available
 async function checkStatus() {
   return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/products`, {
     mode: "no-cors",
@@ -38,6 +40,7 @@ async function checkStatus() {
     });
 }
 
+// Retrieves all available products
 export async function getProducts(): Promise<ProductType[] | null> {
   let ignore = false;
 
@@ -64,17 +67,18 @@ export async function getProducts(): Promise<ProductType[] | null> {
   return fetched;
 }
 
+// Gets the cart contents from the context
 export function getCart(context: CartContextType) {
   let cart = new Array<ProductType>();
   // let setCart = null;
   if (context != null) {
     cart = context.cart;
-    // const product: Product = {id: 3, name: "Item", description: "An item", price: 5.00, quantity: 1};
   }
 
   return cart;
 }
 
+// Adds an item to the cart by updating the context and sending the new list to the server
 export function addToCart(context: CartContextType, product: ProductType) {
   let setCart = null;
   // let setCart = null;
@@ -88,6 +92,7 @@ export function addToCart(context: CartContextType, product: ProductType) {
   }
 }
 
+// Updates quantity of an item in the cart
 export function updateQuantity(
   context: CartContextType,
   index: number,
@@ -111,6 +116,7 @@ export function updateQuantity(
     setCart(newCart);
   }
 }
+
 
 export function removeFromCart(context: CartContextType, index: number) {
   if (context) {
@@ -137,6 +143,7 @@ export function removeFromCart(context: CartContextType, index: number) {
   }
 }
 
+// Gets information on a single product
 export async function getProduct(id: number) {
   if (!checkStatus()) return;
   else {
@@ -152,6 +159,7 @@ export async function getProduct(id: number) {
   }
 }
 
+// Handles searching for a specific product
 export function productSearch(keyword: string) {
   let fetched = easyFetch(
     `products/search?keyword=${keyword}`,
@@ -170,6 +178,7 @@ export function productSearch(keyword: string) {
   return fetched;
 }
 
+// Sends a request to the server to add a new product to the database
 export function addProduct(product: {
   name: string;
   description: string;
@@ -193,6 +202,7 @@ export function addProduct(product: {
   });
 }
 
+// Updates product info, meant to be utilized by the admin
 export function updateProduct(id: number, name: string, description: string) {
   easyFetch(
     `products/${id}`,
@@ -211,6 +221,7 @@ export function updateProduct(id: number, name: string, description: string) {
     });
 }
 
+// Removes a product from the database
 export function removeProduct(id: number) {
   if (id == -1) {
     console.log("Error with removing product");
@@ -228,6 +239,7 @@ export function removeProduct(id: number) {
     });
 }
 
+// Sends a request to the server to create a new transaction
 export function buyProducts(cart: ProductType[]) {
   let product_ids = [];
   let quantities = [];

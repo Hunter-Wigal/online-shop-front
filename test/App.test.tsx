@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import App from "../src/App.tsx";
 import { describe, expect, test } from "vitest";
 import React from "react";
 import Home from "../src/pages/Home.tsx";
 
-// sum.test.js
+
+// These are sample tests used for reference when test are fully implemented later
 function sum(a: number, b: number) {
   return a + b;
 }

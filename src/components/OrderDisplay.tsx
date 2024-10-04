@@ -22,26 +22,6 @@ export interface Transaction {
   user: Customer;
 }
 
-// const [item_name, setName] = useState("");
-// const [description, setDescription] = useState("");
-// const [price, setPrice] = useState(0.0);
-
-// function handleSubmit(event: FormEvent) {
-//   event.preventDefault();
-
-//   fetch("http://localhost:8080/api/v1/products", {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({
-//       item_name: item_name,
-//       description: description,
-//       price: price,
-//     }),
-//   }).then((value) => {
-//     console.log(value);
-//   });
-// }
-
 function OrderRow(props: { transaction: Transaction }) {
   const { transaction } = props;
   return (
@@ -73,7 +53,6 @@ function OrderRow(props: { transaction: Transaction }) {
 
 export default function OrderDisplay(props?: { transactions?: Array<Transaction> }) {
   if (!props || !props.transactions || props.transactions.length === 0) {
-    // TODO change this because it shouldn't be displayed
     return <h1 className="warning center">No orders to show</h1>;
   }
 

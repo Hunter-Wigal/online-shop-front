@@ -9,6 +9,8 @@ export interface User {
   sessionExp: Date;
 }
 
+//TODO implement easyFetch or ajax
+
 export async function login(username: string, password: string, setCart: React.Dispatch<React.SetStateAction<ProductType[]>>) {
   // TODO find out if sending passwords is fine
   // let response = null;
@@ -142,6 +144,8 @@ async function updateUser(username: string, age: number, name: string) {
     });
 }
 
+// Not using cookies anymore
+
 // function deleteAllCookies() {
 //   document.cookie.split(";").forEach((cookie) => {
 //     const eqPos = cookie.indexOf("=");
@@ -178,6 +182,7 @@ export async function checkJWT() {
 
   return true;
 }
+
 
 export function logout(setCart: React.Dispatch<React.SetStateAction<ProductType[]>>) {
   const jwt = localStorage["jwt"];

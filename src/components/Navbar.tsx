@@ -18,7 +18,7 @@ const margin = "0.5%";
 export default function Navbar(props: { cart: ProductType[], setCart: React.Dispatch<React.SetStateAction<ProductType[]>> }) {
   const navigate = useNavigate();
 
-  // temporary. change to accessing roles from database
+  // temporary. TODO change to accessing roles from database
   const admin = true;
 
   function toggleAccount() {
