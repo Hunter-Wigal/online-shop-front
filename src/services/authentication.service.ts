@@ -9,18 +9,64 @@ export interface User {
   sessionExp: Date;
 }
 
+// Function meant to eliminate the long fetch calls. May be changed to ajax later
+function easyFetch(
+  url_endpoint: string,
+  auth: boolean,
+  method: string,
+  body?: any
+): Promise<Response> {
+  let jwt = localStorage.getItem("jwt");
+  if (!jwt) jwt = "";
+
+  let headers: RequestInit["headers"] = !auth
+    ? {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      }
+    : {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + jwt,
+      };
+
+  return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/${url_endpoint}`, {
+    method: `${method}`,
+    headers: headers,
+    body: body,
+  });
+}
+
+// Checks whether the server is available
+export async function checkStatus() {
+  return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/products`, {
+    mode: "no-cors",
+  })
+    .then(() => {
+      return true;
+    })
+    .catch(() => {
+      return false;
+    });
+}
+
 //TODO implement easyFetch or ajax
 
-export async function login(username: string, password: string, setCart: React.Dispatch<React.SetStateAction<ProductType[]>>) {
+export async function login(
+  username: string,
+  password: string,
+  setCart: React.Dispatch<React.SetStateAction<ProductType[]>>
+) {
   // TODO find out if sending passwords is fine
   // let response = null;
   //TODO look into axios
 
-  return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/login`, {
-    headers: { "Content-Type": "application/json" },
-    method: "POST",
-    body: JSON.stringify({ email: username, password: password }),
-  })
+  return easyFetch(
+    "auth/login",
+    false,
+    "POST",
+    JSON.stringify({ email: username, password: password })
+  )
     .then(async (response) => {
       let result = await response.json();
 
@@ -37,7 +83,7 @@ export async function login(username: string, password: string, setCart: React.D
 
       await setCurrentUser(username);
 
-      checkCart().then((response)=>{
+      checkCart().then((response) => {
         setCart(response);
       });
       return true;
@@ -55,11 +101,12 @@ export async function register(
   age: number,
   setCart: React.Dispatch<React.SetStateAction<ProductType[]>>
 ) {
-  return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/register`, {
-    headers: { "Content-Type": "application/json" },
-    method: "POST",
-    body: JSON.stringify({ email: username, password: password }),
-  })
+  return easyFetch(
+    "register",
+    false,
+    "POST",
+    JSON.stringify({ email: username, password: password })
+  )
     .then(async (response) => {
       // let result = await response.text();
       response;
@@ -67,7 +114,7 @@ export async function register(
 
       if (success) {
         await updateUser(username, age, name);
-        
+
         return true;
       } else {
         console.log("Failed to register");
@@ -99,24 +146,18 @@ export function getUserDetails(jwt: string): JWTDetails | null {
   return decoded;
 }
 
-function setCurrentUser(username: string) {
+export function setCurrentUser(username: string) {
   if (!localStorage["jwt"]) return null;
 
-  return fetch(
-    `${import.meta.env.VITE_SERVER_URL}/api/v1/user/user?username=${username}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage["jwt"],
-      },
-      method: "GET",
-      // body: JSON.stringify({ username: username}),
-    }
+  return easyFetch(
+    `user/user?username=${username}`,
+    true,
+    "GET"
+    // body: JSON.stringify({ username: username}),
   )
     .then(async (response) => {
       // Result should be info on user
       let result = await response.text();
-      console.log("Setting user");
       sessionStorage["user"] = result;
     })
     .catch((err) => {
@@ -125,14 +166,12 @@ function setCurrentUser(username: string) {
 }
 
 async function updateUser(username: string, age: number, name: string) {
-  return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/user/user`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage["jwt"],
-    },
-    method: "PUT",
-    body: JSON.stringify({ email: username, name: name, age: age }),
-  })
+  return easyFetch(
+    "user/user",
+    true,
+    "PUT",
+    JSON.stringify({ email: username, name: name, age: age })
+  )
     .then(async (response) => {
       let result = await response.text();
       console.log(`Successfully updated user: ${result}`);
@@ -162,7 +201,6 @@ function removeCurrUser() {
 
 // Check if JWT is expired
 export async function checkJWT() {
-
   const details = getUserDetails(localStorage["jwt"]);
 
   // Reset if no jwt
@@ -183,24 +221,18 @@ export async function checkJWT() {
   return true;
 }
 
-
-export function logout(setCart: React.Dispatch<React.SetStateAction<ProductType[]>>) {
-  const jwt = localStorage["jwt"];
+export function logout(
+  setCart: React.Dispatch<React.SetStateAction<ProductType[]>>
+) {
   localStorage.removeItem("jwt");
   sessionStorage.removeItem("user");
-  fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/logout`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + jwt,
-    },
-    method: "POST",
-  }).then((response) => {
+
+  easyFetch("auth/logout", true, "PUT").then((response) => {
     console.log("Successfully logged out");
     response;
   });
 
-  checkCart().then((response)=>{
-
+  checkCart().then((response) => {
     setCart(response);
   });
 }

@@ -43,7 +43,7 @@ export default function ProductCard(props: {
         className="card mi-1"
         id={`product-${product.product_id}`}
       >
-        <CardContent className="content">
+        <CardContent className="card-image">
           <h2>{product.item_name}</h2>
           <p>{product.description}</p>
           <img

@@ -10,6 +10,9 @@ function easyFetch(
   method: string,
   body?: any
 ): Promise<Response> {
+  let jwt = localStorage.getItem("jwt");
+  if (!jwt) jwt = "";
+
   let headers: RequestInit["headers"] = !auth
     ? {
         Accept: "application/json, text/plain, */*",
@@ -18,8 +21,9 @@ function easyFetch(
     : {
         Accept: "application/json, text/plain, */*",
         "Content-Type": "application/json",
-        Authorization: "Bearer " + document.cookie.split("=")[1],
+        Authorization: "Bearer " + jwt,
       };
+
   return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/${url_endpoint}`, {
     method: `${method}`,
     headers: headers,

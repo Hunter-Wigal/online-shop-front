@@ -1,25 +1,14 @@
 import { Button, TextField } from "@mui/material";
-import { useContext, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import "../styles/auth.scss";
 import * as as from "../services/authentication.service";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { ProductType } from "../components/ProductCard";
-import { CartContext } from '../App';
+import { CartContext } from "../App";
 
-//TODO remove, probably not needed here
-async function checkStatus() {
-  return fetch("http://localhost:8080/api/v1/auth", { mode: "no-cors" })
-    .then(() => {
-      console.log("Request sent with no-cors mode");
-      return true;
-    })
-    .catch(() => {
-      alert("Server is currently unavailable");
-      return false;
-    });
-}
 
 async function register(
+  e: FormEvent<HTMLFormElement>,
   name: string,
   age: number,
   email: string,
@@ -27,7 +16,8 @@ async function register(
   navigate: NavigateFunction,
   setCart: React.Dispatch<React.SetStateAction<ProductType[]>>
 ) {
-  if (await checkStatus()) {
+  e.preventDefault();
+  if (await as.checkStatus()) {
     if (await as.register(email, password, name, age, setCart)) {
       return navigate("/account");
     } else {
@@ -69,12 +59,13 @@ export default function Auth() {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
+  async function login(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
 
-
-  async function login() {
-    if (await checkStatus()) {
-      as.login(loginEmail, loginPassword, context.setCart).then(result => {if(result) return navigate("/account");})
-
+    if (await as.checkStatus()) {
+      as.login(loginEmail, loginPassword, context.setCart).then((result) => {
+        if (result) return navigate("/account");
+      });
     }
   }
 
@@ -83,7 +74,20 @@ export default function Auth() {
       <div className="forms">
         <div className="login">
           <h1>Register</h1>
-          <form autoComplete="off">
+          <form
+            autoComplete="off"
+            onSubmit={async (e) =>
+              register(
+                e,
+                name,
+                age,
+                registerEmail,
+                registerPassword,
+                navigate,
+                context.setCart
+              )
+            }
+          >
             <StyledInput
               label="Full Name"
               type="text"
@@ -113,9 +117,7 @@ export default function Auth() {
               className="submit"
               variant="outlined"
               color="secondary"
-              onClick={async () =>
-                register(name, age, registerEmail, registerPassword, navigate, context.setCart)
-              }
+              type="submit"
             >
               Submit
             </Button>
@@ -123,7 +125,7 @@ export default function Auth() {
         </div>
         <div className="login">
           <h1>Login</h1>
-          <form>
+          <form onSubmit={(e)=> login(e)}>
             <StyledInput
               label="Email"
               type="text"
@@ -139,9 +141,10 @@ export default function Auth() {
 
             <Button
               className="submit"
-              onClick={() => login()}
+              // onClick={() => login()}
               variant="outlined"
               color="secondary"
+              type="submit"
             >
               Submit
             </Button>
