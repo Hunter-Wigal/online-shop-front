@@ -102,7 +102,7 @@ export async function register(
   setCart: React.Dispatch<React.SetStateAction<ProductType[]>>
 ) {
   return easyFetch(
-    "register",
+    "auth/register",
     false,
     "POST",
     JSON.stringify({ email: username, password: password })

@@ -76,3 +76,11 @@ export function sendItemToCart(product: ProductType) {
       console.log(`There was an error with updating the cart: ${err}`);
     });
 }
+
+export function clearCart() : Promise<Response>{
+  let userDetails = sessionStorage["user"];
+  if(!userDetails) return new Promise(()=>{let response = Response.error();return response;});
+
+  let username = JSON.parse(userDetails);
+  return easyFetch(`user/${username}/cart`, true, "DELETE");
+}
