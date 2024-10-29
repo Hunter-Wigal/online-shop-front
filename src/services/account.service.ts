@@ -51,7 +51,9 @@ export async function checkCart() {
       }
       return newCart;
     }
-  );
+  ).catch((err)=>{
+    console.log("no items in cart:", err);
+  });
 }
 
 export function sendItemToCart(product: ProductType) {
@@ -81,6 +83,6 @@ export function clearCart() : Promise<Response>{
   let userDetails = sessionStorage["user"];
   if(!userDetails) return new Promise(()=>{let response = Response.error();return response;});
 
-  let username = JSON.parse(userDetails);
+  let username = JSON.parse(userDetails)['email'];
   return easyFetch(`user/${username}/cart`, true, "DELETE");
 }

@@ -9,14 +9,15 @@ import {
   removeFromCart,
   updateQuantity,
 } from "../services/products.service";
-import { redirect } from "react-router-dom";
 import { clearCart } from "../services/account.service";
 import * as accS from "../services/account.service"
 import { ProductType } from "../components/ProductCard";
+import { useNavigate } from "react-router-dom";
 
 export default function Checkout() {
   const context = useContext(CartContext);
   const [cart, setCart] = useState(context.cart);
+  const navigate = useNavigate();
 
   useEffect(()=>{
     accS.checkCart().then(async (response) => {
@@ -114,7 +115,7 @@ export default function Checkout() {
                 className="pb-10 w-50 mt-3 mb-3"
                 variant="outlined"
                 onClick={() => {
-                  buyProducts(cart).then((response) => {
+                  return buyProducts(cart).then((response) => {
                     console.log(response);
                     if (response.ok) {
                       context.setCart([]);
@@ -125,7 +126,7 @@ export default function Checkout() {
                         }
                       });
                       window.alert("Successfully placed order");
-                      redirect("/shop");
+                      navigate('/shop');
                     }
                   });
                 }}

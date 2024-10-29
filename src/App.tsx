@@ -17,6 +17,7 @@ import Product from "./pages/Product";
 import EditProduct from "./pages/Edit";
 import NotFound from "./pages/404";
 import { NewProduct } from "./pages/NewProduct";
+import TransactionPage from "./pages/ViewTransaction.tsx";
 
 export interface CartContextType {
   cart: ProductType[];
@@ -66,6 +67,7 @@ function App() {
         <CartContext.Provider value={{ cart: cart, setCart: setCart }}>
           <Navbar cart={cart} setCart={setCart} />
 
+          {/* Figure out a way to change admin routes to begin with /admin and only allow the admin to access*/}
           <Routes>
             <Route path="/" index element={<Home />} />
             <Route path="/shop" index element={<Shop />} />
@@ -77,6 +79,7 @@ function App() {
             <Route path="/item/:id" index element={<Product />} />
             <Route path="/edit/:id" index element={<EditProduct />} />
             <Route path="/new-product" index element={<NewProduct />} />
+            <Route path="/transaction/edit/:id" index element={<TransactionPage />} />
             <Route path="404" index element={<NotFound />} />
           </Routes>
         </CartContext.Provider>

@@ -1,3 +1,7 @@
+import Button from "@mui/material/Button";
+import { removeTransaction } from "../services/admin.service";
+import { NavigateFunction } from "react-router-dom";
+
 export interface Customer {
   user_id: number;
   name: string;
@@ -15,48 +19,91 @@ export interface Product {
 }
 
 export interface Transaction {
-  product: Product;
-  quantity: number;
+  products: Array<Product>;
+  quantities: Array<number>;
   status: string;
   transaction_id: number;
   user: Customer;
 }
 
-function OrderRow(props: { transaction: Transaction }) {
-  const { transaction } = props;
+function OrderRow(props: {
+  transaction: Transaction;
+  navigate: NavigateFunction;
+}) {
+  const { transaction, navigate } = props;
+  console.log(transaction);
+
+  let products = "";
+  for (let product of transaction.products) {
+    products += product.item_name + ", ";
+  }
+
+  products = products.trim().substring(0, products.length - 2);
+
+  let totalItems = 0;
+  for (let quant of transaction.quantities) {
+    totalItems += quant;
+  }
   return (
-    <div className="border p-1 w-90 order">
+    <div className="border p-1 w-90 order mb-1">
       <h3 className="row">Order Number: {transaction.transaction_id}</h3>
 
       <div className="row">
-        <div className="col w-50 border p-2">
-          <div className="row">
-            <div className="col w-60 product-info">
-              <div className="row mb-3">Product Name: {transaction.product.item_name}</div>
-              <div className="row">Quantity: {transaction.quantity}</div>
-              
+        <div className="col w-60 p-2">
+          <div className="row w-100">
+            <div className="col w-100 product-info">
+              <div className="row mb-3">Products Ordered: {products}</div>
+              <div className="row">Total Items in Order: {totalItems}</div>
             </div>
-            <hr className="mr-2 split"/>
+
             <div className="col">Current Status: {transaction.status}</div>
           </div>
         </div>
-        <div className="col w-50 border p-2">
-          <div className="col">Customer info:</div>
+        <div className="col w-50 p-2">
+          <div className="col w-50">Customer info:</div>
           <div className="col">Name: {transaction.user.name}</div>
           <div className="col">Email: {transaction.user.email}</div>
         </div>
+        <div className="col delete-btn w-10">
+          <Button
+            className="mr-2 w-40"
+            variant="outlined"
+            color="info"
+            onClick={() => {
+              return navigate(`/transaction/edit/${transaction.transaction_id}`);
+            }}
+          >
+            View
+          </Button>
+          <Button
+            className="w-40"
+            variant="outlined"
+            color="error"
+            onClick={() =>
+              removeTransaction(transaction.transaction_id).then((result) => {
+                result;
+                window.alert("Successfully deleted transaction");
+                window.location.reload();
+              })
+            }
+          >
+            Delete
+          </Button>
+        </div>
       </div>
-
     </div>
   );
 }
 
-export default function OrderDisplay(props?: { transactions?: Array<Transaction> }) {
+export default function OrderDisplay(props?: {
+  transactions?: Array<Transaction>;
+  navigate: NavigateFunction
+}) {
   if (!props || !props.transactions || props.transactions.length === 0) {
     return <h1 className="warning center">No orders to show</h1>;
   }
 
-  const { transactions } = props;
+  const { transactions, navigate } = props;
 
   return (
     <>
@@ -67,7 +114,7 @@ export default function OrderDisplay(props?: { transactions?: Array<Transaction>
           </div>
         </div>
         {transactions.map((item) => {
-          return <OrderRow key={item.transaction_id} transaction={item} />;
+          return <OrderRow key={item.transaction_id} transaction={item} navigate={navigate}/>;
         })}
       </div>
     </>
