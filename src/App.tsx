@@ -18,6 +18,7 @@ import EditProduct from "./pages/Edit";
 import NotFound from "./pages/404";
 import { NewProduct } from "./pages/NewProduct";
 import TransactionPage from "./pages/ViewTransaction.tsx";
+import AdminTabs from "./components/AdminTabs.tsx";
 
 export interface CartContextType {
   cart: ProductType[];
@@ -42,8 +43,7 @@ function App() {
     accS.checkCart().then(async (response) => {
       let newCart = new Array<ProductType>();
 
-      if(response)
-        newCart = response;
+      if (response) newCart = response;
 
       setCart(newCart);
     });
@@ -74,13 +74,18 @@ function App() {
             <Route path="/account" index element={<Account />} />
             <Route path="/checkout" index element={<Checkout />} />
             <Route path="/about" index element={<About />} />
-            <Route path="/admin" index element={<Admin />} />
             <Route path="/auth" index element={<Auth />} />
-            <Route path="/item/:id" index element={<Product />} />
-            <Route path="/edit/:id" index element={<EditProduct />} />
-            <Route path="/new-product" index element={<NewProduct />} />
-            <Route path="/transaction/edit/:id" index element={<TransactionPage />} />
+            <Route path="/item/:id" index element={<Product />} />{/* //TODO ??  */}
+            
             <Route path="404" index element={<NotFound />} />
+
+            <Route path="admin" element={<Admin />}>
+              <Route path="" element={<AdminTabs/>}/>
+              <Route path="edit/:id" element={<EditProduct />} />
+              <Route path="new-product" element={<NewProduct />} />
+              <Route path="transaction/:id" element={<TransactionPage />}/>
+            </Route>
+
           </Routes>
         </CartContext.Provider>
       </ThemeProvider>

@@ -40,7 +40,7 @@ function StyledInput(props: {
       label={props.label}
       variant="outlined"
       color="secondary"
-      autoSave="false"
+      // autoSave="false"
       value={props.value}
       onInput={(e) => props.setter((e.target as HTMLInputElement).value)}
     />

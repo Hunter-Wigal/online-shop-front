@@ -1,6 +1,7 @@
 import Button from "@mui/material/Button";
 import { removeTransaction } from "../services/admin.service";
 import { NavigateFunction } from "react-router-dom";
+import { ProductType } from "./ProductCard";
 
 export interface Customer {
   user_id: number;
@@ -19,7 +20,7 @@ export interface Product {
 }
 
 export interface Transaction {
-  products: Array<Product>;
+  products: Array<ProductType>;
   quantities: Array<number>;
   status: string;
   transaction_id: number;
@@ -31,7 +32,6 @@ function OrderRow(props: {
   navigate: NavigateFunction;
 }) {
   const { transaction, navigate } = props;
-  console.log(transaction);
 
   let products = "";
   for (let product of transaction.products) {
@@ -70,7 +70,7 @@ function OrderRow(props: {
             variant="outlined"
             color="info"
             onClick={() => {
-              return navigate(`/transaction/edit/${transaction.transaction_id}`);
+              return navigate(`/admin/transaction/${transaction.transaction_id}`);
             }}
           >
             View

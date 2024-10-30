@@ -1,34 +1,30 @@
-import { Button, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import "../styles/checkout.scss";
 import ShippingForm from "../components/ShippingForm";
 import PaymentForm from "../components/PaymentForm";
 import { CartContext } from "../App";
-import {
-  buyProducts,
-  removeFromCart,
-  updateQuantity,
-} from "../services/products.service";
+import { buyProducts } from "../services/products.service";
 import { clearCart } from "../services/account.service";
-import * as accS from "../services/account.service"
+import * as accS from "../services/account.service";
 import { ProductType } from "../components/ProductCard";
 import { useNavigate } from "react-router-dom";
+import ProductRow from "../components/ProductRowDisplay";
 
 export default function Checkout() {
   const context = useContext(CartContext);
   const [cart, setCart] = useState(context.cart);
   const navigate = useNavigate();
 
-  useEffect(()=>{
+  useEffect(() => {
     accS.checkCart().then(async (response) => {
       let newCart = new Array<ProductType>();
 
-      if(response)
-        newCart = response;
+      if (response) newCart = response;
 
       setCart(newCart);
     });
-  })
+  });
 
   return (
     <>
@@ -44,52 +40,11 @@ export default function Checkout() {
               ) : (
                 cart.map((product, index) => {
                   return (
-                    <div
-                      className="row mb-1 product p-1"
-                      key={product.product_id}
-                    >
-                      <img
-                        width="150"
-                        height="100"
-                        className="mr-3"
-                        src={product.image_url}
-                      />
-                      <div className="col w-25">Name: {product.item_name}</div>
-                      <div className="col-start">
-                        Price: ${product.price.toFixed(2)}
-                      </div>
-                      <div className="col-end">
-                        <div className="mr-10 row center">
-                          <span style={{ alignContent: "center" }}>
-                            Quantity:
-                          </span>
-                          <TextField
-                            value={product.quantity}
-                            type="number"
-                            onChange={(event) =>
-                              updateQuantity(
-                                context,
-                                index,
-                                parseInt(event.target.value)
-                              )
-                            }
-                          />
-                        </div>
-                        <div style={{ alignContent: "center" }}>
-                          Total Price: $
-                          {(product.price * product.quantity).toFixed(2)}
-                        </div>
-                        <Button
-                          className="ml-2"
-                          style={{ height: "75%", alignSelf: "center" }}
-                          variant="contained"
-                          color="warning"
-                          onClick={() => removeFromCart(context, index)}
-                        >
-                          Remove
-                        </Button>
-                      </div>
-                    </div>
+                    <ProductRow
+                      product={product}
+                      index={index}
+                      context={context}
+                    />
                   );
                 })
               )}
@@ -126,7 +81,7 @@ export default function Checkout() {
                         }
                       });
                       window.alert("Successfully placed order");
-                      navigate('/shop');
+                      navigate("/shop");
                     }
                   });
                 }}
