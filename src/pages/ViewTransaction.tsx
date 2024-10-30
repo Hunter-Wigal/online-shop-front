@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 
 export default function TransactionPage() {
   const { id } = useParams();
-  const [transaction, setTransaction] = useState<Transaction>();
+  const [transaction, setTransaction] = useState<Transaction>({});
 
   useEffect(() => {
     getTransaction(Number(id)).then((response) => {
