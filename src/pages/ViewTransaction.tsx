@@ -3,11 +3,10 @@ import { useParams } from "react-router-dom";
 import { getTransaction } from "../services/admin.service";
 import { Transaction } from "../components/OrderDisplay";
 import "../styles/view-transaction.scss";
-import Button from "@mui/material/Button";
 
 export default function TransactionPage() {
   const { id } = useParams();
-  const [transaction, setTransaction] = useState<Transaction>({});
+  const [transaction, setTransaction] = useState<Transaction>();
 
   useEffect(() => {
     getTransaction(Number(id)).then((response) => {
