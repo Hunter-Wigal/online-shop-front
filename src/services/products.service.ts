@@ -100,13 +100,11 @@ export function updateQuantity(
   index: number,
   newQuantity: number
 ) {
-  let setCart = null;
 
   if (newQuantity < 1) return;
 
   
   if (context != null) {
-    setCart = context.setCart;
     let cart = context.cart;
 
     let product = cart[index];
