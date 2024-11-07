@@ -33,7 +33,7 @@ export default function ProductCard(props: {
 
   if (props.edit) {
     btnText = "Edit Item";
-    route = "edit";
+    route = "admin/edit";
   }
 
   let product = props.product;

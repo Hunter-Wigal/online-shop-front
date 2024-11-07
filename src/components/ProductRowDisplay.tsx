@@ -3,10 +3,13 @@ import { ProductType } from "./ProductCard";
 import { removeFromCart, updateQuantity } from "../services/products.service";
 import { CartContextType } from "../App";
 import Button from "@mui/material/Button";
+import { useState } from "react";
 
 export default function ProductRow(props: {product: ProductType, index: number, context: CartContextType}){
     const {product, index, context} = props;
-    
+
+    const [quantity, setQuantity] = useState(product.quantity);
+
     return (
         <div
           className="row mb-1 product p-1"
@@ -28,14 +31,16 @@ export default function ProductRow(props: {product: ProductType, index: number, 
                 Quantity:
               </span>
               <TextField
-                value={product.quantity}
+                value={quantity}
                 type="number"
-                onChange={(event) =>
+                onChange={(event) =>{
                   updateQuantity(
                     context,
                     index,
                     parseInt(event.target.value)
-                  )
+                  );
+                  setQuantity(context.cart[index].quantity);
+                }
                 }
               />
             </div>

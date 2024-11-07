@@ -84,6 +84,7 @@ export async function login(
       await setCurrentUser(username);
 
       checkCart().then((response) => {
+        if(response)
         setCart(response);
       });
       return true;
@@ -233,6 +234,8 @@ export function logout(
   });
 
   checkCart().then((response) => {
-    setCart(response);
+    if(response)
+    return setCart(response);
+    else return null;
   });
 }

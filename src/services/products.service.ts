@@ -84,14 +84,12 @@ export function getCart(context: CartContextType) {
 
 // Adds an item to the cart by updating the context and sending the new list to the server
 export function addToCart(context: CartContextType, product: ProductType) {
-  let setCart = null;
   // let setCart = null;
   if (context != null) {
-    setCart = context.setCart;
     let newCart = context.cart.slice();
 
     newCart.push(product);
-    setCart(newCart);
+    context.setCart(newCart);
     sendItemToCart(product);
   }
 }
@@ -106,18 +104,17 @@ export function updateQuantity(
 
   if (newQuantity < 1) return;
 
+  
   if (context != null) {
     setCart = context.setCart;
     let cart = context.cart;
+
     let product = cart[index];
     product.quantity = newQuantity;
-
-    let newCart = cart
-      .slice(0, index)
-      .concat(product)
-      .concat(cart.slice(index, cart.length - 1));
-
-    setCart(newCart);
+    
+    cart[index] = product;
+    
+    context.setCart(cart);
   }
 }
 

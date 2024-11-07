@@ -19,12 +19,15 @@ export default function Checkout() {
   useEffect(() => {
     accS.checkCart().then(async (response) => {
       let newCart = new Array<ProductType>();
+      console.log(response);
 
-      if (response) newCart = response;
+      if (response && response.length > 0) {
+        newCart = response;
 
-      setCart(newCart);
+        setCart(newCart);
+      }
     });
-  });
+  }, []);
 
   return (
     <>
@@ -44,6 +47,7 @@ export default function Checkout() {
                       product={product}
                       index={index}
                       context={context}
+                      key={product.product_id}
                     />
                   );
                 })
