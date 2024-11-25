@@ -73,6 +73,11 @@ export default function AdminTabs() {
   const handleClose = () => setOpen(false);
   const [deleting, setDeleting] = useState(-1);
 
+  const [accountInfo, setAccountInfo] = useState({"name": "", "email": "", "age": -1});
+
+  // let accountInfo: {name: string, email: string, age: number} = new Object();
+
+
   useEffect(() => {
     getTransactions().then((array) => {
       if (array) setTransactions(array);
@@ -83,6 +88,11 @@ export default function AdminTabs() {
         setProducts(array);
       }
     });
+
+    let userDetails = JSON.parse(sessionStorage['user']);
+    if(userDetails){
+      setAccountInfo(userDetails);
+    }
   }, []);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -154,7 +164,8 @@ export default function AdminTabs() {
 
         <CustomTabPanel value={value} index={2}>
           <h2>Account info:</h2>
-          <p></p>
+          <p>Account Holder Name: {accountInfo.name}</p>
+          <p>Account Holder Email: {accountInfo.email}</p>
         </CustomTabPanel>
       </div>
 
