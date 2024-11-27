@@ -24,7 +24,7 @@ export default function Shop() {
     getProducts()
       .then((data) => {
         if (!data) {
-          console.log("Cannot connect to the server");
+          console.log("Can't connect to the server");
           return;
         } else {
           setSearchedProducts(data);

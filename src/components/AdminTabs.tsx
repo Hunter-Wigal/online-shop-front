@@ -89,7 +89,7 @@ export default function AdminTabs() {
       }
     });
 
-    let userDetails = JSON.parse(sessionStorage['user']);
+    let userDetails = sessionStorage['user'] ? JSON.parse(sessionStorage['user']) : undefined;
     if(userDetails){
       setAccountInfo(userDetails);
     }
@@ -136,7 +136,7 @@ export default function AdminTabs() {
             <Button
               variant="contained"
               onClick={() => {
-                return navigate("/new-product");
+                return navigate("/admin/new-product");
               }}
             >
               Add new product
