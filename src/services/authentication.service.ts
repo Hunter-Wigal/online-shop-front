@@ -30,7 +30,7 @@ function easyFetch(
         Authorization: "Bearer " + jwt,
       };
 
-  return fetch(`${process.env.VITE_SERVER_URL}/api/v1/${url_endpoint}`, {
+  return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/${url_endpoint}`, {
     method: `${method}`,
     headers: headers,
     body: body,
@@ -238,4 +238,15 @@ export function logout(
     return setCart(response);
     else return null;
   });
+}
+
+export async function checkAdmin(): Promise<boolean>{
+  return easyFetch("auth/admin_check", true, "GET").then(async (resp)=>{
+    let admin: boolean = await resp.json();
+    return admin;
+  }).catch((err)=>{
+    console.log("An error has occurred: ", err);
+    return false;
+  })
+
 }

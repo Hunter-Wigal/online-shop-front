@@ -25,7 +25,7 @@ function easyFetch(
       };
 
       //TODO Will have to check this later
-  return fetch(`${process.env.VITE_SERVER_URL}/api/v1/${url_endpoint}`, {
+  return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/${url_endpoint}`, {
     method: `${method}`,
     headers: headers,
     body: body,

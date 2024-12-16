@@ -8,8 +8,8 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { ProductType } from "./ProductCard";
-import { checkJWT, logout } from "../services/authentication.service";
-import { useEffect } from "react";
+import { checkAdmin, checkJWT, logout } from "../services/authentication.service";
+import { useEffect, useState } from "react";
 
 // TODO fix this mess
 const fontSize = 20;
@@ -17,9 +17,8 @@ const margin = "0.5%";
 
 export default function Navbar(props: { cart: ProductType[], setCart: React.Dispatch<React.SetStateAction<ProductType[]>> }) {
   const navigate = useNavigate();
+  const [admin, setAdmin] = useState(false);
 
-  // temporary. TODO change to accessing roles from database
-  const admin = true;
 
   function toggleAccount() {
     const dropdown = document.getElementById("account-dropdown");
@@ -35,6 +34,7 @@ export default function Navbar(props: { cart: ProductType[], setCart: React.Disp
     if (!checkJWT()) {
       return navigate("/auth");
     }
+    checkAdmin().then((isAdmin)=>{setAdmin(isAdmin)});
   }, []);
 
   let cart = props.cart;
