@@ -30,7 +30,7 @@ export default function Shop() {
           setSearchedProducts(data);
         };
       })
-      .catch(() => {
+      .catch((err) => {
         console.log("Error fetching products");
       });
   }, []);
