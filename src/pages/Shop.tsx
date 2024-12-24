@@ -42,8 +42,7 @@ export default function Shop() {
     <>
       <div className="container">
         <h1 className="header">Shop page</h1>
-        <div className="search-area">
-          <form onSubmit={(event)=>{event.preventDefault();search(searchText).then((foundPrducts)=>{setSearchedProducts(foundPrducts)})}}>
+          <form className="search-area" onSubmit={(event)=>{event.preventDefault();search(searchText).then((foundPrducts)=>{setSearchedProducts(foundPrducts)})}}>
             <TextField
               sx={{ width: "100% !important" }}
               id="search-text"
@@ -62,7 +61,6 @@ export default function Shop() {
             />
             <Button type="submit" variant="outlined" onClick={()=>{search(searchText).then((foundPrducts)=>{setSearchedProducts(foundPrducts)})}}>Search</Button>
           </form>
-        </div>
 
         <div className="products">
           {searchedProducts.length > 0 ? (
