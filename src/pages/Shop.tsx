@@ -17,6 +17,7 @@ async function search(keyword: string){
 export default function Shop() {
   const [searchText, setSearch] = useState("");
   const [searchedProducts, setSearchedProducts] = useState(new Array<ProductType>());
+  const [loaded, setLoaded] = useState(false);
 
   const navigate = useNavigate();
 
@@ -28,6 +29,7 @@ export default function Shop() {
           return;
         } else {
           setSearchedProducts(data);
+          setLoaded(true);
         };
       })
       .catch((err) => {
@@ -41,23 +43,25 @@ export default function Shop() {
       <div className="container">
         <h1 className="header">Shop page</h1>
         <div className="search-area">
-          <TextField
-            sx={{ width: "100% !important" }}
-            id="search-text"
-            label="Search for Products"
-            variant="outlined"
-            margin="none"
-            value={searchText}
-            onChange={(event)=>{setSearch(event.target.value)}}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <Button variant="outlined" onClick={()=>{search(searchText).then((foundPrducts)=>{setSearchedProducts(foundPrducts)})}}>Search</Button>
+          <form onSubmit={(event)=>{event.preventDefault();search(searchText).then((foundPrducts)=>{setSearchedProducts(foundPrducts)})}}>
+            <TextField
+              sx={{ width: "100% !important" }}
+              id="search-text"
+              label="Search for Products"
+              variant="outlined"
+              margin="none"
+              value={searchText}
+              onChange={(event)=>{setSearch(event.target.value)}}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Search />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <Button type="submit" variant="outlined" onClick={()=>{search(searchText).then((foundPrducts)=>{setSearchedProducts(foundPrducts)})}}>Search</Button>
+          </form>
         </div>
 
         <div className="products">
@@ -66,7 +70,7 @@ export default function Shop() {
               return ProductCard({ product, navigate, key: product.product_id.toString() });
             })
           ) : (
-            <h2>No products available to display</h2>
+            loaded ? <h2>No products available to display</h2> : <h2>Loading...</h2>
           )}
         </div>
       </div>

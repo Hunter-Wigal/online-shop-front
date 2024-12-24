@@ -228,8 +228,9 @@ export function logout(
   localStorage.removeItem("jwt");
   sessionStorage.removeItem("user");
 
-  easyFetch("auth/logout", true, "PUT").then((response) => {
+  easyFetch("auth/logout", true, "POST").then((response) => {
     console.log("Successfully logged out");
+    window.location.reload();
     response;
   });
 
