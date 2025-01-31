@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { ProductType } from "./ProductCard";
 import { checkAdmin, checkJWT, logout } from "../services/authentication.service";
 import { useEffect, useState } from "react";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 
 // TODO fix this mess
 const fontSize = 20;
@@ -132,6 +134,9 @@ export default function Navbar(props: { cart: ProductType[], setCart: React.Disp
           ) : null}
 
           <div className="act-btn">
+            <IconButton sx={{"px": "0.5rem"}}>
+              <DarkModeIcon/>
+            </IconButton>
             <IconButton
               size="large"
               onClick={() => {

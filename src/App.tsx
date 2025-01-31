@@ -11,7 +11,7 @@ import * as as from "./services/authentication.service";
 import * as accS from "./services/account.service.ts";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Auth from "./pages/Auth";
-import { createContext, SetStateAction, useState } from "react";
+import { createContext, SetStateAction, useContext, useEffect, useState } from "react";
 import { ProductType } from "./components/ProductCard";
 import Product from "./pages/Product";
 import EditProduct from "./pages/Edit";
@@ -19,6 +19,9 @@ import NotFound from "./pages/404";
 import { NewProduct } from "./pages/NewProduct";
 import TransactionPage from "./pages/ViewTransaction.tsx";
 import AdminTabs from "./components/AdminTabs.tsx";
+import VarModal from "./components/VarModal.tsx";
+import { Container, CssBaseline } from "@mui/material";
+
 
 export interface CartContextType {
   cart: ProductType[];
@@ -35,8 +38,18 @@ const context: CartContextType = {
 
 export const CartContext = createContext<CartContextType>(context);
 
+export const ColorModeContext = createContext({ toggleColorMode: () => {} });
+
 function App() {
   const [cart, setCart] = useState(Array<ProductType>());
+  const [serverStatus, setServerStatus] = useState(false);
+  const colorMode = useContext(ColorModeContext);
+
+  useEffect(() => {
+    as.checkStatus().then((result) => {
+      setServerStatus(result);
+    });
+  }, []);
 
   window.addEventListener("load", () => {
     as.checkJWT();
@@ -51,6 +64,7 @@ function App() {
 
   const theme = createTheme({
     palette: {
+      mode: "light",
       primary: {
         main: "#0097a7",
       },
@@ -58,36 +72,45 @@ function App() {
         main: "#3f51b5",
       },
       warning: { main: "#ff0000" },
-    },
+    }
   });
 
   return (
     <>
       <ThemeProvider theme={theme}>
-        <CartContext.Provider value={{ cart: cart, setCart: setCart }}>
-          <Navbar cart={cart} setCart={setCart} />
+        <CssBaseline>
+          <CartContext.Provider value={{ cart: cart, setCart: setCart }}>
+            <Navbar cart={cart} setCart={setCart} />
+            {/* Figure out a way to change admin routes to begin with /admin and only allow the admin to access*/}
+            <Container>
+              <Routes>
+                <Route path="/" index element={<Home />} />
+                <Route path="/shop" index element={<Shop />} />
+                <Route path="/account" index element={<Account />} />
+                <Route path="/checkout" index element={<Checkout />} />
+                <Route path="/about" index element={<About />} />
+                <Route path="/auth" index element={<Auth />} />
+                <Route path="/item/:id" index element={<Product />} />
+                {/* //TODO ??  */}
 
-          {/* Figure out a way to change admin routes to begin with /admin and only allow the admin to access*/}
-          <Routes>
-            <Route path="/" index element={<Home />} />
-            <Route path="/shop" index element={<Shop />} />
-            <Route path="/account" index element={<Account />} />
-            <Route path="/checkout" index element={<Checkout />} />
-            <Route path="/about" index element={<About />} />
-            <Route path="/auth" index element={<Auth />} />
-            <Route path="/item/:id" index element={<Product />} />{/* //TODO ??  */}
-            
-            <Route path="404" index element={<NotFound />} />
-
-            <Route path="admin" element={<Admin />}>
-              <Route path="" element={<AdminTabs/>}/>
-              <Route path="edit/:id" element={<EditProduct />} />
-              <Route path="new-product" element={<NewProduct />} />
-              <Route path="transaction/:id" element={<TransactionPage />}/>
-            </Route>
-
-          </Routes>
-        </CartContext.Provider>
+                <Route path="404" index element={<NotFound />} />
+                <Route path="admin" element={<Admin />}>
+                  <Route path="" element={<AdminTabs />} />
+                  <Route path="edit/:id" element={<EditProduct />} />
+                  <Route path="new-product" element={<NewProduct />} />
+                  <Route path="transaction/:id" element={<TransactionPage />} />
+                </Route>
+              </Routes>
+            </Container>
+            {!serverStatus ? (
+              <VarModal
+                title="Server Offline"
+                message="The shop server is currently offline, so all resources are unavailable"
+                startState={true}
+              ></VarModal>
+            ) : null}
+          </CartContext.Provider>
+        </CssBaseline>
       </ThemeProvider>
     </>
   );

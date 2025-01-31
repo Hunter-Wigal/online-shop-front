@@ -42,7 +42,7 @@ export default function Shop() {
     <>
       <div className="container">
         <h1 className="header">Shop page</h1>
-          <form className="search-area" onSubmit={(event)=>{event.preventDefault();search(searchText).then((foundPrducts)=>{setSearchedProducts(foundPrducts)})}}>
+          <form className="search-area" onSubmit={(event)=>{event.preventDefault();search(searchText).then((foundProducts)=>{setSearchedProducts(foundProducts)})}}>
             <TextField
               sx={{ width: "100% !important" }}
               id="search-text"
