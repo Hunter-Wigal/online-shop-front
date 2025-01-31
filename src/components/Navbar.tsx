@@ -1,6 +1,6 @@
 import Link from "@mui/material/Link";
 import "../styles/index.scss";
-import { AppBar, Badge, Button, IconButton } from "@mui/material";
+import { AppBar, Badge, Button, IconButton, PaletteMode } from "@mui/material";
 import {
   AccountCircle,
   ShoppingCartOutlined,
@@ -17,9 +17,14 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 const fontSize = 20;
 const margin = "0.5%";
 
-export default function Navbar(props: { cart: ProductType[], setCart: React.Dispatch<React.SetStateAction<ProductType[]>> }) {
+export default function Navbar(props: { cart: ProductType[], setCart: React.Dispatch<React.SetStateAction<ProductType[]>>, setColorMode: React.Dispatch<React.SetStateAction<PaletteMode>>, colorMode: PaletteMode }) {
   const navigate = useNavigate();
   const [admin, setAdmin] = useState(false);
+
+  function toggleDarkMode(){
+    let newColor: PaletteMode = (props.colorMode =='dark') ? 'light' : 'dark';
+    props.setColorMode(newColor);
+  }
 
 
   function toggleAccount() {
@@ -134,8 +139,8 @@ export default function Navbar(props: { cart: ProductType[], setCart: React.Disp
           ) : null}
 
           <div className="act-btn">
-            <IconButton sx={{"px": "0.5rem"}}>
-              <DarkModeIcon/>
+            <IconButton sx={{"px": "0.5rem"}} onClick={toggleDarkMode}>
+              {(props.colorMode == 'dark')? <DarkModeIcon/> : <LightModeIcon/>}
             </IconButton>
             <IconButton
               size="large"
