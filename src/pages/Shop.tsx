@@ -2,13 +2,18 @@ import "../styles/shop.scss";
 import ProductCard, { ProductType } from "../components/ProductCard";
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Search } from "@mui/icons-material";
 import { getProducts, productSearch } from "../services/products.service";
 import { useNavigate } from "react-router-dom";
+import {
+  Container,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+} from "@mui/material";
 
-async function search(keyword: string){
+async function search(keyword: string) {
   let foundProducts = await productSearch(keyword);
 
   return foundProducts;
@@ -16,8 +21,12 @@ async function search(keyword: string){
 
 export default function Shop() {
   const [searchText, setSearch] = useState("");
-  const [searchedProducts, setSearchedProducts] = useState(new Array<ProductType>());
+  const [searchedProducts, setSearchedProducts] = useState(
+    new Array<ProductType>()
+  );
   const [loaded, setLoaded] = useState(false);
+  // Server availability
+  const [status, setStatus] = useState(true);
 
   const navigate = useNavigate();
 
@@ -26,11 +35,12 @@ export default function Shop() {
       .then((data) => {
         if (!data) {
           console.log("Can't connect to the server");
+          setStatus(false);
           return;
         } else {
           setSearchedProducts(data);
           setLoaded(true);
-        };
+        }
       })
       .catch((err) => {
         console.log("Error fetching products");
@@ -40,38 +50,69 @@ export default function Shop() {
 
   return (
     <>
-      <div className="container">
+      <Container className="container">
         <h1 className="header">Shop page</h1>
-          <form className="search-area" onSubmit={(event)=>{event.preventDefault();search(searchText).then((foundProducts)=>{setSearchedProducts(foundProducts)})}}>
-            <TextField
-              sx={{ width: "100% !important" }}
-              id="search-text"
+        <form
+          className="search-area"
+          onSubmit={(event) => {
+            event.preventDefault();
+            search(searchText).then((foundProducts) => {
+              setSearchedProducts(foundProducts);
+            });
+          }}
+        >
+
+          <FormControl fullWidth={true}>
+            <InputLabel htmlFor="component-outlined">
+              Search for Products
+            </InputLabel>
+            <OutlinedInput
+              fullWidth
+              id="component-outlined"
+              defaultValue="Composed TextField"
               label="Search for Products"
-              variant="outlined"
-              margin="none"
               value={searchText}
-              onChange={(event)=>{setSearch(event.target.value)}}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Search />
-                  </InputAdornment>
-                ),
+              onChange={(event) => {
+                setSearch(event.target.value);
               }}
+              startAdornment={
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              }
             />
-            <Button type="submit" variant="outlined" onClick={()=>{search(searchText).then((foundPrducts)=>{setSearchedProducts(foundPrducts)})}}>Search</Button>
-          </form>
+          </FormControl>
+          <Button
+            type="submit"
+            variant="outlined"
+            onClick={() => {
+              search(searchText).then((foundPrducts) => {
+                setSearchedProducts(foundPrducts);
+              });
+            }}
+          >
+            Search
+          </Button>
+        </form>
 
         <div className="products">
           {searchedProducts.length > 0 ? (
             searchedProducts.map((product: ProductType) => {
-              return ProductCard({ product, navigate, key: product.product_id.toString() });
+              return ProductCard({
+                product,
+                navigate,
+                key: product.product_id.toString(),
+              });
             })
+          ) : loaded ? (
+            <h2>No products available to display</h2>
+          ) : status ? (
+            <h2>Loading...</h2>
           ) : (
-            loaded ? <h2>No products available to display</h2> : <h2>Loading...</h2>
+            <h2>Server unavailable</h2>
           )}
         </div>
-      </div>
+      </Container>
     </>
   );
 }

@@ -13,7 +13,6 @@ import { useEffect, useState } from "react";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 
-// TODO fix this mess
 const fontSize = 20;
 const margin = "0.5%";
 
@@ -139,7 +138,7 @@ export default function Navbar(props: { cart: ProductType[], setCart: React.Disp
           ) : null}
 
           <div className="act-btn">
-            <IconButton sx={{"px": "0.5rem"}} onClick={toggleDarkMode}>
+            <IconButton sx={{"px": "1rem"}} onClick={toggleDarkMode}>
               {(props.colorMode == 'dark')? <DarkModeIcon/> : <LightModeIcon/>}
             </IconButton>
             <IconButton

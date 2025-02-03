@@ -6,7 +6,6 @@ import { NavigateFunction, useNavigate } from "react-router-dom";
 import { ProductType } from "../components/ProductCard";
 import { CartContext } from "../App";
 
-
 async function register(
   e: FormEvent<HTMLFormElement>,
   name: string,
@@ -34,6 +33,7 @@ function StyledInput(props: {
 }) {
   return (
     <TextField
+      fullWidth
       sx={{ marginBottom: "1.5% !important" }}
       id="outlined-basic"
       type={props.type}
@@ -125,7 +125,7 @@ export default function Auth() {
         </div>
         <div className="login">
           <h1>Login</h1>
-          <form onSubmit={(e)=> login(e)}>
+          <form onSubmit={(e) => login(e)}>
             <StyledInput
               label="Email"
               type="text"

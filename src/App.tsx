@@ -103,7 +103,7 @@ function App() {
             {!serverStatus ? (
               <VarModal
                 title="Server Offline"
-                message="The shop server is currently offline, so all resources are unavailable"
+                message="The shop server is currently offline, so all resources are unavailable. Please check back later"
                 startState={true}
               ></VarModal>
             ) : null}
