@@ -42,13 +42,15 @@ export default function ProductCard(props: {
         key={props.key}
         className="card mi-1"
         id={`product-${product.product_id}`}
+        sx={{'minWidth': '400px', 'minHeight': '200px'}}
       >
-        <CardContent className="card-image">
+        <CardContent className="" >
           <h2>{product.item_name}</h2>
           <p>{product.description}</p>
           <img
             src={product.image_url}
             alt={`A picture of ${product.item_name}`}
+            style={{'height': '300px'}}
           />
           <p>Price: ${product.price}</p>
           <div className="buttons">

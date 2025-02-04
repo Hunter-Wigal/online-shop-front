@@ -7,10 +7,13 @@ import { Search } from "@mui/icons-material";
 import { getProducts, productSearch } from "../services/products.service";
 import { useNavigate } from "react-router-dom";
 import {
+  Card,
+  CardContent,
   Container,
   FormControl,
   InputLabel,
   OutlinedInput,
+  Skeleton,
 } from "@mui/material";
 
 async function search(keyword: string) {
@@ -61,15 +64,13 @@ export default function Shop() {
             });
           }}
         >
-
           <FormControl fullWidth={true}>
             <InputLabel htmlFor="component-outlined">
               Search for Products
             </InputLabel>
             <OutlinedInput
-              fullWidth
+              fullWidth={true}
               id="component-outlined"
-              defaultValue="Composed TextField"
               label="Search for Products"
               value={searchText}
               onChange={(event) => {
@@ -106,8 +107,21 @@ export default function Shop() {
             })
           ) : loaded ? (
             <h2>No products available to display</h2>
-          ) : status ? (
-            <h2>Loading...</h2>
+          ) : status ? (<>
+                {Array.from({ length: 3 }, (_, i) => (
+                  <Card key={i} className="card mi-1">
+                    <CardContent className="card-skeleton mi-1">
+                      <h2>
+                        <Skeleton sx={{marginInline:5}} variant="rectangular" width={300} />
+                      </h2>
+                      <p>
+                        <Skeleton variant="rectangular" width={300} height={50} />
+                      </p>
+                      <Skeleton variant="rounded" width={300} height={350} />
+                    </CardContent>
+                  </Card>
+                ))}
+            </>
           ) : (
             <h2>Server unavailable</h2>
           )}

@@ -40,7 +40,7 @@ export const CartContext = createContext<CartContextType>(context);
 
 function App() {
   const [cart, setCart] = useState(Array<ProductType>());
-  const [serverStatus, setServerStatus] = useState(false);
+  const [serverStatus, setServerStatus] = useState(true);
   const [colorMode, setColorMode] = useState<PaletteMode>("dark");
 
   useEffect(() => {
