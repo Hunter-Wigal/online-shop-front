@@ -204,7 +204,7 @@ export function addProduct(product: {
 }
 
 // Updates product info, meant to be utilized by the admin
-export function updateProduct(id: number, name: string, description: string) {
+export function updateProduct(id: number, name: string, description: string, imageURL: string, price: number) {
   easyFetch(
     `products/${id}`,
     true,
@@ -212,6 +212,8 @@ export function updateProduct(id: number, name: string, description: string) {
     JSON.stringify({
       item_name: name,
       item_description: description,
+      imageURL: imageURL,
+      price: price
     })
   )
     .then((response) => {

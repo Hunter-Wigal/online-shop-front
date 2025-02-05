@@ -50,7 +50,7 @@ export default function ProductCard(props: {
           <img
             src={product.image_url}
             alt={`A picture of ${product.item_name}`}
-            style={{'height': '300px'}}
+            style={{}}
           />
           <p>Price: ${product.price}</p>
           <div className="buttons">

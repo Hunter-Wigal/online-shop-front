@@ -113,9 +113,9 @@ export default function OrderDisplay(props?: {
             <h2>Orders Display</h2>
           </div>
         </div>
-        {transactions.map((item) => {
+        {transactions.length > 0 ? transactions.map((item) => {
           return <OrderRow key={item.transaction_id} transaction={item} navigate={navigate}/>;
-        })}
+        }): <h1>No transactions to display</h1>}
       </div>
     </>
   );

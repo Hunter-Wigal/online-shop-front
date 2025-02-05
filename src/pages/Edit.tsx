@@ -3,7 +3,7 @@ import "../styles/edit.scss";
 import { getProduct, updateProduct } from "../services/products.service";
 import { useEffect, useState } from "react";
 import { getImages } from "../components/Carousel";
-import { Button, TextareaAutosize } from "@mui/material/"
+import { Button, TextareaAutosize, TextField } from "@mui/material/"
 
 
 export default function EditProduct() {
@@ -11,6 +11,9 @@ export default function EditProduct() {
   const navigate = useNavigate();
   const [newName, setNewName] = useState("");
   const [newDescription, setNewDescription] = useState("");
+  const [newURL, setNewURL] = useState("");
+  const [newPrice, setNewPrice] = useState(0.0);
+
   const [changed, setChanged] = useState(false);
 
   const [product, setProduct] = useState({
@@ -36,6 +39,8 @@ export default function EditProduct() {
       setProduct(productFound);
       setNewName(productFound.item_name);
       setNewDescription(productFound.description);
+      setNewURL(productFound.imageURL);
+      setNewPrice(productFound.price);
     });
   }, []);
 
@@ -51,7 +56,10 @@ export default function EditProduct() {
           <strong>Description:</strong> 
           <TextareaAutosize value={newDescription} onChange={(event)=>{setNewDescription(event.target.value);setChanged(true)}}/>
         </div>
-        <div className="col-center mt-2"><Button variant="contained" onClick={()=>{if(changed){updateProduct(productId, newName, newDescription)}}}>Save</Button></div>
+        <div className="col-center mt-3">
+          <TextField label="Price" type="number" InputLabelProps={{ shrink: true }} value={newPrice} onChange={(event)=>{setNewPrice(Number(event.target.value));setChanged(true)}}/>
+        </div>
+        <div className="col-center mt-2"><Button variant="contained" onClick={()=>{if(changed){updateProduct(productId, newName, newDescription, newURL, newPrice)}}}>Save</Button></div>
       </div>
     </>
   );

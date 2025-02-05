@@ -21,5 +21,5 @@ export default function Admin() {
   );
 
   else
-  return <h1>You are not authorized to view this page</h1>
+  return <h1 style={{"textAlign": "center"}}>You are not authorized to view this page</h1>
 }
