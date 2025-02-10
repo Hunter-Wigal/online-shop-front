@@ -21,17 +21,17 @@ export default function ProductRow(props: {product: ProductType, index: number, 
             className="mr-3"
             src={product.image_url}
           />
-          <div className="col w-25">Name: {product.item_name}</div>
-          <div className="col-start">
+          <div className="col">Name: {product.item_name}</div>
+          <div className="col-start mr-2">
             Price: ${product.price.toFixed(2)}
           </div>
           <div className="col-end">
-            <div className="mr-10 row center">
-              <span style={{ alignContent: "center" }}>
+              <span className="mr-1" style={{ alignContent: "center" }}>
                 Quantity:
               </span>
               <TextField
                 value={quantity}
+                sx={{minWidth: '30%', maxWidth: '40%'}}
                 type="number"
                 onChange={(event) =>{
                   updateQuantity(
@@ -44,7 +44,7 @@ export default function ProductRow(props: {product: ProductType, index: number, 
                 }
               />
             </div>
-            <div style={{ alignContent: "center" }}>
+            <div className="ml-2" style={{ alignContent: "center", minWidth: 'fit-content' }}>
               Total Price: $
               {(product.price * product.quantity).toFixed(2)}
             </div>
@@ -57,7 +57,6 @@ export default function ProductRow(props: {product: ProductType, index: number, 
             >
               Remove
             </Button>
-          </div>
         </div>
       );
 }

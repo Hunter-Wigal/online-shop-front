@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import "../styles/checkout.scss";
 import ShippingForm from "../components/ShippingForm";
 import PaymentForm from "../components/PaymentForm";
@@ -16,10 +16,10 @@ export default function Checkout() {
   const [cart, setCart] = useState(context.cart);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  // Possibly not updated yet, useful when refreshing
+  if (cart.length == 0) {
     accS.checkCart().then(async (response) => {
       let newCart = new Array<ProductType>();
-      console.log(response);
 
       if (response && response.length > 0) {
         newCart = response;
@@ -27,7 +27,7 @@ export default function Checkout() {
         setCart(newCart);
       }
     });
-  }, []);
+  }
 
   return (
     <>

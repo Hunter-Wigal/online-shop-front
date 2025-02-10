@@ -37,7 +37,7 @@ export async function checkCart() {
   }
   let username = JSON.parse(userDetails).email;
 
-  return easyFetch(`user/${username}/cart`, false, "GET").then(
+  return easyFetch(`user/${username}/cart`, true, "GET").then(
     async (response) => {
       if (!response) return newCart;
 
@@ -71,8 +71,9 @@ export function sendItemToCart(product: ProductType) {
   });
 
   easyFetch(`user/${username}/cart`, false, "POST", body)
-    .then((response) => {
-      console.log(response);
+    .then(() => {
+      // console.log(response);
+      window.alert("Item added successfully");
     })
     .catch((err) => {
       console.log(`There was an error with updating the cart: ${err}`);

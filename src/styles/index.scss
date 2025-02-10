@@ -107,17 +107,21 @@ body {
   margin: 0 auto;
   box-sizing: border-box;
   justify-content: center;
+  
+  flex-wrap: wrap;
 }
 
 .row {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .col {
   display: flex;
   margin: auto;
-  width: 100%;
+  // width: 100%;
+  flex: 1 0 0%;
+  flex-wrap: wrap;
 
   &-start {
     @extend .col;
