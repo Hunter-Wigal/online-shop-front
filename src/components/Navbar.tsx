@@ -1,14 +1,27 @@
 import Link from "@mui/material/Link";
 import "../styles/index.scss";
-import { AppBar, Badge, Button, IconButton, PaletteMode } from "@mui/material";
+import {
+  AppBar,
+  Badge,
+  Button,
+  IconButton,
+  MenuItem,
+  PaletteMode,
+  Menu,
+} from "@mui/material";
 import {
   AccountCircle,
+  Menu as HamburgerMenu,
   ShoppingCartOutlined,
   StoreOutlined,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { ProductType } from "./ProductCard";
-import { checkAdmin, checkJWT, logout } from "../services/authentication.service";
+import {
+  checkAdmin,
+  checkJWT,
+  logout,
+} from "../services/authentication.service";
 import { useEffect, useState } from "react";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
@@ -16,15 +29,19 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 const fontSize = 20;
 const margin = "0.5%";
 
-export default function Navbar(props: { cart: ProductType[], setCart: React.Dispatch<React.SetStateAction<ProductType[]>>, setColorMode: React.Dispatch<React.SetStateAction<PaletteMode>>, colorMode: PaletteMode }) {
+export default function Navbar(props: {
+  cart: ProductType[];
+  setCart: React.Dispatch<React.SetStateAction<ProductType[]>>;
+  setColorMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
+  colorMode: PaletteMode;
+}) {
   const navigate = useNavigate();
   const [admin, setAdmin] = useState(false);
 
-  function toggleDarkMode(){
-    let newColor: PaletteMode = (props.colorMode =='dark') ? 'light' : 'dark';
+  function toggleDarkMode() {
+    let newColor: PaletteMode = props.colorMode == "dark" ? "light" : "dark";
     props.setColorMode(newColor);
   }
-
 
   function toggleAccount() {
     const dropdown = document.getElementById("account-dropdown");
@@ -40,7 +57,9 @@ export default function Navbar(props: { cart: ProductType[], setCart: React.Disp
     if (!checkJWT()) {
       return navigate("/auth");
     }
-    checkAdmin().then((isAdmin)=>{setAdmin(isAdmin)});
+    checkAdmin().then((isAdmin) => {
+      setAdmin(isAdmin);
+    });
   }, []);
 
   let cart = props.cart;
@@ -56,7 +75,7 @@ export default function Navbar(props: { cart: ProductType[], setCart: React.Disp
           // return navigate("/account");
           return navigate("/auth");
         }}
-        sx={{ margin: "auto", marginInline: "10%", height: "95%" }}
+        sx={{ margin: "auto", marginInline: "10%", height: "auto" }}
       >
         Login
       </Button>
@@ -70,8 +89,15 @@ export default function Navbar(props: { cart: ProductType[], setCart: React.Disp
       </IconButton>
     );
 
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-    
   return (
     <div className="mb-2">
       <AppBar position="relative">
@@ -137,23 +163,46 @@ export default function Navbar(props: { cart: ProductType[], setCart: React.Disp
             </Link>
           ) : null}
 
-          <div className="act-btn">
-            <IconButton sx={{"px": "1rem"}} onClick={toggleDarkMode}>
-              {(props.colorMode == 'dark')? <DarkModeIcon/> : <LightModeIcon/>}
+          <div className="dropdown-container">
+            <IconButton onClick={toggleDarkMode}>
+              {props.colorMode == "dark" ? <DarkModeIcon /> : <LightModeIcon />}
             </IconButton>
-            <IconButton
-              size="large"
-              onClick={() => {
-                return navigate("/checkout");
-              }}
-            >
-              <Badge badgeContent={cart.length} color="secondary">
-                <ShoppingCartOutlined fontSize="large" />
-              </Badge>
-            </IconButton>
-            {account}
+
+              <div className="side-buttons">
+                <IconButton
+                  size="large"
+                  onClick={() => {
+                    return navigate("/checkout");
+                  }}
+                >
+                  <Badge badgeContent={cart.length} color="secondary">
+                    <ShoppingCartOutlined fontSize="large" />
+                  </Badge>
+                </IconButton>
+                {account}
+              </div>
+
           </div>
+
+          <IconButton className="hamburger" onClick={handleClick}>
+            <HamburgerMenu fontSize="large" />
+          </IconButton>
+
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            <MenuItem onClick={handleClose}>Profile</MenuItem>
+            <MenuItem onClick={handleClose}>My account</MenuItem>
+            <MenuItem onClick={handleClose}>Logout</MenuItem>
+          </Menu>
         </div>
+
       </AppBar>
       <div className="account-dropdown mt-1" id="account-dropdown">
         <Button

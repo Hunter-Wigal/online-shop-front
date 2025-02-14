@@ -3,8 +3,16 @@
     display: block;
     position: relative;
     margin-inline: auto;
+    text-align: center;
 }
 
 .content p{
     font-size: 20px;
+}
+
+@media (max-width: 600px){
+    .content{
+        max-width: 90%;
+        
+    }
 }

@@ -67,12 +67,22 @@ body {
   cursor: pointer;
 }
 
-.act-btn {
+.side-buttons{
+  display: flex;
+  padding-right: 5%;
+}
+
+.dropdown-container{
   width: 20%;
   position: absolute;
   right: 0;
   justify-content: right;
   display: flex;
+}
+
+
+.hamburger{
+  display: none;
 }
 
 .account {
@@ -155,3 +165,23 @@ body {
 @include generate-margin-classes(100);
 
 @include generate-padding-classes(100);
+
+@media (max-width: 600px){
+  .side-buttons{
+    display: none;
+  }
+
+  .dropdown-container{
+    position: relative;
+    margin-right: 0;
+    width: 100%;
+    padding: 0;
+  }
+
+  .hamburger{
+    display: block;
+    // position: absolute;
+    right: 0;
+    margin-top: 0.05rem;
+  }
+}

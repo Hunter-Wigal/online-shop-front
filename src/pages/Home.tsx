@@ -31,7 +31,7 @@ export default function Home() {
             </p>
           </div>
           <div className="row">
-              <div className="col">
+              <div className="col w-100">
                   <Carousel></Carousel>
               </div>
           </div>

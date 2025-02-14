@@ -6,3 +6,9 @@
     font-size: 18px;
     text-wrap: balance;
 }
+
+@media (max-width: 600px) {
+    .intro{
+        max-width: 90%;
+    }
+}
