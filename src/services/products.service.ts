@@ -3,7 +3,7 @@ import { CartContextType } from "../App";
 import { getUserDetails } from "./authentication.service";
 import { sendItemToCart } from "./account.service";
 
-// Function meant to eliminate the long fetch calls. May be changed to ajax later
+// Function meant to eliminate the long fetch calls. May be changed to axios later
 function easyFetch(
   url_endpoint: string,
   auth: boolean,

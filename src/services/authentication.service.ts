@@ -9,7 +9,7 @@ export interface User {
   sessionExp: Date;
 }
 
-// Function meant to eliminate the long fetch calls. May be changed to ajax later
+// Function meant to eliminate the long fetch calls. May be changed to axios later
 function easyFetch(
   url_endpoint: string,
   auth: boolean,
@@ -36,21 +36,6 @@ function easyFetch(
     body: body,
   });
 }
-
-// Checks whether the server is available
-export async function checkStatus() {
-  return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/products`, {
-    mode: "no-cors",
-  })
-    .then(() => {
-      return true;
-    })
-    .catch(() => {
-      return false;
-    });
-}
-
-//TODO implement easyFetch or ajax
 
 export async function login(
   username: string,

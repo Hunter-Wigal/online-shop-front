@@ -3,7 +3,7 @@
 import { Transaction } from "../components/OrderDisplay";
 
 
-// Function meant to eliminate the long fetch calls. May be changed to ajax later
+// Function meant to eliminate the long fetch calls. May be changed to axios later
 function easyFetch(
   url_endpoint: string,
   auth: boolean,

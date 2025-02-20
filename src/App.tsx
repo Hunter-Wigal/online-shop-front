@@ -9,6 +9,7 @@ import Admin from "./pages/Admin";
 import Checkout from "./pages/Checkout";
 import * as as from "./services/authentication.service";
 import * as accS from "./services/account.service.ts";
+import * as hs from "./services/health.service.ts";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Auth from "./pages/Auth";
 import { createContext, SetStateAction, useEffect, useState } from "react";
@@ -44,7 +45,7 @@ function App() {
   const [colorMode, setColorMode] = useState<PaletteMode>("dark");
 
   useEffect(() => {
-    as.checkStatus().then((result) => {
+    hs.healthCheck().then((result) => {
       setServerStatus(result);
     });
   }, []);
