@@ -27,13 +27,17 @@
   position: relative;
   display: block;
   margin-inline: auto;
-  min-width: 20%;
+  min-width: 25%;
 
-  img{
+  img, .skel-img{
     background-color: black;
-    width: 100%;
+    width: 90%;
     display: block;
     margin:auto;
+  }
+
+  .skel-img{
+    min-height: 300px;
   }
 
   .buttons{

@@ -7,7 +7,7 @@ import {
   IconButton,
   MenuItem,
   PaletteMode,
-  Menu,
+  Menu
 } from "@mui/material";
 import {
   AccountCircle,
@@ -25,9 +25,12 @@ import {
 import { useEffect, useState } from "react";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import AuthCard from "./AuthCard";
 
 const fontSize = 20;
 const margin = "0.5%";
+
+
 
 export default function Navbar(props: {
   cart: ProductType[];
@@ -37,6 +40,10 @@ export default function Navbar(props: {
 }) {
   const navigate = useNavigate();
   const [admin, setAdmin] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
 
   function toggleDarkMode() {
     let newColor: PaletteMode = props.colorMode == "dark" ? "light" : "dark";
@@ -164,24 +171,28 @@ export default function Navbar(props: {
           ) : null}
 
           <div className="dropdown-container">
-            <IconButton onClick={toggleDarkMode}>
+            <IconButton
+              onClick={toggleDarkMode}
+              style={{ height: "fit-content", alignSelf: "center" }}
+            >
               {props.colorMode == "dark" ? <DarkModeIcon /> : <LightModeIcon />}
             </IconButton>
 
-              <div className="side-buttons">
-                <IconButton
-                  size="large"
-                  onClick={() => {
-                    return navigate("/checkout");
-                  }}
-                >
-                  <Badge badgeContent={cart.length} color="secondary">
-                    <ShoppingCartOutlined fontSize="large" />
-                  </Badge>
-                </IconButton>
-                {account}
-              </div>
-
+            <div className="side-buttons">
+              <IconButton
+                size="large"
+                onClick={() => {
+                  return navigate("/checkout");
+                }}
+              >
+                <Badge badgeContent={cart.length} color="secondary">
+                  <ShoppingCartOutlined fontSize="large" />
+                </Badge>
+              </IconButton>
+              {account}
+            </div>
+            <Button onClick={handleOpenModal}>Open modal</Button>
+            <AuthCard openModal={openModal} handleCloseModal={handleCloseModal}></AuthCard>
           </div>
 
           <IconButton className="hamburger" onClick={handleClick}>
@@ -202,7 +213,6 @@ export default function Navbar(props: {
             <MenuItem onClick={handleClose}>Logout</MenuItem>
           </Menu>
         </div>
-
       </AppBar>
       <div className="account-dropdown mt-1" id="account-dropdown">
         <Button
