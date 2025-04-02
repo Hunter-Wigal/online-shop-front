@@ -5,6 +5,7 @@ import * as as from "../services/authentication.service";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { ProductType } from "../components/ProductCard";
 import { CartContext } from "../App";
+import { healthCheck } from "../services/health.service";
 
 async function register(
   e: FormEvent<HTMLFormElement>,
@@ -16,7 +17,7 @@ async function register(
   setCart: React.Dispatch<React.SetStateAction<ProductType[]>>
 ) {
   e.preventDefault();
-  if (await as.checkStatus()) {
+  if (await healthCheck()) {
     if (await as.register(email, password, name, age, setCart)) {
       return navigate("/account");
     } else {
@@ -62,7 +63,7 @@ export default function Auth() {
   async function login(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (await as.checkStatus()) {
+    if (await healthCheck()) {
       as.login(loginEmail, loginPassword, context.setCart).then((result) => {
         if (result) return navigate("/account");
       });

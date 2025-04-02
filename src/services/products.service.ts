@@ -2,6 +2,7 @@ import { ProductType } from "../components/ProductCard";
 import { CartContextType } from "../App";
 import { getUserDetails } from "./authentication.service";
 import { sendItemToCart } from "./account.service";
+import { healthCheck } from "./health.service";
 
 // Function meant to eliminate the long fetch calls. May be changed to axios later
 function easyFetch(
@@ -33,24 +34,13 @@ function easyFetch(
   });
 }
 
-// Checks whether the server is available
-async function checkStatus() {
-  return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/products`, {
-    mode: "no-cors",
-  })
-    .then(() => {
-      return true;
-    })
-    .catch(() => {
-      return false;
-    });
-}
+
 
 // Retrieves all available products
 export async function getProducts(): Promise<ProductType[] | null> {
   let ignore = false;
 
-  if (!(await checkStatus())) return null;
+  if (!(await healthCheck())) return null;
 
   const fetched = easyFetch("products", false, "GET")
     .then(async (data) => {
@@ -146,7 +136,7 @@ export function removeFromCart(context: CartContextType, index: number) {
 
 // Gets information on a single product
 export async function getProduct(id: number) {
-  if (!checkStatus()) return;
+  if (!healthCheck()) return;
   else {
     return await easyFetch(`products/${id}`, false, "GET")
       .then(async (data) => {

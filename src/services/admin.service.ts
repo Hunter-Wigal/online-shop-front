@@ -1,6 +1,7 @@
 // This file specifically handles admin related requests
 
 import { Transaction } from "../components/OrderDisplay";
+import { healthCheck } from "./health.service";
 
 
 // Function meant to eliminate the long fetch calls. May be changed to axios later
@@ -32,18 +33,10 @@ function easyFetch(
   });
 }
 
-async function checkStatus() {
-    return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/orders`, { mode: "no-cors" })
-      .then(() => {
-        return true;
-      })
-      .catch(() => {
-        return false;
-      });
-  }
+
 
 export async function getTransactions(): Promise<Array<Transaction> | null>{
-    if(!await checkStatus()){
+    if(!await healthCheck()){
         alert("Server not available");
         return null;
     }
