@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import "./styles/app.scss";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
@@ -22,7 +22,6 @@ import TransactionPage from "./pages/ViewTransaction.tsx";
 import AdminTabs from "./components/AdminTabs.tsx";
 import VarModal from "./components/VarModal.tsx";
 import { Container, CssBaseline, PaletteMode } from "@mui/material";
-
 
 export interface CartContextType {
   cart: ProductType[];
@@ -63,7 +62,7 @@ function App() {
 
   const theme = createTheme({
     palette: {
-      mode: colorMode ? colorMode : 'dark',
+      mode: colorMode ? colorMode : "dark",
       primary: {
         main: "#0097a7",
       },
@@ -71,46 +70,56 @@ function App() {
         main: "#3f51b5",
       },
       warning: { main: "#ff0000" },
-    }
+    },
   });
 
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <CssBaseline>
-          <CartContext.Provider value={{ cart: cart, setCart: setCart }}>
-            <Navbar cart={cart} setCart={setCart} setColorMode={setColorMode} colorMode={colorMode}/>
-            {/* Figure out a way to change admin routes to begin with /admin and only allow the admin to access*/}
-            <Container>
-              <Routes>
-                <Route path="/" index element={<Home />} />
-                <Route path="/shop" index element={<Shop />} />
-                <Route path="/account" index element={<Account />} />
-                <Route path="/checkout" index element={<Checkout />} />
-                <Route path="/about" index element={<About />} />
-                <Route path="/auth" index element={<Auth />} />
-                <Route path="/item/:id" index element={<Product />} />
-                {/* //TODO ??  */}
+      <Router>
+        <ThemeProvider theme={theme}>
+          <CssBaseline>
+            <CartContext.Provider value={{ cart: cart, setCart: setCart }}>
+              <Navbar
+                cart={cart}
+                setCart={setCart}
+                setColorMode={setColorMode}
+                colorMode={colorMode}
+              />
+              {/* Figure out a way to change admin routes to begin with /admin and only allow the admin to access*/}
+              <Container>
+                <Routes>
+                  <Route path="/" index element={<Home />} />
+                  <Route path="/shop" index element={<Shop />} />
+                  <Route path="/account" index element={<Account />} />
+                  <Route path="/checkout" index element={<Checkout />} />
+                  <Route path="/about" index element={<About />} />
+                  <Route path="/auth" index element={<Auth />} />
+                  <Route path="/item/:id" index element={<Product />} />
+                  {/* //TODO ??  */}
 
-                <Route path="404" index element={<NotFound />} />
-                <Route path="admin" element={<Admin />}>
-                  <Route path="" element={<AdminTabs />} />
-                  <Route path="edit/:id" element={<EditProduct />} />
-                  <Route path="new-product" element={<NewProduct />} />
-                  <Route path="transaction/:id" element={<TransactionPage />} />
-                </Route>
-              </Routes>
-            </Container>
-            {!serverStatus ? (
-              <VarModal
-                title="Server Offline"
-                message="The shop server is currently offline, so all resources are unavailable. Please check back later"
-                startState={true}
-              ></VarModal>
-            ) : null}
-          </CartContext.Provider>
-        </CssBaseline>
-      </ThemeProvider>
+                  <Route path="404" index element={<NotFound />} />
+                  <Route path="admin" element={<Admin />}>
+                    <Route path="" element={<AdminTabs />} />
+                    <Route path="edit/:id" element={<EditProduct />} />
+                    <Route path="new-product" element={<NewProduct />} />
+                    <Route
+                      path="transaction/:id"
+                      element={<TransactionPage />}
+                    />
+                  </Route>
+                </Routes>
+              </Container>
+              {!serverStatus ? (
+                <VarModal
+                  title="Server Offline"
+                  message="The shop server is currently offline, so all resources are unavailable. Please check back later"
+                  startState={true}
+                ></VarModal>
+              ) : null}
+            </CartContext.Provider>
+          </CssBaseline>
+        </ThemeProvider>
+      </Router>
     </>
   );
 }

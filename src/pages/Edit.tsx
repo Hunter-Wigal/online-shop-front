@@ -3,7 +3,7 @@ import "../styles/edit.scss";
 import { getProduct, updateProduct } from "../services/products.service";
 import { useEffect, useState } from "react";
 import { getImages } from "../components/Carousel";
-import { Button, TextareaAutosize, TextField } from "@mui/material/"
+import { Button, TextareaAutosize, TextField } from "@mui/material"
 
 
 export default function EditProduct() {

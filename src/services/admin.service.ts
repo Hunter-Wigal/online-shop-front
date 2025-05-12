@@ -36,7 +36,7 @@ function easyFetch(
 
 
 export async function getTransactions(): Promise<Array<Transaction> | null>{
-    if(!await healthCheck()){
+    if(!(await healthCheck())){
         alert("Server not available");
         return null;
     }
