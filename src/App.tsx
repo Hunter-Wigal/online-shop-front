@@ -11,7 +11,6 @@ import * as as from "./services/authentication.service";
 import * as accS from "./services/account.service.ts";
 import * as hs from "./services/health.service.ts";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Auth from "./pages/Auth";
 import { createContext, SetStateAction, useEffect, useState } from "react";
 import { ProductType } from "./components/ProductCard";
 import Product from "./pages/Product";
@@ -93,7 +92,6 @@ function App() {
                   <Route path="/account" index element={<Account />} />
                   <Route path="/checkout" index element={<Checkout />} />
                   <Route path="/about" index element={<About />} />
-                  <Route path="/auth" index element={<Auth />} />
                   <Route path="/item/:id" index element={<Product />} />
                   {/* //TODO ??  */}
 

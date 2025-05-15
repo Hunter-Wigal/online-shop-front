@@ -62,7 +62,7 @@ export default function Navbar(props: {
   }
   useEffect(() => {
     if (!checkJWT()) {
-      navigate("/auth");
+      // navigate("/auth");
     }
     checkAdmin().then((isAdmin) => {
       setAdmin(isAdmin);
@@ -78,10 +78,8 @@ export default function Navbar(props: {
       <Button
         color="secondary"
         variant="contained"
-        onClick={() => {
-          // return navigate("/account");
-          return navigate("/auth");
-        }}
+        onClick={handleOpenModal}
+        
         sx={{ margin: "auto", marginInline: "10%", height: "auto" }}
       >
         Login
@@ -191,7 +189,7 @@ export default function Navbar(props: {
               </IconButton>
               {account}
             </div>
-            <Button onClick={handleOpenModal}>Open modal</Button>
+            
             <AuthCard openModal={openModal} handleCloseModal={handleCloseModal}></AuthCard>
           </div>
 
@@ -236,7 +234,7 @@ export default function Navbar(props: {
             logout(props.setCart);
             toggleAccount();
 
-            return navigate("/auth");
+            // return navigate("/auth");
           }}
         >
           Logout

@@ -86,6 +86,7 @@ export default function Shop() {
           <Button
             type="submit"
             variant="outlined"
+            style={{width: "7rem"}}
             onClick={() => {
               search(searchText).then((foundPrducts) => {
                 setSearchedProducts(foundPrducts);
