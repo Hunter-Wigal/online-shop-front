@@ -47,7 +47,8 @@ export default function Shop() {
       })
       .catch((err) => {
         console.log("Error fetching products");
-        console.log(err);
+        // console.log(err);
+        err!;
       });
   }, []);
 

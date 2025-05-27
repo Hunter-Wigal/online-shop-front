@@ -11,7 +11,8 @@
 
 .add-row {
   width: 75%;
-  margin: auto;
+  margin-inline: auto;
+  margin-top: 3%;
   justify-content: space-between;
 
   .price{
@@ -20,6 +21,7 @@
 
   .add{
     width: 40%;
+    justify-content: space-between;
   }
 }
 
@@ -27,17 +29,17 @@
   position: relative;
   display: block;
   margin-inline: auto;
-  min-width: 25%;
 
   img, .skel-img{
     background-color: black;
     width: 90%;
     display: block;
     margin:auto;
+    max-width: auto;
   }
 
   .skel-img{
-    min-height: 300px;
+    min-height: 400px;
   }
 
   .buttons{
@@ -55,7 +57,7 @@
   margin-inline: auto;
 
   .img{
-    aspect-ratio: 1/1;
+    // aspect-ratio: 1/1;
     width: 30%
   }
 

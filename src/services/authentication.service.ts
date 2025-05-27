@@ -29,7 +29,6 @@ function easyFetch(
         "Content-Type": "application/json",
         Authorization: "Bearer " + jwt,
       };
-
   return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/${url_endpoint}`, {
     method: `${method}`,
     headers: headers,
