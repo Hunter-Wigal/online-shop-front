@@ -1,4 +1,6 @@
-import { Autocomplete, SxProps, TextField, Theme } from "@mui/material";
+import Autocomplete from "@mui/material/Autocomplete";
+import { SxProps, Theme } from "@mui/material/styles";
+import TextField from "@mui/material/TextField";
 import { ChangeEventHandler, useState } from "react";
 
 function StyledAutocomplete(props: {

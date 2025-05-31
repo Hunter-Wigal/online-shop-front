@@ -2,7 +2,8 @@
 import CardContent from "@mui/material/CardContent";
 import Card from "@mui/material/Card";
 import "../styles/product.scss";
-import { Button, Skeleton } from "@mui/material";
+import Button from "@mui/material/Button";
+import Skeleton from "@mui/material/Skeleton";
 import { NavigateFunction } from "react-router-dom";
 import { ReactElement, ReactEventHandler } from "react";
 const isClient = typeof window !== 'undefined';

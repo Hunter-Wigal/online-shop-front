@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import "../styles/admin.scss";
-import { Box, Button, Modal, Tab, Tabs } from "@mui/material";
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
+import Modal from "@mui/material/Modal"
+import Tab from "@mui/material/Tab"
+import Tabs from "@mui/material/Tabs"
 import OrderDisplay, { Transaction } from "../components/OrderDisplay";
 import { getTransactions } from "../services/admin.service";
 import ProductCard, { ProductType } from "../components/ProductCard";

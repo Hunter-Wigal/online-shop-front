@@ -20,8 +20,8 @@ import { NewProduct } from "./pages/NewProduct";
 import TransactionPage from "./pages/ViewTransaction.tsx";
 import AdminTabs from "./components/AdminTabs.tsx";
 import VarModal from "./components/VarModal.tsx";
-import { Container, CssBaseline, PaletteMode } from "@mui/material";
-
+import Container from "@mui/material/Container"
+import CssBaseline from "@mui/material/CssBaseline";
 export interface CartContextType {
   cart: ProductType[];
   setCart: React.Dispatch<React.SetStateAction<ProductType[]>>;
@@ -40,7 +40,7 @@ export const CartContext = createContext<CartContextType>(context);
 function App() {
   const [cart, setCart] = useState(Array<ProductType>());
   const [serverStatus, setServerStatus] = useState(true);
-  const [colorMode, setColorMode] = useState<PaletteMode>("dark");
+  const [colorMode, setColorMode] = useState<"light" | "dark">("dark");
 
   useEffect(() => {
     hs.healthCheck().then((result) => {

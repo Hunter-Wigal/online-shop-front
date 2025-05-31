@@ -1,4 +1,8 @@
-import { Dialog, DialogContent, DialogTitle, IconButton, styled } from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/Dialog";
+import IconButton from "@mui/material/IconButton";
+import {styled} from "@mui/material/styles";
 import { useState } from "react";
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -20,7 +24,7 @@ export default function VarModal(props: {title: string, message: string, startSt
 
     return <>
     <BootstrapDialog open={open} onClose={handleClose}>
-      <DialogTitle sx={{ m: 0, p: 2 }}>{props.title}</DialogTitle>
+      <DialogTitle sx={{ m: 0, p: 2 }} open={open}>{props.title}</DialogTitle>
       <IconButton
           aria-label="close"
           onClick={handleClose}
@@ -33,7 +37,7 @@ export default function VarModal(props: {title: string, message: string, startSt
         >
           <CloseIcon />
         </IconButton>
-      <DialogContent sx={{m: 2}}>
+      <DialogContent open={open} sx={{m: 2}}>
         {props.message}
       </DialogContent>
     </BootstrapDialog>

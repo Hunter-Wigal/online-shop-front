@@ -1,20 +1,18 @@
 import Link from "@mui/material/Link";
 import "../styles/index.scss";
-import {
-  AppBar,
-  Badge,
-  Button,
-  IconButton,
-  MenuItem,
-  PaletteMode,
-  Menu
-} from "@mui/material";
-import {
-  AccountCircle,
-  Menu as HamburgerMenu,
-  ShoppingCartOutlined,
-  StoreOutlined,
-} from "@mui/icons-material";
+import AppBar from "@mui/material/AppBar"
+import Badge from "@mui/material/Badge"
+import Button from "@mui/material/Button"
+import IconButton from "@mui/material/IconButton"
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem"
+
+
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import {Menu as HamburgerMenu} from "@mui/icons-material";
+import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
+import StoreOutlined from "@mui/icons-material/StoreOutlined";
+
 import { useNavigate } from "react-router-dom";
 import { ProductType } from "./ProductCard";
 import {
@@ -35,8 +33,8 @@ const margin = "0.5%";
 export default function Navbar(props: {
   cart: ProductType[];
   setCart: React.Dispatch<React.SetStateAction<ProductType[]>>;
-  setColorMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
-  colorMode: PaletteMode;
+  setColorMode: React.Dispatch<React.SetStateAction<"light" | "dark">>;
+  colorMode: "light" | "dark";
 }) {
   const navigate = useNavigate();
   const [admin, setAdmin] = useState(false);
@@ -46,7 +44,7 @@ export default function Navbar(props: {
 
 
   function toggleDarkMode() {
-    let newColor: PaletteMode = props.colorMode == "dark" ? "light" : "dark";
+    let newColor: "light" | "dark" = props.colorMode == "dark" ? "light" : "dark";
     props.setColorMode(newColor);
   }
 

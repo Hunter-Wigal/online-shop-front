@@ -3,8 +3,9 @@ import "../styles/edit.scss";
 import { getProduct, updateProduct } from "../services/products.service";
 import { useEffect, useState } from "react";
 import { getImages } from "../components/Carousel";
-import { Button, TextareaAutosize, TextField } from "@mui/material"
-
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 
 export default function EditProduct() {
   const { id } = useParams();

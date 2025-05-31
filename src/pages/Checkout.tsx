@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
 import { useContext, useState } from "react";
 import "../styles/checkout.scss";
 import ShippingForm from "../components/ShippingForm";

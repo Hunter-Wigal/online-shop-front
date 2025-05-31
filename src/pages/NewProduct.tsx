@@ -1,4 +1,5 @@
-import { Button, TextField } from "@mui/material";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import "../styles/new-product.scss";
 import { addProduct } from "../services/products.service";
 import { useState } from "react";

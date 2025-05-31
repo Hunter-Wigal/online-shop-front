@@ -6,15 +6,15 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { Search } from "@mui/icons-material";
 import { getProducts, productSearch } from "../services/products.service";
 import { useNavigate } from "react-router-dom";
-import {
-  Card,
-  CardContent,
-  Container,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  Skeleton,
-} from "@mui/material";
+import Card from "@mui/material/Card";
+import CardContent from '@mui/material/CardContent';
+import Container from '@mui/material/Container';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Skeleton from "@mui/material/Skeleton";
+
+
 
 async function search(keyword: string) {
   let foundProducts = await productSearch(keyword);

@@ -3,7 +3,8 @@ import { addToCart, getProduct } from "../services/products.service";
 import { useContext, useEffect, useState } from "react";
 import { ProductType } from "../components/ProductCard";
 import "../styles/product.scss";
-import { Button, TextField } from "@mui/material";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import { CartContext } from "../App";
 
 export default function Product() {

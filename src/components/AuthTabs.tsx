@@ -6,7 +6,8 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { FormEvent, useContext, useState } from "react";
 import { healthCheck } from "../services/health.service";
-import { Button, TextField } from "@mui/material";
+import Button from "@mui/material/Button"
+import TextField from "@mui/material/TextField"
 import * as as from "../services/authentication.service";
 import { CartContext, CartContextType } from '../App';
 import { NavigateFunction, useNavigate } from "react-router-dom";
