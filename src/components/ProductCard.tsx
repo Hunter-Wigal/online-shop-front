@@ -69,9 +69,9 @@ export default function ProductCard(props: {
   let product = props.product;
 
   let imgLoadedCallback: ReactEventHandler<HTMLImageElement> = (event) => {
+    event!;
     if(!isClient)
       return;
-    console.log(event);
     let id = props.product.image_url;
     if (!id) return;
     let loader = document.getElementById(id + "-skeleton");
