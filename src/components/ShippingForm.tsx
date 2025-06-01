@@ -8,8 +8,8 @@ function StyledAutocomplete(props: {
   type?: string;
   error?: boolean;
   autoComplete?: boolean;
-  style?: SxProps<Theme> | undefined
-  required?: boolean
+  style?: SxProps<Theme> | undefined;
+  required?: boolean;
   validate:
     | ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     | undefined;
@@ -23,9 +23,9 @@ function StyledAutocomplete(props: {
         <TextField
           error={props.error}
           onChange={props.validate}
-          helperText={props.helperText}
+          helperText={!props.error ? props.helperText : ""}
           type={props.type}
-          sx={ props.style }
+          sx={props.style}
           {...params}
           label={props.label}
           slotProps={{
@@ -37,11 +37,11 @@ function StyledAutocomplete(props: {
     ></Autocomplete>
   ) : (
     <TextField
-      error={props.error}
+      error={!props.error}
       onChange={props.validate}
-      helperText={props.helperText}
+      helperText={!props.error ? props.helperText : ""}
       type={props.type}
-      sx={{"width": "75% !important", "marginTop": "1%"}}
+      sx={{ width: "75% !important", marginTop: "1%" }}
       required={props.required}
       label={props.label}
     />
@@ -50,72 +50,132 @@ function StyledAutocomplete(props: {
   return input;
 }
 
-interface ShippingInputs{
-  email: string,
-  name: string,
-  address: string,
-  phoneNumber: string
+interface ShippingInputs {
+  email: string;
+  name: string;
+  address: string;
+  phoneNumber: string;
 }
 
-export default function ShippingForm(props: {formValidHander: React.Dispatch<React.SetStateAction<boolean>>, setShippingVal: (val: Function)=>void}) {
-  const setFormValid = props.formValidHander;
-  const [shippingInputs, setShippingInputs] = useState<ShippingInputs>({email: "", name: "", address: "", phoneNumber: ""})
+export default function ShippingForm(props: {
+  setShippingVal: (val: Function) => void;
+}) {
+  const [shippingInputs, setShippingInputs] = useState<ShippingInputs>({
+    email: "",
+    name: "",
+    address: "",
+    phoneNumber: "",
+  });
   const [emailValid, setEmailValid] = useState(true);
   const [nameValid, setNameValid] = useState(true);
-
-  const validCheck = (formVal: boolean, stateUpdate: React.Dispatch<React.SetStateAction<any>>, newState: boolean)=>{
-    setFormValid(formVal);
+  const [addressValid, setAddressValid] = useState(true);
+  const [phoneValid, setPhoneValid] = useState(true);
+  /**
+   * Calls form valid handler from checkout page and calls passed statehandler with new value
+   *
+   * @param {React.Dispatch<React.SetStateAction<any>>} stateUpdate
+   * @param {boolean} newState
+   */
+  const validCheck = (
+    stateUpdate: React.Dispatch<React.SetStateAction<any>>,
+    newState: boolean
+  ) => {
     stateUpdate(newState);
   };
 
-  const finalValidation = () =>{
-    if(shippingInputs.name.length < 3 || shippingInputs.email.length < 5 || shippingInputs.address.length < 5 || shippingInputs.phoneNumber.length < 10){
+  function finalValidation (){
+    if (
+      !nameValid ||
+      shippingInputs.name.length < 1 ||
+      !emailValid ||
+      shippingInputs.email.length < 1 ||
+      !addressValid ||
+      shippingInputs.address.length < 1 ||
+      !phoneValid ||
+      shippingInputs.phoneNumber.length < 9
+    ) {
       return false;
     }
-    return false;
+    return true;
   }
+
   props.setShippingVal(finalValidation);
 
-// TODO change to not use autocomplete unless necessary
+  // TODO change to not use autocomplete unless necessary
   return (
     <div className="delivery">
       <StyledAutocomplete
         label="Name"
-        error={!nameValid}
+        error={nameValid}
         required={true}
-        helperText="Please enter your name"
+        helperText={"Please enter your name"}
         validate={(event) => {
-          console.log(event.target.value);
+          let name = event.target.value;
           let newInputs = shippingInputs;
-          newInputs.name = event.target.value;
-          setShippingInputs(newInputs);
-          setNameValid(true);
+          newInputs.name = name;
+
+          if (name.length > 0 && name.length < 5) {
+            validCheck(setNameValid, false);
+          } else {
+            validCheck(setNameValid, true);
+          }
         }}
       ></StyledAutocomplete>
       <StyledAutocomplete
         label="Address"
-        validate={(test) => {console.log(test.target.value); return false}}
+        validate={(event) => {
+          let address = event.target.value;
+          let newInputs = shippingInputs;
+          newInputs.address = event.target.value;
+          setShippingInputs(newInputs);
+
+          // TODO add actual address validation
+          if (address.length > 0 && address.length < 7) {
+            validCheck(setAddressValid, false);
+          } else {
+            validCheck(setAddressValid, true);
+          }
+        }}
+        error={addressValid}
         required={true}
+        helperText={"Please enter your address"}
       ></StyledAutocomplete>
       <StyledAutocomplete
         label="Email"
-        error={!emailValid}
+        error={emailValid}
+        helperText={"Please enter your email address"}
         validate={(event) => {
           let email = event.target.value;
+          let newInputs = shippingInputs;
+          newInputs.email = event.target.value;
+          setShippingInputs(newInputs);
           if (
             (!email.includes("@") || !email.includes(".com")) &&
             email.length > 0
           ) {
-            validCheck(false, setEmailValid, false);
+            validCheck(setEmailValid, false);
           } else {
-            validCheck(false, setEmailValid, true);
+            validCheck(setEmailValid, true);
           }
         }}
       ></StyledAutocomplete>
       <StyledAutocomplete
         label="Phone Number"
-        validate={() => {}}
+        validate={(event) => {
+          let phone = event.target.value;
+          let newInputs = shippingInputs;
+          newInputs.phoneNumber = event.target.value;
+          setShippingInputs(newInputs);
+
+          if (phone.length > 0 && phone.length < 10) {
+            validCheck(setPhoneValid, false);
+          } else {
+            validCheck(setPhoneValid, true);
+          }
+        }}
+        error={phoneValid}
         required={true}
+        helperText={"Please enter your phone number without dashes or spaces"}
       ></StyledAutocomplete>
     </div>
   );

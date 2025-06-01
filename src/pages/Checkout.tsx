@@ -15,7 +15,7 @@ export default function Checkout() {
   const context = useContext(CartContext);
   const [cart, setCart] = useState(context.cart);
   const navigate = useNavigate();
-  const [formValid, setFormValid] = useState(true);
+  // const [formValid, setFormValid] = useState(false);
   let shippingVal: Function;
   const setShippingVal = (val: Function) =>{shippingVal = val};
 
@@ -62,7 +62,7 @@ export default function Checkout() {
           <div className="col" style={{ display: "block" }}>
             <h2>Delivery Details</h2>
             {/* // TODO find a better way of implementing this */}
-            <ShippingForm formValidHander={setFormValid} setShippingVal={setShippingVal}/>
+            <ShippingForm setShippingVal={setShippingVal}/>
           </div>
         </div>
         <div className="row mt-3">
@@ -78,12 +78,14 @@ export default function Checkout() {
                 className="pb-10 w-50 mt-3 mb-3"
                 variant="outlined"
                 onClick={() => {
-                  if(!formValid || !shippingVal()){
+                  let shippingValid = shippingVal();
+                  // console.log(formValid)
+                  if(!shippingValid){
                     alert("Please complete all required fields before submitting")
                     return;
                   }
                   console.log(shippingVal())
-                  return;
+                  // TODO finish testing this
 
                   return buyProducts(cart).then((response) => {
                     console.log(response);
