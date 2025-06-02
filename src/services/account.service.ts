@@ -51,8 +51,8 @@ export async function checkCart() {
       }
       return newCart;
     }
-  ).catch((err)=>{
-    console.log("no items in cart:", err);
+  ).catch(()=>{
+    console.log("no items in cart:");
   });
 }
 

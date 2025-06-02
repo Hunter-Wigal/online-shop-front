@@ -1,18 +1,14 @@
 .img-blank,
-.header {
-  justify-content: center;
-
   img {
     min-width: 100px;
     min-height: 100px;
     background-color: black;
   }
-}
+
 
 .add-row {
   width: 75%;
   margin-inline: auto;
-  margin-top: 3%;
   justify-content: space-between;
 
   .price{
@@ -31,15 +27,11 @@
   margin-inline: auto;
 
   img, .skel-img{
-    background-color: black;
-    width: 90%;
-    display: block;
     margin:auto;
-    max-width: auto;
   }
 
   .skel-img{
-    min-height: 400px;
+    min-height: 300px;
   }
 
   .buttons{
@@ -57,12 +49,19 @@
   margin-inline: auto;
 
   .img{
-    // aspect-ratio: 1/1;
     width: 30%
   }
 
   .description{
     width: 60%;
+    border-width: 1px;
+    border-radius: 5px;
+    border-style: solid;
+    align-items: center;
+
+    p{
+      padding: 10px;
+    }
   }
 
 

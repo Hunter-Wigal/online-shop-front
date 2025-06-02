@@ -6,6 +6,8 @@ import "../styles/product.scss";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { CartContext } from "../App";
+import Divider from '@mui/material/Divider';
+
 
 export default function Product() {
   const defaultProduct: ProductType = {
@@ -53,11 +55,12 @@ export default function Product() {
       {navigate ? <Navigate to="/shop" /> : null}
 
       <div className="container">
-        <div className="row">
-          <div className="col header">
+        <div className="row mx-auto">
+          <div className="col ">
             <h1>{product.item_name}</h1>
           </div>
         </div>
+        <Divider className="mt-1 mb-8"></Divider>
         <div className="row product-content">
           <div className="col img">
             <img src={product.image_url} />
@@ -66,7 +69,9 @@ export default function Product() {
             <p>Description: {product.description}</p>
           </div>
         </div>
+        <Divider className="mt-8 mb-2"></Divider>
         <div className="row add-row">
+          
           <div className="col price">Price: ${product.price.toFixed(2)}</div>
           <div className="col add">
             <div>

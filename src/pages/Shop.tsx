@@ -55,7 +55,7 @@ export default function Shop() {
   return (
     <>
       <Container className="container">
-        <h1 className="header">Shop page</h1>
+        <h1 className="mx-auto">Shop page</h1>
         <form
           className="search-area"
           onSubmit={(event) => {
@@ -98,7 +98,7 @@ export default function Shop() {
           </Button>
         </form>
 
-        <div className="products">
+        <div className="products mt-1">
           {searchedProducts.length > 0 ? (
             searchedProducts.map((product: ProductType) => {
               return ProductCard({

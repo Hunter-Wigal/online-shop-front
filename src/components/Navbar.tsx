@@ -175,16 +175,15 @@ export default function Navbar(props: {
             </IconButton>
 
             <div className="side-buttons">
-              <IconButton
-                size="large"
-                onClick={() => {
-                  return navigate("/checkout");
-                }}
-              >
-                <Badge badgeContent={cart.length} color="secondary">
-                  <ShoppingCartOutlined fontSize="large" />
-                </Badge>
-              </IconButton>
+              {!admin ?
+                <IconButton size="large" onClick={() => {return navigate("/checkout");}}>
+                  <Badge badgeContent={cart.length} color="secondary">
+                    <ShoppingCartOutlined fontSize="large" />
+                  </Badge>
+                </IconButton>
+                : <></>
+              }
+
               {account}
             </div>
             

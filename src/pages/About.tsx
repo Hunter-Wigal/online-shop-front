@@ -1,9 +1,7 @@
-import "../styles/about.scss";
-
 export default function About() {
   return (
     <>
-      <div className="content">
+      <div>
         <h1 className="col-center">About the Company/Organization/Shop</h1>
         <p>
           Lorem ipsum odor amet, consectetuer adipiscing elit. Duis molestie

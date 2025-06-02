@@ -44,13 +44,15 @@ export async function getTransactions(): Promise<Array<Transaction> | null>{
     // Assume jwt is available because admin is required for this page
     return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/orders`, {headers: {
         "Content-Type": "application/json",
-        // Authorization: "Bearer " + localStorage["jwt"],
+        Authorization: "Bearer " + localStorage["jwt"],
       },
       method: "GET",
       // body: JSON.stringify({ username: username}),
     }).then(async (transactionsRecieved)=>{
         const json = await transactionsRecieved.json()
         return json;
+    }).catch((err)=>{
+      console.log("SOme err", err)
     })
 }
 

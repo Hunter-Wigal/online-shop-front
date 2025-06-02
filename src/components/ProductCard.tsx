@@ -1,21 +1,11 @@
 'use client';
 import CardContent from "@mui/material/CardContent";
 import Card from "@mui/material/Card";
-import "../styles/product.scss";
 import Button from "@mui/material/Button";
 import Skeleton from "@mui/material/Skeleton";
 import { NavigateFunction } from "react-router-dom";
 import { ReactElement, ReactEventHandler } from "react";
 const isClient = typeof window !== 'undefined';
-
-{
-  /* <img
-src={product.image_url}
-alt={`A picture of ${product.item_name}`}
-style={{"display": "hidden"}}
-onLoad={imgLoadedCallback}
-/> */
-}
 
 export interface ProductType {
   product_id: number;
@@ -93,7 +83,7 @@ export default function ProductCard(props: {
       sx={{ minWidth: "400px", minHeight: "200px" }}
     >
       <CardContent className="">
-        <h2>{product.item_name}</h2>
+        <h1>{product.item_name}</h1>
         <p>{product.description}</p>
         <img
           src={product.image_url}
