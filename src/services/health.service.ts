@@ -29,5 +29,5 @@ function easyFetch(
 export async function healthCheck(){
     return easyFetch("health", false, "GET").then(async (response)=>{
         return (await response.json()).status == "UP";
-    })
+    }).catch(()=>{return false;})
 }

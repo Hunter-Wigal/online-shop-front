@@ -52,7 +52,7 @@ export async function getTransactions(): Promise<Array<Transaction> | null>{
         const json = await transactionsRecieved.json()
         return json;
     }).catch((err)=>{
-      console.log("SOme err", err)
+      console.log("Some err", err)
     })
 }
 
@@ -65,4 +65,8 @@ export async function getTransaction(transaction_id: number): Promise<Transactio
   return easyFetch(`orders/${transaction_id}`, true, "GET").then((response)=>{
     return response.json();
   });
+}
+
+export async function makeAdmin(username: string){
+  return easyFetch(`auth/make_admin?username=${username}`, true, "post");
 }

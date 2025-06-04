@@ -1,15 +1,14 @@
 import Link from "@mui/material/Link";
 import "../styles/index.scss";
-import AppBar from "@mui/material/AppBar"
-import Badge from "@mui/material/Badge"
-import Button from "@mui/material/Button"
-import IconButton from "@mui/material/IconButton"
+import AppBar from "@mui/material/AppBar";
+import Badge from "@mui/material/Badge";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem"
-
+import MenuItem from "@mui/material/MenuItem";
 
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import {Menu as HamburgerMenu} from "@mui/icons-material";
+import { Menu as HamburgerMenu } from "@mui/icons-material";
 import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
 import StoreOutlined from "@mui/icons-material/StoreOutlined";
 
@@ -28,13 +27,12 @@ import AuthCard from "./AuthCard";
 const fontSize = 20;
 const margin = "0.5%";
 
-
-
 export default function Navbar(props: {
   cart: ProductType[];
   setCart: React.Dispatch<React.SetStateAction<ProductType[]>>;
   setColorMode: React.Dispatch<React.SetStateAction<"light" | "dark">>;
   colorMode: "light" | "dark";
+  serverStatus: boolean;
 }) {
   const navigate = useNavigate();
   const [admin, setAdmin] = useState(false);
@@ -42,9 +40,9 @@ export default function Navbar(props: {
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
-
   function toggleDarkMode() {
-    let newColor: "light" | "dark" = props.colorMode == "dark" ? "light" : "dark";
+    let newColor: "light" | "dark" =
+      props.colorMode == "dark" ? "light" : "dark";
     props.setColorMode(newColor);
   }
 
@@ -62,9 +60,11 @@ export default function Navbar(props: {
     if (!checkJWT()) {
       // navigate("/auth");
     }
-    checkAdmin().then((isAdmin) => {
-      setAdmin(isAdmin);
-    });
+    if (props.serverStatus) {
+      checkAdmin().then((isAdmin) => {
+        setAdmin(isAdmin);
+      });
+    }
   }, []);
 
   let cart = props.cart;
@@ -77,7 +77,6 @@ export default function Navbar(props: {
         color="secondary"
         variant="contained"
         onClick={handleOpenModal}
-        
         sx={{ margin: "auto", marginInline: "10%", height: "auto" }}
       >
         Login
@@ -175,19 +174,28 @@ export default function Navbar(props: {
             </IconButton>
 
             <div className="side-buttons">
-              {!admin ?
-                <IconButton size="large" onClick={() => {return navigate("/checkout");}}>
+              {!admin ? (
+                <IconButton
+                  size="large"
+                  onClick={() => {
+                    return navigate("/checkout");
+                  }}
+                >
                   <Badge badgeContent={cart.length} color="secondary">
                     <ShoppingCartOutlined fontSize="large" />
                   </Badge>
                 </IconButton>
-                : <></>
-              }
+              ) : (
+                <></>
+              )}
 
               {account}
             </div>
-            
-            <AuthCard openModal={openModal} handleCloseModal={handleCloseModal}></AuthCard>
+
+            <AuthCard
+              openModal={openModal}
+              handleCloseModal={handleCloseModal}
+            ></AuthCard>
           </div>
 
           <IconButton className="hamburger" onClick={handleClick}>
@@ -202,7 +210,7 @@ export default function Navbar(props: {
             slotProps={{
               list: {
                 "aria-labelledby": "basic-button",
-              }
+              },
             }}
           >
             <MenuItem onClick={handleClose}>Profile</MenuItem>

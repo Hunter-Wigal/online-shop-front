@@ -83,6 +83,7 @@ function App() {
                 setCart={setCart}
                 setColorMode={setColorMode}
                 colorMode={colorMode}
+                serverStatus={serverStatus}
               />
               {/* Figure out a way to change admin routes to begin with /admin and only allow the admin to access*/}
               <Container>

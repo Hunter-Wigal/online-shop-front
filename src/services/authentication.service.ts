@@ -229,8 +229,8 @@ export async function checkAdmin(): Promise<boolean>{
   return easyFetch("auth/admin_check", true, "GET").then(async (resp)=>{
     let admin: boolean = await resp.json();
     return admin;
-  }).catch((err)=>{
-    console.log("An error has occurred: ", err);
+  }).catch(()=>{
+    // console.log("An error has occurred: ", err);
     return false;
   })
 
