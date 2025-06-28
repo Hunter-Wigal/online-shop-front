@@ -24,7 +24,7 @@ export default function VarModal(props: {title: string, message: string, startSt
 
     return <>
     <BootstrapDialog open={open} onClose={handleClose}>
-      <DialogTitle sx={{ m: 0, p: 2 }}>{props.title}</DialogTitle>
+      <DialogTitle sx={{ m: 0, p: 2, textAlign: "center" }}>{props.title}</DialogTitle>
       <IconButton
           aria-label="close"
           onClick={handleClose}
@@ -37,7 +37,7 @@ export default function VarModal(props: {title: string, message: string, startSt
         >
           <CloseIcon />
         </IconButton>
-      <DialogContent sx={{m: 2}}>
+      <DialogContent sx={{marginBottom: "1rem"}}>
         {props.message}
       </DialogContent>
     </BootstrapDialog>

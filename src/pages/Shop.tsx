@@ -1,7 +1,6 @@
 import "../styles/shop.scss";
 import ProductCard, { ProductType } from "../components/ProductCard";
 import { useEffect, useState } from "react";
-import Button from "@mui/material/Button";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Search } from "@mui/icons-material";
 import { getProducts, productSearch } from "../services/products.service";
@@ -13,6 +12,8 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Skeleton from "@mui/material/Skeleton";
+import { IconButton } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
 
 
 
@@ -54,7 +55,7 @@ export default function Shop() {
 
   return (
     <>
-      <Container className="container">
+      <Container className="container" style={{paddingLeft: 0}}>
         <h1 className="mx-auto">Shop page</h1>
         <form
           className="search-area"
@@ -74,6 +75,7 @@ export default function Shop() {
               id="component-outlined"
               label="Search for Products"
               value={searchText}
+              style={{marginRight: 0}}
               onChange={(event) => {
                 setSearch(event.target.value);
               }}
@@ -84,10 +86,10 @@ export default function Shop() {
               }
             />
           </FormControl>
-          <Button
+          {/* <Button
             type="submit"
             variant="outlined"
-            style={{width: "7rem"}}
+            style={{minWidth: "15%"}}
             onClick={() => {
               search(searchText).then((foundPrducts) => {
                 setSearchedProducts(foundPrducts);
@@ -95,7 +97,10 @@ export default function Shop() {
             }}
           >
             Search
-          </Button>
+          </Button> */}
+          <IconButton color="primary">
+            <SearchIcon></SearchIcon>
+          </IconButton>
         </form>
 
         <div className="products mt-1">
@@ -125,7 +130,7 @@ export default function Shop() {
                 ))}
             </>
           ) : (
-            <h2>Server unavailable</h2>
+            <h2 style={{alignSelf: "center"}}>Server unavailable</h2>
           )}
         </div>
       </Container>

@@ -1,5 +1,5 @@
 .search-area{
-    width: 50%;
+    width: 75%;
     margin: auto;
     position: relative;
     display: grid;
@@ -41,7 +41,7 @@
 
     .search-area{
         width: 90%;
-        grid-template-columns: 85% 15%;
+        font-size: 14px;
     }
 }
 
@@ -55,6 +55,7 @@
 
     .search-area{
         width: 100%;
-        grid-template-columns: 75% 25%;
+
+        font-size: 12px !important;
     }
 }

@@ -29,7 +29,7 @@ export default function AuthTabs() {
     <Box sx={{ width: "100%", typography: "body1" }}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
+          <TabList onChange={handleChange} aria-label="lab API tabs example" sx={{paddingInline: "7.5%"}}>
             <Tab style={{fontSize: "1.25rem"}} label="Login" value="1" />
             <Tab style={{fontSize: "1.25rem"}} label="Register" value="2" />
             {/* <Tab label="Item Three" value="3" /> */}
@@ -52,7 +52,7 @@ function StyledInput(props: {
   return (
     <TextField
       fullWidth
-      sx={{ marginBottom: "5% !important" }}
+      sx={{ marginBottom: "5% !important", width: "90%" }}
       id="outlined-basic"
       type={props.type}
       label={props.label}

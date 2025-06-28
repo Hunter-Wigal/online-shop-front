@@ -70,6 +70,15 @@ function App() {
       },
       warning: { main: "#ff0000" },
     },
+    components: {
+      MuiContainer:{
+        styleOverrides: {
+          root:{
+            height: "100%"
+          }
+        }
+      }
+    }
   });
 
   return (

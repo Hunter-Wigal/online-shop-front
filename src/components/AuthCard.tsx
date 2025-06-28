@@ -7,7 +7,6 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: "50%",
   minHeight: "60%",
   bgcolor: 'background.paper',
   border: '2px solid #000',
@@ -25,7 +24,7 @@ export default function AuthCard(props: {openModal: boolean, handleCloseModal: (
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={style} className="auth-card">
           <AuthTabs></AuthTabs>
         </Box>
       </Modal>

@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import AuthCard from "./AuthCard";
+import Divider from "@mui/material/Divider";
 
 const fontSize = 20;
 const margin = "0.5%";
@@ -203,7 +204,6 @@ export default function Navbar(props: {
           </IconButton>
 
           <Menu
-            id="basic-menu"
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
@@ -212,10 +212,14 @@ export default function Navbar(props: {
                 "aria-labelledby": "basic-button",
               },
             }}
+            id="hamburger-menu"
+            children={
+              currUser != null ?
+              [<MenuItem key="1" onClick={handleClose}>My account</MenuItem>, <MenuItem key="2" onClick={()=>{return navigate("/checkout")}}>Cart</MenuItem>, <MenuItem key="3" onClick={handleClose}>Logout</MenuItem>]
+              :
+              [<MenuItem key="1" onClick={handleOpenModal}>Login</MenuItem>, <Divider/>,<MenuItem key="2" onClick={()=>{return navigate("/checkout")}}>Cart</MenuItem>]
+            }
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
           </Menu>
         </div>
       </AppBar>
@@ -239,7 +243,7 @@ export default function Navbar(props: {
             logout(props.setCart);
             toggleAccount();
 
-            // return navigate("/auth");
+            return navigate("/");
           }}
         >
           Logout

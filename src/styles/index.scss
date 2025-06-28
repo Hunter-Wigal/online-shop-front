@@ -39,30 +39,32 @@
   }
 }
 
-.mx-auto{
+.mx-auto {
   margin-inline: auto;
 }
 
-
 html,
-body {
+body,
+#root {
   width: 100%;
-  min-height: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  min-height: 100vh;
   position: absolute;
-  display: block;
+  // display: block;
   margin: 0;
 }
 
 // Home page
-.intro{
-    text-align: center;
-    font-size: 18px;
-    text-wrap: balance;
+.intro {
+  text-align: center;
+  font-size: 18px;
+  text-wrap: balance;
 }
 
 // Navbar
 .links {
-  margin: 0.75%;
+  padding: 0.75%;
   margin-inline: 1.5%;
   display: inline-flex;
   align-items: center;
@@ -79,12 +81,12 @@ body {
   cursor: pointer;
 }
 
-.side-buttons{
+.side-buttons {
   display: flex;
   padding-right: 5%;
 }
 
-.dropdown-container{
+.dropdown-container {
   width: 20%;
   position: absolute;
   right: 0;
@@ -92,8 +94,7 @@ body {
   display: flex;
 }
 
-
-.hamburger{
+.hamburger {
   display: none;
 }
 
@@ -114,14 +115,26 @@ body {
   flex-direction: column;
   z-index: 500;
 
-  button{
+  button {
     display: block;
     width: 100%;
   }
 }
 
-.var-modal{
+#hamburger-menu {
+  li {
+    width: 7.5rem;
+    text-align: center;
+  }
+}
+
+.var-modal {
   width: 50%;
+}
+
+.auth-card {
+  width: 45%;
+  padding-inline: 0;
 }
 
 .container {
@@ -130,10 +143,9 @@ body {
   position: relative;
   width: 100%;
   min-height: 100%;
-  margin: 0 auto;
   box-sizing: border-box;
   justify-content: center;
-  
+
   flex-wrap: wrap;
 }
 
@@ -160,18 +172,17 @@ body {
     justify-content: center;
   }
 
-  &-end{
+  &-end {
     @extend .col;
     justify-content: flex-end;
-
   }
 }
 
-.border{
+.border {
   border: 1px solid black;
 }
 
-.center{
+.center {
   text-align: center;
   justify-content: center;
 }
@@ -182,22 +193,40 @@ body {
 
 @include generate-padding-classes(100);
 
-@media (max-width: 600px){
-  .side-buttons{
+@media (max-width: 1400px) {
+  .auth-card {
+    width: 65%;
+  }
+}
+
+@media (max-width: 800px) {
+  .auth-card {
+    width: 90%;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .side-buttons {
     display: none;
   }
 
-  .dropdown-container{
+  .dropdown-container {
     position: relative;
     margin-right: 0;
     width: 100%;
     padding: 0;
   }
 
-  .hamburger{
+  .hamburger {
     display: block;
     // position: absolute;
     right: 0;
     margin-top: 0.05rem;
+  }
+
+  .nav-link {
+    font-size: 15px;
+    margin-inline: 0.5%;
   }
 }
