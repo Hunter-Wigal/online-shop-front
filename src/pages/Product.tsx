@@ -6,8 +6,7 @@ import "../styles/product.scss";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { CartContext } from "../App";
-import Divider from '@mui/material/Divider';
-
+import Divider from "@mui/material/Divider";
 
 export default function Product() {
   const defaultProduct: ProductType = {
@@ -71,22 +70,23 @@ export default function Product() {
         </div>
         <Divider className="mt-8 mb-2"></Divider>
         <div className="row add-row">
-          
           <div className="col price">Price: ${product.price.toFixed(2)}</div>
-          <div className="col add">
-            <div>
-              <TextField
-                id="outlined-basic"
-                variant="outlined"
-                type="number"
-                value={quantity}
-                onInput={(e) =>
-                  quantitySetter(parseInt((e.target as HTMLInputElement).value))
-                }
-              />
-            </div>
+          <div className="col quantity">
+            <TextField
+              id="outlined-basic"
+              label="Quantity"
+              variant="outlined"
+              type="number"
+              value={quantity}
+              onInput={(e) =>
+                quantitySetter(parseInt((e.target as HTMLInputElement).value))
+              }
+            />
+          </div>
+          <div className="col add-btn">
             <Button
               variant="contained"
+              sx={{minWidth: "5rem"}}
               onClick={() => {
                 product.quantity = quantity;
                 addToCart(context, product);

@@ -88,7 +88,7 @@ export default function ProductCard(props: {
         <img
           src={product.image_url}
           alt={`A picture of ${product.item_name}`}
-          style={{ display: "none" }}
+          style={{ display: "none", maxWidth: "90%" }}
           onLoad={imgLoadedCallback}
           id={product.image_url + "-image"}
           loading="eager"

@@ -36,6 +36,8 @@
 
         .card{
             flex: 40%;
+            max-width: 50%;
+            margin-top: 4%;
         }
     }
 
@@ -50,6 +52,7 @@
 
         .card{
             flex: 60%;
+            max-width: 90%;
         }
     }
 

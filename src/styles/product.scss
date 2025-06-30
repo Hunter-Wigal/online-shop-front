@@ -1,24 +1,31 @@
 .img-blank,
-  img {
-    min-width: 100px;
-    min-height: 100px;
-    background-color: black;
-  }
-
+img {
+  min-width: 100px;
+  min-height: 100px;
+  background-color: black;
+}
 
 .add-row {
   width: 75%;
   margin-inline: auto;
   justify-content: space-between;
 
-  .price{
+  .price {
     margin-left: 4%;
+    align-self: center;
   }
 
-  .add{
+  .add {
     width: 40%;
-    justify-content: space-between;
   }
+
+  .add-btn{
+    width: "100%"; 
+  }
+}
+
+.quantity{
+  flex-direction: row;
 }
 
 .card {
@@ -26,15 +33,16 @@
   display: block;
   margin-inline: auto;
 
-  img, .skel-img{
-    margin:auto;
+  img,
+  .skel-img {
+    margin: auto;
   }
 
-  .skel-img{
+  .skel-img {
     min-height: 300px;
   }
 
-  .buttons{
+  .buttons {
     display: flex;
     flex-direction: column;
     width: 60%;
@@ -48,29 +56,64 @@
   width: 75%;
   margin-inline: auto;
 
-  .img{
-    width: 30%
+  .img {
+    width: 30%;
   }
 
-  .description{
+  .description {
     width: 60%;
     border-width: 1px;
     border-radius: 5px;
     border-style: solid;
     align-items: center;
 
-    p{
+    p {
       padding: 10px;
     }
   }
-
-
 }
 
-.close-button{
+.close-button {
   position: fixed !important;
   right: 0;
   top: 0;
   text-align: center;
+}
 
+@media (max-width: 1000px) {
+  .product-content {
+    flex-direction: column;
+
+    .img {
+      width: 100%;
+    }
+
+    .description {
+      margin-top: 10%;
+      width: 100%;
+    }
+  }
+
+  .add-row{
+    width: 90%;
+    flex-wrap: wrap;
+    flex-direction: row;
+  
+
+    .price{
+      min-width: 50%;
+      margin-bottom: 5%;
+      margin: 0;
+    }
+
+    .quantity{
+      min-width: 40%;
+      justify-content: right;
+    }
+
+    .add-btn{
+      justify-content: center;
+      margin-top: 7%;
+    }
+  }
 }
