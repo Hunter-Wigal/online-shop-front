@@ -22,6 +22,7 @@ import AdminTabs from "./components/AdminTabs.tsx";
 import VarModal from "./components/VarModal.tsx";
 import Container from "@mui/material/Container"
 import CssBaseline from "@mui/material/CssBaseline";
+import Cart from "./pages/Cart.tsx";
 export interface CartContextType {
   cart: ProductType[];
   setCart: React.Dispatch<React.SetStateAction<ProductType[]>>;
@@ -101,6 +102,7 @@ function App() {
                   <Route path="/shop" index element={<Shop />} />
                   <Route path="/account" index element={<Account />} />
                   <Route path="/checkout" index element={<Checkout />} />
+                  <Route path="/cart" index element={<Cart />}/>
                   <Route path="/about" index element={<About />} />
                   <Route path="/item/:id" index element={<Product />} />
                   {/* //TODO ??  */}

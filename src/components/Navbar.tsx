@@ -179,7 +179,7 @@ export default function Navbar(props: {
                 <IconButton
                   size="large"
                   onClick={() => {
-                    return navigate("/checkout");
+                    return navigate("/cart");
                   }}
                 >
                   <Badge badgeContent={cart.length} color="secondary">

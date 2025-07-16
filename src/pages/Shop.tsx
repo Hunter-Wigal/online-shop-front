@@ -1,8 +1,6 @@
 import "../styles/shop.scss";
 import ProductCard, { ProductType } from "../components/ProductCard";
 import { useEffect, useState } from "react";
-import InputAdornment from "@mui/material/InputAdornment";
-import { Search } from "@mui/icons-material";
 import { getProducts, productSearch } from "../services/products.service";
 import { useNavigate } from "react-router-dom";
 import Card from "@mui/material/Card";
@@ -78,12 +76,10 @@ export default function Shop() {
               style={{marginRight: 0}}
               onChange={(event) => {
                 setSearch(event.target.value);
+
+                // * Live search, might need a better way to do this
+                // search(searchText).then((data)=>{setSearchedProducts(data)});
               }}
-              startAdornment={
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              }
             />
           </FormControl>
           {/* <Button
@@ -98,7 +94,7 @@ export default function Shop() {
           >
             Search
           </Button> */}
-          <IconButton color="primary">
+          <IconButton color="primary" className="search-btn" type="submit">
             <SearchIcon></SearchIcon>
           </IconButton>
         </form>
