@@ -4,6 +4,8 @@ import "../styles/account.scss";
 import { checkAdmin, setCurrentUser } from "../services/authentication.service";
 import Button from "@mui/material/Button";
 import { makeAdmin } from "../services/admin.service";
+import { addAddress, getAddress } from '../services/account.service';
+import AddressCard from "../components/AddressCard";
 
 export default function Account() {
   const navigate = useNavigate();
@@ -58,15 +60,20 @@ export default function Account() {
   }, []);
 
   return (
-    <div className="account-display">
-      <h1>Account page</h1>
-      <div className="">{user}</div>
-      <Button variant="outlined" onClick={callMakeAdmin}>
-        Admin
-      </Button>
-      <div>
-        <h1>Previous Orders:</h1>
+    <div>
+      <div className="account-display">
+        <h1>Account page</h1>
+        <div className="">{user}</div>
+        <Button variant="outlined" onClick={callMakeAdmin}>
+          Admin
+        </Button>
+        <Button variant="contained" onClick={addAddress}>Add Address</Button>
+        <Button variant="outlined" onClick={getAddress}>Get Address</Button>
+        <div>
+          <h1>Previous Orders:</h1>
+        </div>
       </div>
+    <AddressCard />
     </div>
   );
 }

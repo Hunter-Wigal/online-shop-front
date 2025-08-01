@@ -87,3 +87,24 @@ export function clearCart() : Promise<Response>{
   let username = JSON.parse(userDetails)['email'];
   return easyFetch(`user/${username}/cart`, true, "DELETE");
 }
+
+export function addAddress(){
+  let userDetails = sessionStorage["user"];
+  if(!userDetails) return new Promise(()=>{let response = Response.error();return response;});
+
+  let username = JSON.parse(userDetails)['email'];
+
+  let body = JSON.stringify({street: "123 Test Street", secondary_street: "", city: "Test City", state: "TS", country: "USA", zip_code: 12345});
+
+  easyFetch(`user/${username}/address`, true, "POST", body).then(async (response)=>{console.log(await response.json())});
+}
+
+export function getAddress(){
+    let userDetails = sessionStorage["user"];
+  if(!userDetails) return new Promise(()=>{let response = Response.error();return response;});
+
+  let username = JSON.parse(userDetails)['email'];
+
+
+  easyFetch(`user/${username}/address`, true, "GET").then(async (response)=>{console.log(await response.json())});
+}

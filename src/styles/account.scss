@@ -4,8 +4,22 @@
     margin: auto;
     text-align: center;
     border: 1px solid black;
-    width: 30%;
-    min-height: 30vh;
+    width: 75%;
     justify-content: center;
 
+}
+
+.address-display{
+    border: 1px solid white;
+    border-radius: 5px;
+    width: 75%;
+    margin: auto;
+    margin-top: 2%;
+}
+
+
+@media (max-width: 1000px) {
+    .account-display{
+        width: 50%;
+    }
 }
