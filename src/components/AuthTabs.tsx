@@ -37,7 +37,6 @@ export default function AuthTabs() {
         </Box>
         <TabPanel value="1" className="forms"><LoginTab  navigate={navigate} context={context}/></TabPanel>
         <TabPanel value="2" className="forms"><RegisterTab navigate={navigate} context={context}/></TabPanel>
-        <TabPanel value="3">Item Three</TabPanel>
       </TabContext>
     </Box>
   );
@@ -105,7 +104,9 @@ function RegisterTab(props: {navigate: NavigateFunction, context: CartContextTyp
             registerPassword,
             props.navigate,
             props.context.setCart
-          )
+          ).then(()=>{
+              
+          })
         }
       >
         <StyledInput
