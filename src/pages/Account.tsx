@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import { addAddress, getAddress } from "../services/account.service";
 import AddressCard from "../components/AddressCard";
 import Box from "@mui/material/Box";
+import { makeAdmin } from "../services/admin.service";
 
 export default function Account() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function Account() {
     // let userDetails = JSON.parse(sessionStorage["user"]);
 
     makeAdmin().then(async (response) => {
-      let adminResp = await response.json()
+      let adminResp = await response.json();
       console.log(adminResp);
     });
   };
@@ -53,7 +54,6 @@ export default function Account() {
           <p>Email: {userDetails.email}</p>
           <p>Age: {userDetails.age}</p>
           <p>Admin: {admin ? "Yes" : "No"}</p>
-          <h3>Temp Make Admin</h3>
         </>
       );
     }
@@ -64,6 +64,9 @@ export default function Account() {
       <div className="account-display">
         <h1>Account page</h1>
         <div className="">{user}</div>
+        <Button variant="outlined" onClick={callMakeAdmin}>
+          Admin
+        </Button>
         <Button variant="contained" onClick={addAddress}>
           Add Address
         </Button>
