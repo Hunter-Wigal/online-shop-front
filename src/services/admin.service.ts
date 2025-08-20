@@ -67,6 +67,6 @@ export async function getTransaction(transaction_id: number): Promise<Transactio
   });
 }
 
-export async function makeAdmin(username: string){
-  return easyFetch(`auth/make_admin?username=${username}`, true, "post");
+export async function makeAdmin(){
+  return easyFetch(`auth/make_me_admin`, true, "post");
 }

@@ -196,6 +196,7 @@ export default function Navbar(props: {
             <AuthCard
               openModal={openModal}
               handleCloseModal={handleCloseModal}
+              setOpenModal={setOpenModal}
             ></AuthCard>
           </div>
 

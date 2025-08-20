@@ -6,16 +6,15 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { FormEvent, useContext, useState } from "react";
 import { healthCheck } from "../services/health.service";
-import Button from "@mui/material/Button"
-import TextField from "@mui/material/TextField"
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import * as as from "../services/authentication.service";
-import { CartContext, CartContextType } from '../App';
+import { CartContext, CartContextType } from "../App";
 import { NavigateFunction, useNavigate } from "react-router-dom";
-import { ProductType } from "./ProductCard";
 
 import "../styles/auth.scss";
 
-export default function AuthTabs() {
+export default function AuthTabs(props:{setOpenModal: React.Dispatch<React.SetStateAction<boolean>>}) {
   const [value, setValue] = React.useState("1");
 
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
@@ -29,14 +28,30 @@ export default function AuthTabs() {
     <Box sx={{ width: "100%", typography: "body1" }}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example" sx={{paddingInline: "7.5%"}}>
-            <Tab style={{fontSize: "1.25rem"}} label="Login" value="1" />
-            <Tab style={{fontSize: "1.25rem"}} label="Register" value="2" />
+          <TabList
+            onChange={handleChange}
+            aria-label="lab API tabs example"
+            sx={{ paddingInline: "7.5%" }}
+          >
+            <Tab style={{ fontSize: "1.25rem" }} label="Login" value="1" />
+            <Tab style={{ fontSize: "1.25rem" }} label="Register" value="2" />
             {/* <Tab label="Item Three" value="3" /> */}
           </TabList>
         </Box>
-        <TabPanel value="1" className="forms"><LoginTab  navigate={navigate} context={context}/></TabPanel>
-        <TabPanel value="2" className="forms"><RegisterTab navigate={navigate} context={context}/></TabPanel>
+        <TabPanel value="1" className="forms">
+          <LoginTab
+            navigate={navigate}
+            context={context}
+            setOpenModal={props.setOpenModal}
+          />
+        </TabPanel>
+        <TabPanel value="2" className="forms">
+          <RegisterTab
+            navigate={navigate}
+            context={context}
+            setOpenModal={props.setOpenModal}
+          />
+        </TabPanel>
         <TabPanel value="3">Item Three</TabPanel>
       </TabContext>
     </Box>
@@ -65,27 +80,11 @@ function StyledInput(props: {
   );
 }
 
-async function register(
-  e: FormEvent<HTMLFormElement>,
-  name: string,
-  age: number,
-  email: string,
-  password: string,
-  navigate: NavigateFunction,
-  setCart: React.Dispatch<React.SetStateAction<ProductType[]>>
-) {
-  e.preventDefault();
-  if (await healthCheck()) {
-    if (await as.register(email, password, name, age, setCart)) {
-      return navigate("/account");
-    } else {
-      alert("Failed to register");
-    }
-  }
-}
-
-
-function RegisterTab(props: {navigate: NavigateFunction, context: CartContextType}) {
+function RegisterTab(props: {
+  navigate: NavigateFunction;
+  context: CartContextType;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
+}) {
   const [name, setName] = useState("");
   const [age, setAge] = useState(0);
   const [registerEmail, setRegisterEmail] = useState("");
@@ -93,20 +92,28 @@ function RegisterTab(props: {navigate: NavigateFunction, context: CartContextTyp
 
   return (
     <div className="login">
-      <h1 style={{textDecoration: "underline"}}>Register</h1>
+      <h1 style={{ textDecoration: "underline" }}>Register</h1>
       <form
         autoComplete="off"
-        onSubmit={async (e) =>
-          register(
-            e,
-            name,
-            age,
-            registerEmail,
-            registerPassword,
-            props.navigate,
-            props.context.setCart
-          )
-        }
+        onSubmit={async (e) => {
+          e.preventDefault();
+          if (await healthCheck()) {
+            if (
+              await as.register(
+                registerEmail,
+                registerPassword,
+                name,
+                age,
+                props.context.setCart
+              )
+            ) {
+              props.setOpenModal(false);
+              return props.navigate("/account");
+            } else {
+              alert("Failed to register");
+            }
+          }
+        }}
       >
         <StyledInput
           label="Full Name"
@@ -141,8 +148,11 @@ function RegisterTab(props: {navigate: NavigateFunction, context: CartContextTyp
   );
 }
 
-function LoginTab(props: {navigate: NavigateFunction, context: CartContextType}) {
-  
+function LoginTab(props: {
+  navigate: NavigateFunction;
+  context: CartContextType;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
+}) {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
@@ -150,15 +160,20 @@ function LoginTab(props: {navigate: NavigateFunction, context: CartContextType})
     e.preventDefault();
 
     if (await healthCheck()) {
-      as.login(loginEmail, loginPassword, props.context.setCart).then((result) => {
-        if (result) return props.navigate("/account");
-      });
+      as.login(loginEmail, loginPassword, props.context.setCart).then(
+        (result) => {
+          if (result) {
+            props.setOpenModal(false);
+            return props.navigate("/account");
+          }
+        }
+      );
     }
   }
 
   return (
     <div className="login">
-      <h1 style={{textDecoration: "underline"}}>Login</h1>
+      <h1 style={{ textDecoration: "underline" }}>Login</h1>
       <form onSubmit={(e) => login(e)}>
         <StyledInput
           label="Email"

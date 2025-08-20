@@ -13,9 +13,9 @@ export default function Account() {
   const [admin, setAdmin] = useState(false);
 
   const callMakeAdmin = () => {
-    let userDetails = JSON.parse(sessionStorage["user"]);
+    // let userDetails = JSON.parse(sessionStorage["user"]);
 
-    makeAdmin(userDetails.email).then(async (response) => {
+    makeAdmin().then(async (response) => {
       let adminResp = await response.json()
       console.log(adminResp);
     });

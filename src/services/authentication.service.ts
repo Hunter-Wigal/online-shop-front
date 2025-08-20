@@ -214,7 +214,6 @@ export function logout(
 
   easyFetch("auth/logout", true, "POST").then((response) => {
     console.log("Successfully logged out");
-    window.location.reload();
     response;
   });
 
