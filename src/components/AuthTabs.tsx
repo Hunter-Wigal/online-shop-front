@@ -14,7 +14,9 @@ import { NavigateFunction, useNavigate } from "react-router-dom";
 
 import "../styles/auth.scss";
 
-export default function AuthTabs(props:{setOpenModal: React.Dispatch<React.SetStateAction<boolean>>}) {
+export default function AuthTabs(props: {
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const [value, setValue] = React.useState("1");
 
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
@@ -63,10 +65,13 @@ function StyledInput(props: {
   value: any;
   setter: Function;
   type: string;
+  validation?: Function;
+  valid: boolean;
 }) {
   return (
     <TextField
       fullWidth
+      error={!props.valid}
       sx={{ marginBottom: "5% !important", width: "90%" }}
       id="outlined-basic"
       type={props.type}
@@ -75,7 +80,9 @@ function StyledInput(props: {
       color="secondary"
       // autoSave="false"
       value={props.value}
-      onInput={(e) => props.setter((e.target as HTMLInputElement).value)}
+      onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+        props.setter(event.target.value);
+      }}
     />
   );
 }
@@ -83,12 +90,18 @@ function StyledInput(props: {
 function RegisterTab(props: {
   navigate: NavigateFunction;
   context: CartContextType;
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [name, setName] = useState("");
   const [age, setAge] = useState(0);
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
+
+  const [nameValid, setNameValid] = useState(true);
+  const [emailValid, setEmailValid] = useState(true);
+  const [passwordValid, setPasswordValid] = useState(true);
+
+
 
   return (
     <div className="login">
@@ -97,6 +110,7 @@ function RegisterTab(props: {
         autoComplete="off"
         onSubmit={async (e) => {
           e.preventDefault();
+          if (!nameValid && !emailValid && !passwordValid) return
           if (await healthCheck()) {
             if (
               await as.register(
@@ -120,19 +134,50 @@ function RegisterTab(props: {
           type="text"
           value={name}
           setter={setName}
+          validation={(value: string) => {
+            if (value.length < 5) {
+              setNameValid(false);
+            }
+          }}
+          valid={nameValid}
         />
-        <StyledInput label="Age" type="number" value={age} setter={setAge} />
+        {/* //TODO remove age input, probably not needed */}
+        <StyledInput
+          label="Age"
+          type="number"
+          value={age}
+          setter={(value: any)=>{
+            if(!isNaN(value)){
+              setAge(value);
+            }
+          }
+            
+            }
+          valid={true}
+        />
         <StyledInput
           label="Email"
           type="text"
           value={registerEmail}
           setter={setRegisterEmail}
+          validation={(value: string) => {
+            if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value))
+              setEmailValid(true);
+            else setEmailValid(false);
+          }}
+          valid={emailValid}
         />
         <StyledInput
           label="Password"
           type="text"
           value={registerPassword}
           setter={setRegisterPassword}
+          valid={passwordValid}
+          validation={(value: string) => {
+            if (value.length < 6){
+              setPasswordValid(false);
+            }
+          }}
         />
 
         <Button
@@ -151,10 +196,13 @@ function RegisterTab(props: {
 function LoginTab(props: {
   navigate: NavigateFunction;
   context: CartContextType;
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+
+  const [emailValid, setEmailValid] = useState(true);
+  const [passwordValid, setPasswordValid] = useState(true);
 
   async function login(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -180,12 +228,26 @@ function LoginTab(props: {
           type="text"
           value={loginEmail}
           setter={setLoginEmail}
+          valid={emailValid}
+          validation={(value: string) => {
+            if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value))
+              setEmailValid(true);
+            else setEmailValid(false);
+          }}
         />
         <StyledInput
           label="Password"
           type="password"
           value={loginPassword}
           setter={setLoginPassword}
+          valid={passwordValid}
+          validation={(value: string) => {
+            if(value.length < 6)
+              setPasswordValid(false);
+            
+              else setPasswordValid(true);
+            }
+          }
         />
 
         <Button
