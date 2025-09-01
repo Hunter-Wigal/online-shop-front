@@ -23,11 +23,15 @@ function easyFetch(
     ? {
         Accept: "application/json, text/plain, */*",
         "Content-Type": "application/json",
+        crossdomain: "true",
+        "Access-Control-Allow-Origin": "*"
       }
     : {
         Accept: "application/json, text/plain, */*",
         "Content-Type": "application/json",
         Authorization: "Bearer " + jwt,
+        "Access-Control-Allow-Origin": "*",
+        crossdomain: "true"
       };
   return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/${url_endpoint}`, {
     method: `${method}`,
@@ -154,7 +158,7 @@ async function updateUser(username: string, age: number, name: string) {
   return easyFetch(
     "user/user",
     true,
-    "PUT",
+    "PATCH",
     JSON.stringify({ email: username, name: name, age: age })
   )
     .then(async (response) => {
