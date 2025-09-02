@@ -18,7 +18,6 @@ function easyFetch(
     ? {
         Accept: "application/json, text/plain, */*",
         "Content-Type": "application/json",
-        crossdomain: "true",
         "Access-Control-Allow-Origin": "*"
       }
     : {
@@ -26,7 +25,6 @@ function easyFetch(
         "Content-Type": "application/json",
         Authorization: "Bearer " + jwt,
         "Access-Control-Allow-Origin": "*",
-        crossdomain: "true"
       };
   return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/${url_endpoint}`, {
     method: `${method}`,

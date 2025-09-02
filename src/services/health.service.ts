@@ -12,8 +12,8 @@ function easyFetch(
     ? {
         Accept: "application/json, text/plain, */*",
         "Content-Type": "application/json",
-        crossdomain: "true",
-        "Access-Control-Allow-Origin": "*"
+        // crossdomain: "true",
+        // "Access-Control-Allow-Origin": "*"
       }
     : {
         Accept: "application/json, text/plain, */*",
@@ -22,7 +22,7 @@ function easyFetch(
         "Access-Control-Allow-Origin": "*",
         crossdomain: "true"
       };
-  return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/${url_endpoint}`, {
+  return fetch(`${import.meta.env.VITE_SERVER_URL}/${url_endpoint}`, {
     method: `${method}`,
     headers: headers,
     body: body,
@@ -30,7 +30,7 @@ function easyFetch(
 }
 
 export async function healthCheck(){
-    return easyFetch("health", false, "GET").then(async (response)=>{
+    return easyFetch("actuator/health", false, "GET").then(async (response)=>{
         return (await response.json()).status == "UP";
     }).catch(()=>{return false;})
 }
