@@ -3,36 +3,7 @@ import { CartContextType } from "../App";
 import { getUserDetails } from "./authentication.service";
 import { sendItemToCart } from "./account.service";
 import { healthCheck } from "./health.service";
-
-// Function meant to eliminate the long fetch calls. May be changed to axios later
-function easyFetch(
-  url_endpoint: string,
-  auth: boolean,
-  method: string,
-  body?: any
-): Promise<Response> {
-  let jwt = localStorage.getItem("jwt");
-  if (!jwt) jwt = "";
-
-  let headers: RequestInit["headers"] = !auth
-    ? {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
-      }
-    : {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + jwt,
-        "Access-Control-Allow-Origin": "*",
-      };
-  return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/${url_endpoint}`, {
-    method: `${method}`,
-    headers: headers,
-    body: body,
-  });
-}
-
+import easyFetch from "../helpers/EasyFetch";
 
 
 // Retrieves all available products
@@ -91,22 +62,19 @@ export function updateQuantity(
   index: number,
   newQuantity: number
 ) {
-
   if (newQuantity < 1) return;
 
-  
   if (context != null) {
     let cart = context.cart;
 
     let product = cart[index];
     product.quantity = newQuantity;
-    
+
     cart[index] = product;
-    
+
     context.setCart(cart);
   }
 }
-
 
 export function removeFromCart(context: CartContextType, index: number) {
   if (context) {
@@ -193,7 +161,13 @@ export function addProduct(product: {
 }
 
 // Updates product info, meant to be utilized by the admin
-export function updateProduct(id: number, name: string, description: string, imageURL: string, price: number) {
+export function updateProduct(
+  id: number,
+  name: string,
+  description: string,
+  imageURL: string,
+  price: number
+) {
   easyFetch(
     `products/${id}`,
     true,
@@ -202,7 +176,7 @@ export function updateProduct(id: number, name: string, description: string, ima
       item_name: name,
       item_description: description,
       imageURL: imageURL,
-      price: price
+      price: price,
     })
   )
     .then((response) => {

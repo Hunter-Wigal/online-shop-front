@@ -1,33 +1,5 @@
 import { ProductType } from "../components/ProductCard";
-
-// Function meant to eliminate the long fetch calls. May be changed to axios later
-function easyFetch(
-  url_endpoint: string,
-  auth: boolean,
-  method: string,
-  body?: any
-): Promise<Response> {
-  let jwt = localStorage.getItem("jwt");
-  if (!jwt) jwt = "";
-
-  let headers: RequestInit["headers"] = !auth
-    ? {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
-      }
-    : {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + jwt,
-        "Access-Control-Allow-Origin": "*",
-      };
-  return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/${url_endpoint}`, {
-    method: `${method}`,
-    headers: headers,
-    body: body,
-  });
-}
+import easyFetch from "../helpers/EasyFetch";
 
 export async function checkCart() {
   let userDetails = sessionStorage["user"];
@@ -38,8 +10,8 @@ export async function checkCart() {
   }
   let username = JSON.parse(userDetails).email;
 
-  return easyFetch(`user/${username}/cart`, true, "GET").then(
-    async (response) => {
+  return easyFetch(`user/cart/${username}`, true, "GET")
+    .then(async (response) => {
       if (!response) return newCart;
 
       let foundCart = await response.json();
@@ -51,10 +23,10 @@ export async function checkCart() {
         newCart.push(product);
       }
       return newCart;
-    }
-  ).catch(()=>{
-    console.log("no items in cart:");
-  });
+    })
+    .catch(() => {
+      console.log("no items in cart:");
+    });
 }
 
 export function sendItemToCart(product: ProductType) {
@@ -67,11 +39,11 @@ export function sendItemToCart(product: ProductType) {
   let username = JSON.parse(userDetails).email;
 
   let body = JSON.stringify({
-    "product_id": product.product_id,
-    "quantity": product.quantity,
+    product_id: product.product_id,
+    quantity: product.quantity,
   });
 
-  easyFetch(`user/${username}/cart`, false, "POST", body)
+  easyFetch(`user/cart/${username}`, true, "POST", body)
     .then(() => {
       // console.log(response);
       window.alert("Item added successfully");
@@ -81,31 +53,55 @@ export function sendItemToCart(product: ProductType) {
     });
 }
 
-export function clearCart() : Promise<Response>{
+export function clearCart(): Promise<Response> {
   let userDetails = sessionStorage["user"];
-  if(!userDetails) return new Promise(()=>{let response = Response.error();return response;});
+  if (!userDetails)
+    return new Promise(() => {
+      let response = Response.error();
+      return response;
+    });
 
-  let username = JSON.parse(userDetails)['email'];
-  return easyFetch(`user/${username}/cart`, true, "DELETE");
+  let username = JSON.parse(userDetails)["email"];
+  return easyFetch(`user/cart/${username}`, true, "DELETE");
 }
 
-export function addAddress(){
+export function addAddress() {
   let userDetails = sessionStorage["user"];
-  if(!userDetails) return new Promise(()=>{let response = Response.error();return response;});
+  if (!userDetails)
+    return new Promise(() => {
+      let response = Response.error();
+      return response;
+    });
 
-  let username = JSON.parse(userDetails)['email'];
+  let username = JSON.parse(userDetails)["email"];
 
-  let body = JSON.stringify({street: "123 Test Street", secondary_street: "", city: "Test City", state: "TS", country: "USA", zip_code: 12345});
+  let body = JSON.stringify({
+    street: "123 Test Street",
+    secondary_street: "",
+    city: "Test City",
+    state: "TS",
+    country: "USA",
+    zip_code: 12345,
+  });
 
-  easyFetch(`user/${username}/address`, true, "POST", body).then(async (response)=>{console.log(await response.json())});
+  easyFetch(`user/address/${username}`, true, "POST", body).then(
+    async (response) => {
+      console.log(await response.json());
+    }
+  );
 }
 
-export function getAddress(){
-    let userDetails = sessionStorage["user"];
-  if(!userDetails) return new Promise(()=>{let response = Response.error();return response;});
+export function getAddress() {
+  let userDetails = sessionStorage["user"];
+  if (!userDetails)
+    return new Promise(() => {
+      let response = Response.error();
+      return response;
+    });
 
-  let username = JSON.parse(userDetails)['email'];
+  let username = JSON.parse(userDetails)["email"];
 
-
-  easyFetch(`user/${username}/address`, true, "GET").then(async (response)=>{console.log(await response.json())});
+  easyFetch(`user/address/${username}`, true, "GET").then(async (response) => {
+    console.log(await response.json());
+  });
 }

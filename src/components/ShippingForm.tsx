@@ -2,6 +2,8 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { SxProps, Theme } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import { ChangeEventHandler, useState } from "react";
+import AddressCard from "./AddressCard";
+import Box from "@mui/material/Box";
 
 function StyledAutocomplete(props: {
   label: string;
@@ -82,15 +84,14 @@ export default function ShippingForm(props: {
   ) => {
     stateUpdate(newState);
   };
-
-  function finalValidation (){
+  setAddressValid(true);
+  function finalValidation() {
     if (
       !nameValid ||
       shippingInputs.name.length < 1 ||
       !emailValid ||
       shippingInputs.email.length < 1 ||
       !addressValid ||
-      shippingInputs.address.length < 1 ||
       !phoneValid ||
       shippingInputs.phoneNumber.length < 9
     ) {
@@ -120,25 +121,6 @@ export default function ShippingForm(props: {
             validCheck(setNameValid, true);
           }
         }}
-      ></StyledAutocomplete>
-      <StyledAutocomplete
-        label="Address"
-        validate={(event) => {
-          let address = event.target.value;
-          let newInputs = shippingInputs;
-          newInputs.address = event.target.value;
-          setShippingInputs(newInputs);
-
-          // TODO add actual address validation
-          if (address.length > 0 && address.length < 7) {
-            validCheck(setAddressValid, false);
-          } else {
-            validCheck(setAddressValid, true);
-          }
-        }}
-        error={addressValid}
-        required={true}
-        helperText={"Please enter your address"}
       ></StyledAutocomplete>
       <StyledAutocomplete
         label="Email"
@@ -177,6 +159,10 @@ export default function ShippingForm(props: {
         required={true}
         helperText={"Please enter your phone number without dashes or spaces"}
       ></StyledAutocomplete>
+
+      <Box sx={{ marginTop: "2%", width: "75%" }}>
+        <AddressCard />
+      </Box>
     </div>
   );
 }

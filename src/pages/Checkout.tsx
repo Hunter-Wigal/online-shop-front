@@ -2,7 +2,6 @@ import Button from "@mui/material/Button";
 import { useContext, useState } from "react";
 import "../styles/checkout.scss";
 import ShippingForm from "../components/ShippingForm";
-import PaymentForm from "../components/PaymentForm";
 import { CartContext } from "../App";
 import { buyProducts } from "../services/products.service";
 import { clearCart } from "../services/account.service";
@@ -61,14 +60,13 @@ export default function Checkout() {
         <div className="row mt-3">
           <div className="col" style={{ display: "block" }}>
             <h2>Delivery Details</h2>
-            {/* // TODO find a better way of implementing this */}
             <ShippingForm setShippingVal={setShippingVal}/>
           </div>
         </div>
         <div className="row mt-3">
           <div className="col" style={{ display: "block" }}>
             <h2>Payment Info</h2>
-            <PaymentForm />
+            {/* <PaymentForm /> */}
           </div>
         </div>
         <div className="row">

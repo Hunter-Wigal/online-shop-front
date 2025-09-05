@@ -1,4 +1,5 @@
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box"
 import { useContext, useState } from "react";
 import "../styles/checkout.scss";
 import { CartContext } from "../App";
@@ -36,6 +37,8 @@ export default function Cart() {
     });
   }
 
+  let border = cart.length > 0 ?{border: "2px solid", borderColor:"primary.main", borderRadius: "5px"} : {};
+
   return (
     <>
       <div className="container checkout">
@@ -44,7 +47,7 @@ export default function Cart() {
         <div className="row">
           <div className="col-start cart">
             <h2>Cart</h2>
-            <div>
+            <Box sx={border}>
               {cart.length < 1 ? (
                 <h3 className="warning">No items placed in cart</h3>
               ) : (
@@ -59,7 +62,7 @@ export default function Cart() {
                   );
                 })
               )}
-            </div>
+            </Box>
           </div>
         </div>
         <div className="row">

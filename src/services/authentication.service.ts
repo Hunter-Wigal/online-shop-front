@@ -1,41 +1,13 @@
 import { jwtDecode } from "jwt-decode";
 import { checkCart } from "./account.service";
 import { ProductType } from "../components/ProductCard";
+import easyFetch from "../helpers/EasyFetch";
 
 export interface User {
   username: string;
   full_name: string;
   sessionID: string;
   sessionExp: Date;
-}
-
-// Function meant to eliminate the long fetch calls. May be changed to axios later
-function easyFetch(
-  url_endpoint: string,
-  auth: boolean,
-  method: string,
-  body?: any
-): Promise<Response> {
-  let jwt = localStorage.getItem("jwt");
-  if (!jwt) jwt = "";
-
-  let headers: RequestInit["headers"] = !auth
-    ? {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
-      }
-    : {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + jwt,
-        "Access-Control-Allow-Origin": "*",
-      };
-  return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/${url_endpoint}`, {
-    method: `${method}`,
-    headers: headers,
-    body: body,
-  });
 }
 
 export async function login(
@@ -55,7 +27,6 @@ export async function login(
   )
     .then(async (response) => {
       let result = await response.json();
-
       let token = result.accessToken;
 
       if (!token) {
@@ -69,14 +40,15 @@ export async function login(
 
       await setCurrentUser(username);
 
+      easyFetch("auth/csrf", true, "GET");
       checkCart().then((response) => {
-        if(response)
-        setCart(response);
+        if (response) setCart(response);
       });
       return true;
     })
-    .catch((err) => {
-      console.log(err);
+    .catch(async (err) => {
+      let result = await err.json();
+      console.log(result);
       return false;
     });
 }
@@ -220,19 +192,19 @@ export function logout(
   });
 
   checkCart().then((response) => {
-    if(response)
-    return setCart(response);
+    if (response) return setCart(response);
     else return null;
   });
 }
 
-export async function checkAdmin(): Promise<boolean>{
-  return easyFetch("auth/admin_check", true, "GET").then(async (resp)=>{
-    let admin: boolean = await resp.json();
-    return admin;
-  }).catch(()=>{
-    // console.log("An error has occurred: ", err);
-    return false;
-  })
-
+export async function checkAdmin(): Promise<boolean> {
+  return easyFetch("auth/admin_check", true, "GET")
+    .then(async (resp) => {
+      let admin: boolean = await resp.json();
+      return admin;
+    })
+    .catch(() => {
+      // console.log("An error has occurred: ", err);
+      return false;
+    });
 }

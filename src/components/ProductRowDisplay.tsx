@@ -4,6 +4,7 @@ import { removeFromCart, updateQuantity } from "../services/products.service";
 import { CartContextType } from "../App";
 import Button from "@mui/material/Button";
 import { useState } from "react";
+import Box  from "@mui/material/Box";
 
 export default function ProductRow(props: {product: ProductType, index: number, context: CartContextType}){
     const {product, index, context} = props;
@@ -11,7 +12,7 @@ export default function ProductRow(props: {product: ProductType, index: number, 
     const [quantity, setQuantity] = useState(product.quantity);
 
     return (
-        <div
+        <Box
           className="row mb-1 product p-1"
           key={product.product_id}
         >
@@ -26,12 +27,13 @@ export default function ProductRow(props: {product: ProductType, index: number, 
             Price: ${product.price.toFixed(2)}
           </div>
           <div className="col-end">
-              <span className="mr-1" style={{ alignContent: "center" }}>
+              <span className="mr-5" style={{ alignContent: "center" }}>
                 Quantity:
               </span>
               <TextField
                 value={quantity}
-                sx={{minWidth: '30%', maxWidth: '40%'}}
+                disabled={true}
+                sx={{minWidth: '40%', maxWidth: '50%'}}
                 type="number"
                 onChange={(event) =>{
                   updateQuantity(
@@ -57,6 +59,6 @@ export default function ProductRow(props: {product: ProductType, index: number, 
             >
               Remove
             </Button>
-        </div>
+        </Box>
       );
 }
