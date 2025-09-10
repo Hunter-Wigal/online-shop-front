@@ -40,7 +40,7 @@ export async function login(
 
       await setCurrentUser(username);
 
-      easyFetch("auth/csrf", true, "GET");
+      // await easyFetch("auth/csrf", true, "POST");
       checkCart().then((response) => {
         if (response) setCart(response);
       });
@@ -180,20 +180,15 @@ export async function checkJWT() {
   return true;
 }
 
-export function logout(
+export async function logout(
   setCart: React.Dispatch<React.SetStateAction<ProductType[]>>
 ) {
-  localStorage.removeItem("jwt");
-  sessionStorage.removeItem("user");
-
-  easyFetch("auth/logout", true, "POST").then((response) => {
+  return easyFetch("auth/logout", false, "POST").then((response) => {
     console.log("Successfully logged out");
     response;
-  });
-
-  checkCart().then((response) => {
-    if (response) return setCart(response);
-    else return null;
+    localStorage.removeItem("jwt");
+    sessionStorage.removeItem("user");
+    setCart([]);
   });
 }
 

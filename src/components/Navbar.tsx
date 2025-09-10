@@ -241,8 +241,8 @@ export default function Navbar(props: {
           color="error"
           variant="contained"
           onClick={() => {
-            logout(props.setCart);
-            toggleAccount();
+            logout(props.setCart).then(()=>{toggleAccount();});
+            
 
             return navigate("/");
           }}

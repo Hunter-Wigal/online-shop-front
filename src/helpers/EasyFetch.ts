@@ -21,16 +21,23 @@ export default async function easyFetch(
         "Access-Control-Allow-Origin": "*",
       };
 
-  let csrfToken = getCookie("XSRF-TOKEN");
+  let csrfToken = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("XSRF-TOKEN="))
+    ?.split("=")[1]; //getCookie("XSRF-TOKEN");
 
-  // if (csrfToken == "") {
-  //    let response = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/csrf`, {headers: headers});
+  if (csrfToken == undefined) {
+    await fetch(
+      `${import.meta.env.VITE_SERVER_URL}/api/v1/auth/csrf`,
+      { headers: headers, method: "POST", credentials: "include" }
+    );
+    csrfToken = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("XSRF-TOKEN="))
+    ?.split("=")[1];
+  }
 
-  //   csrfToken = (await response.json())['token'];
-  //   // document.cookie = "XSRF-TOKEN=" + csrfToken + ";";
-  // }
-
-  headers["X-XSRF-TOKEN"] = csrfToken;
+  headers["X-XSRF-TOKEN"] = csrfToken!;
 
   return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/${url_endpoint}`, {
     method: `${method}`,
@@ -40,14 +47,14 @@ export default async function easyFetch(
   });
 }
 
-function getCookie(name: string): string {
-  let cookies = document.cookie.split("; ");
-  for (let cookie of cookies) {
-    let cookieVal = cookie.split("=");
-    if (cookieVal[0] == name) {
-      return cookieVal[1];
-    }
-  }
+// function getCookie(name: string): string {
+//   let cookies = document.cookie.split("; ");
+//   for (let cookie of cookies) {
+//     let cookieVal = cookie.split("=");
+//     if (cookieVal[0] == name) {
+//       return cookieVal[1];
+//     }
+//   }
 
-  return "";
-}
+//   return "";
+// }

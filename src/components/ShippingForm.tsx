@@ -84,8 +84,9 @@ export default function ShippingForm(props: {
   ) => {
     stateUpdate(newState);
   };
-  setAddressValid(true);
+  // setAddressValid(true);
   function finalValidation() {
+    setAddressValid(true);
     if (
       !nameValid ||
       shippingInputs.name.length < 1 ||

@@ -226,5 +226,5 @@ export function buyProducts(cart: ProductType[]) {
   if (details) username = details.sub;
   orders.user_email = username;
 
-  return easyFetch("orders", false, "POST", JSON.stringify(orders));
+  return easyFetch("orders", true, "POST", JSON.stringify(orders));
 }
