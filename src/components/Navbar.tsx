@@ -31,12 +31,14 @@ const margin = "0.5%";
 export default function Navbar(props: {
   cart: ProductType[];
   setCart: React.Dispatch<React.SetStateAction<ProductType[]>>;
+  admin: boolean;
+  setAdmin: React.Dispatch<React.SetStateAction<boolean>>;
   setColorMode: React.Dispatch<React.SetStateAction<"light" | "dark">>;
   colorMode: "light" | "dark";
   serverStatus: boolean;
 }) {
   const navigate = useNavigate();
-  const [admin, setAdmin] = useState(false);
+  const [admin, setAdmin] = [props.admin, props.setAdmin];
   const [openModal, setOpenModal] = useState(false);
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
@@ -47,14 +49,21 @@ export default function Navbar(props: {
     props.setColorMode(newColor);
   }
 
+
   function toggleAccount() {
     const dropdown = document.getElementById("account-dropdown");
 
     if (dropdown) {
-      dropdown.style.display =
-        dropdown.style.display == "none" || dropdown.style.display == ""
-          ? "flex"
-          : "none";
+      if (dropdown.style.display == "none" || dropdown.style.display == "") {
+        
+        // Close dropdown after 5 seconds
+        // let timeout = new Promise((resolve => setTimeout(resolve, 3000)));
+        // timeout.then(()=>{toggleAccount()});
+        dropdown.style.display = "flex";
+
+      } else if (dropdown.style.display == "flex") {
+        dropdown.style.display = "none";
+      }
     }
   }
   useEffect(() => {
@@ -215,13 +224,39 @@ export default function Navbar(props: {
             }}
             id="hamburger-menu"
             children={
-              currUser != null ?
-              [<MenuItem key="1" onClick={handleClose}>My account</MenuItem>, <MenuItem key="2" onClick={()=>{return navigate("/checkout")}}>Cart</MenuItem>, <MenuItem key="3" onClick={handleClose}>Logout</MenuItem>]
-              :
-              [<MenuItem key="1" onClick={handleOpenModal}>Login</MenuItem>, <Divider/>,<MenuItem key="2" onClick={()=>{return navigate("/checkout")}}>Cart</MenuItem>]
+              currUser != null
+                ? [
+                    <MenuItem key="1" onClick={handleClose}>
+                      My account
+                    </MenuItem>,
+                    <MenuItem
+                      key="2"
+                      onClick={() => {
+                        return navigate("/checkout");
+                      }}
+                    >
+                      Cart
+                    </MenuItem>,
+                    <MenuItem key="3" onClick={handleClose}>
+                      Logout
+                    </MenuItem>,
+                  ]
+                : [
+                    <MenuItem key="1" onClick={handleOpenModal}>
+                      Login
+                    </MenuItem>,
+                    <Divider />,
+                    <MenuItem
+                      key="2"
+                      onClick={() => {
+                        return navigate("/checkout");
+                      }}
+                    >
+                      Cart
+                    </MenuItem>,
+                  ]
             }
-          >
-          </Menu>
+          ></Menu>
         </div>
       </AppBar>
       <div className="account-dropdown mt-1" id="account-dropdown">
@@ -241,9 +276,10 @@ export default function Navbar(props: {
           color="error"
           variant="contained"
           onClick={() => {
-            logout(props.setCart).then(()=>{toggleAccount();});
-            
-
+            logout(props.setCart).then(() => {
+              toggleAccount();
+            });
+            props.setAdmin(false);
             return navigate("/");
           }}
         >

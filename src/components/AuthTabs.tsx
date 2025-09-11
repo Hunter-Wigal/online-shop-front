@@ -9,7 +9,7 @@ import { healthCheck } from "../services/health.service";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import * as as from "../services/authentication.service";
-import { CartContext, CartContextType } from "../App";
+import { AdminContext, AdminContextType, CartContext, CartContextType } from "../App";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 
 import "../styles/auth.scss";
@@ -24,7 +24,8 @@ export default function AuthTabs(props: {
   };
 
   let navigate = useNavigate();
-  let context = useContext(CartContext);
+  let cartContext = useContext(CartContext);
+  let adminContext = useContext(AdminContext);
 
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
@@ -43,14 +44,16 @@ export default function AuthTabs(props: {
         <TabPanel value="1" className="forms">
           <LoginTab
             navigate={navigate}
-            context={context}
+            context={cartContext}
+            adminContext={adminContext}
             setOpenModal={props.setOpenModal}
           />
         </TabPanel>
         <TabPanel value="2" className="forms">
           <RegisterTab
             navigate={navigate}
-            context={context}
+            context={cartContext}
+            adminContext={adminContext}
             setOpenModal={props.setOpenModal}
           />
         </TabPanel>
@@ -90,6 +93,7 @@ function StyledInput(props: {
 function RegisterTab(props: {
   navigate: NavigateFunction;
   context: CartContextType;
+  adminContext: AdminContextType
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [name, setName] = useState("");
@@ -196,6 +200,7 @@ function RegisterTab(props: {
 function LoginTab(props: {
   navigate: NavigateFunction;
   context: CartContextType;
+  adminContext: AdminContextType
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [loginEmail, setLoginEmail] = useState("");
@@ -212,7 +217,11 @@ function LoginTab(props: {
         (result) => {
           if (result) {
             props.setOpenModal(false);
-            return props.navigate("/account");
+            as.checkAdmin().then((admin)=>{
+              props.adminContext.setAdmin(admin);
+              if (admin) return props.navigate("/admin");
+              else return props.navigate("/account");
+            })
           }
         }
       );

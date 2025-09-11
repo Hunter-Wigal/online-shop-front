@@ -87,17 +87,17 @@ export default function ShippingForm(props: {
   // setAddressValid(true);
   function finalValidation() {
     setAddressValid(true);
-    if (
-      !nameValid ||
-      shippingInputs.name.length < 1 ||
-      !emailValid ||
-      shippingInputs.email.length < 1 ||
-      !addressValid ||
-      !phoneValid ||
-      shippingInputs.phoneNumber.length < 9
-    ) {
-      return false;
-    }
+    // if (
+    //   !nameValid ||
+    //   shippingInputs.name.length < 1 ||
+    //   !emailValid ||
+    //   shippingInputs.email.length < 1 ||
+    //   !addressValid ||
+    //   !phoneValid ||
+    //   shippingInputs.phoneNumber.length < 9
+    // ) {
+    //   return false;
+    // }
     return true;
   }
 

@@ -20,12 +20,17 @@ import { NewProduct } from "./pages/NewProduct";
 import TransactionPage from "./pages/ViewTransaction.tsx";
 import AdminTabs from "./components/AdminTabs.tsx";
 import VarModal from "./components/VarModal.tsx";
-import Container from "@mui/material/Container"
+import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Cart from "./pages/Cart.tsx";
 export interface CartContextType {
   cart: ProductType[];
   setCart: React.Dispatch<React.SetStateAction<ProductType[]>>;
+}
+
+export interface AdminContextType {
+  admin: boolean;
+  setAdmin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const context: CartContextType = {
@@ -36,10 +41,20 @@ const context: CartContextType = {
   },
 };
 
+const adminContext: AdminContextType = {
+  admin: false,
+  setAdmin: function (value: SetStateAction<boolean>): void {
+    value;
+    throw new Error("Function not implemented.");
+  },
+};
+
 export const CartContext = createContext<CartContextType>(context);
+export const AdminContext = createContext<AdminContextType>(adminContext);
 
 function App() {
   const [cart, setCart] = useState(Array<ProductType>());
+  const [admin, setAdmin] = useState(false);
   const [serverStatus, setServerStatus] = useState(true);
   const [colorMode, setColorMode] = useState<"light" | "dark">("dark");
 
@@ -72,14 +87,14 @@ function App() {
       warning: { main: "#ff0000" },
     },
     components: {
-      MuiContainer:{
+      MuiContainer: {
         styleOverrides: {
-          root:{
-            height: "100%"
-          }
-        }
-      }
-    }
+          root: {
+            height: "100%",
+          },
+        },
+      },
+    },
   });
 
   return (
@@ -87,46 +102,50 @@ function App() {
       <Router>
         <ThemeProvider theme={theme}>
           <CssBaseline>
-            <CartContext.Provider value={{ cart: cart, setCart: setCart }}>
-              <Navbar
-                cart={cart}
-                setCart={setCart}
-                setColorMode={setColorMode}
-                colorMode={colorMode}
-                serverStatus={serverStatus}
-              />
-              {/* Figure out a way to change admin routes to begin with /admin and only allow the admin to access*/}
-              <Container>
-                <Routes>
-                  <Route path="/" index element={<Home />} />
-                  <Route path="/shop" index element={<Shop />} />
-                  <Route path="/account" index element={<Account />} />
-                  <Route path="/checkout" index element={<Checkout />} />
-                  <Route path="/cart" index element={<Cart />}/>
-                  <Route path="/about" index element={<About />} />
-                  <Route path="/item/:id" index element={<Product />} />
-                  {/* //TODO ??  */}
+            <AdminContext.Provider value={{admin: admin, setAdmin: setAdmin}}>
+              <CartContext.Provider value={{ cart: cart, setCart: setCart }}>
+                <Navbar
+                  cart={cart}
+                  setCart={setCart}
+                  admin={admin}
+                  setAdmin={setAdmin}
+                  setColorMode={setColorMode}
+                  colorMode={colorMode}
+                  serverStatus={serverStatus}
+                />
+                {/* Figure out a way to change admin routes to begin with /admin and only allow the admin to access*/}
+                <Container>
+                  <Routes>
+                    <Route path="/" index element={<Home />} />
+                    <Route path="/shop" index element={<Shop />} />
+                    <Route path="/account" index element={<Account />} />
+                    <Route path="/checkout" index element={<Checkout />} />
+                    <Route path="/cart" index element={<Cart />} />
+                    <Route path="/about" index element={<About />} />
+                    <Route path="/item/:id" index element={<Product />} />
+                    {/* //TODO ??  */}
 
-                  <Route path="404" index element={<NotFound />} />
-                  <Route path="admin" element={<Admin />}>
-                    <Route path="" element={<AdminTabs />} />
-                    <Route path="edit/:id" element={<EditProduct />} />
-                    <Route path="new-product" element={<NewProduct />} />
-                    <Route
-                      path="transaction/:id"
-                      element={<TransactionPage />}
-                    />
-                  </Route>
-                </Routes>
-              </Container>
-              {!serverStatus ? (
-                <VarModal
-                  title="Server Offline"
-                  message="The shop server is currently offline, so all resources are unavailable. Please check back later"
-                  startState={true}
-                ></VarModal>
-              ) : null}
-            </CartContext.Provider>
+                    <Route path="404" index element={<NotFound />} />
+                    <Route path="admin" element={<Admin />}>
+                      <Route path="" element={<AdminTabs />} />
+                      <Route path="edit/:id" element={<EditProduct />} />
+                      <Route path="new-product" element={<NewProduct />} />
+                      <Route
+                        path="transaction/:id"
+                        element={<TransactionPage />}
+                      />
+                    </Route>
+                  </Routes>
+                </Container>
+                {!serverStatus ? (
+                  <VarModal
+                    title="Server Offline"
+                    message="The shop server is currently offline, so all resources are unavailable. Please check back later"
+                    startState={true}
+                  ></VarModal>
+                ) : null}
+              </CartContext.Provider>
+            </AdminContext.Provider>
           </CssBaseline>
         </ThemeProvider>
       </Router>
