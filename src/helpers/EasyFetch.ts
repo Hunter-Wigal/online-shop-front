@@ -39,7 +39,6 @@ export default async function easyFetch(
 
   headers["X-XSRF-TOKEN"] = csrfToken!;
 
-  console.log(body);
   return fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1/${url_endpoint}`, {
     method: `${method}`,
     headers: headers,

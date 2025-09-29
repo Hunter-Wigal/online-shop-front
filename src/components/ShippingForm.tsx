@@ -71,6 +71,7 @@ export default function ShippingForm(props: {
   const [emailValid, setEmailValid] = useState(true);
   const [nameValid, setNameValid] = useState(true);
   const [addressValid, setAddressValid] = useState(true);
+  addressValid
   const [phoneValid, setPhoneValid] = useState(true);
   /**
    * Calls form valid handler from checkout page and calls passed statehandler with new value

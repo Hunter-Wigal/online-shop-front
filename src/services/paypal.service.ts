@@ -31,13 +31,19 @@ export async function createPaypalOrder(cart: ProductType[]) {
         for (let item of cart){
             newCart.push({product_id: item.product_id, quantity: item.quantity})
         }
-
-        const response = await easyFetch("orders/paypal/createorder", true, "POST", JSON.stringify(
+        let user = sessionStorage.getItem("user");
+        if(!user){ console.log("can't find email")
+            return "";
+        };
+        let userObject = JSON.parse(user);
+        let email = userObject ? userObject['email'] : 'invalid'
+        const response = await easyFetch(`orders/paypal/createorder/${email}`, true, "POST", JSON.stringify(
                 newCart,
             ));
         // response.json().then((resp)=>{console.log(resp)});
         
       const orderData: OrderData = await response.json();
+      console.log(orderData);
       if (!orderData.id) {
           const errorDetail = orderData?.details![0];
           const errorMessage = errorDetail
@@ -53,3 +59,8 @@ export async function createPaypalOrder(cart: ProductType[]) {
     }
 
 };
+
+
+export async function captureOrder(orderId: string){
+    return easyFetch("orders/paypal/capture", true, "POST", JSON.stringify(orderId));
+}

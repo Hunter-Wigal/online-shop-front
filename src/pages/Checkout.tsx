@@ -1,20 +1,21 @@
-// import Button from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import { useContext, useState } from "react";
 import "../styles/checkout.scss";
 import ShippingForm from "../components/ShippingForm";
 import { CartContext } from "../App";
-// import { buyProducts } from "../services/products.service";
-// import { clearCart } from "../services/account.service";
+import { buyProducts } from "../services/products.service";
+import { clearCart } from "../services/account.service";
 import * as accS from "../services/account.service";
 import { ProductType } from "../components/ProductCard";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ProductRow from "../components/ProductRowDisplay";
 import {
   PayPalButtons,
   PayPalScriptProvider,
   ReactPayPalScriptOptions,
+  PayPalButtonsComponentProps,
 } from "@paypal/react-paypal-js";
-import { createPaypalOrder } from "../services/paypal.service";
+import { captureOrder, createPaypalOrder } from "../services/paypal.service";
 
 export default function Checkout() {
   const initialOptions: ReactPayPalScriptOptions = {
@@ -23,13 +24,14 @@ export default function Checkout() {
 
   const context = useContext(CartContext);
   const [cart, setCart] = useState(context.cart);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   // const [formValid, setFormValid] = useState(false);
   let shippingVal: Function;
   const setShippingVal = (val: Function) => {
     shippingVal = val;
   };
 
+ 
   // Possibly not updated yet, useful when refreshing
   if (cart.length == 0) {
     accS.checkCart().then(async (response) => {
@@ -42,6 +44,19 @@ export default function Checkout() {
       }
     });
   }
+
+  const onApprove: PayPalButtonsComponentProps["onApprove"] = async (data) => {
+    const result = await captureOrder(data.orderID);
+    console.log(await result.json());
+    if (result.ok) {
+      return navigate(`/success/${data.orderID}`);
+    }
+  };
+
+  const onCancel: PayPalButtonsComponentProps["onCancel"] = (data) => {
+        data;
+        return navigate("/");
+    }
 
   return (
     <>
@@ -85,7 +100,7 @@ export default function Checkout() {
           <div className="row">
             <div className="col">
               <div className="place">
-                {/* <Button
+                <Button
                   className="pb-10 w-50 mt-3 mb-3"
                   variant="outlined"
                   onClick={() => {
@@ -117,8 +132,15 @@ export default function Checkout() {
                   }}
                 >
                   Place Order
-                </Button> */}
-                <PayPalButtons className="pb-10 w-50 mt-3 mb-3" createOrder={()=>{return createPaypalOrder(cart)}}/>
+                </Button>
+                <PayPalButtons
+                  className="pb-10 w-50 mt-3 mb-3"
+                  createOrder={() => {
+                    return createPaypalOrder(cart);
+                  }}
+                  onApprove={onApprove}
+                  onCancel={onCancel}
+                />
                 {/* <Button onClick={createPaypalOrder}>Test Paypal</Button> */}
               </div>
             </div>
